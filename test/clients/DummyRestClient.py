@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    test.rest.DummyRestClient
+    test.clients.DummyRestClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Dummy REST client implementation
@@ -9,9 +9,10 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_net.rest import RestClient, RestQueryParams
+from pip_services_rpc.services import RestQueryParams
+from pip_services_rpc.clients import RestClient
 from pip_services_commons.data import DataPage
-from ..IDummyClient import IDummyClient
+from .IDummyClient import IDummyClient
 
 class DummyRestClient(RestClient, IDummyClient):
 

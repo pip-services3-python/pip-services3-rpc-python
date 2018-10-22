@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    test.rest.DummyCommandableHttpClient
+    test.clients.DummyCommandableHttpClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Dummy commandable HTTP client
@@ -10,8 +10,8 @@
 """
 
 from pip_services_commons.data import DataPage
-from pip_services_net.rest import CommandableHttpClient
-from ..IDummyClient import IDummyClient
+from pip_services_rpc.clients import CommandableHttpClient
+from .IDummyClient import IDummyClient
 
 class DummyCommandableHttpClient(CommandableHttpClient, IDummyClient):
     

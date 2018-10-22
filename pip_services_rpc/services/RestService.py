@@ -131,30 +131,30 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         return HttpResponseSender.send_error(error)
 
 
-    # def get_param(self, param, default = None):
-    #     return bottle.request.params.get(param, default)
-    #
-    #
-    # def get_correlation_id(self):
-    #     return bottle.request.query.get('correlation_id')
-    #
-    #
-    # def get_filter_params(self):
-    #     data = dict(bottle.request.query.decode())
-    #     data.pop('correlation_id', None)
-    #     data.pop('skip', None)
-    #     data.pop('take', None)
-    #     data.pop('total', None)
-    #     return FilterParams(data)
-    #
-    #
-    # def get_paging_params(self):
-    #     skip = bottle.request.query.get('skip')
-    #     take = bottle.request.query.get('take')
-    #     total = bottle.request.query.get('total')
-    #     return PagingParams(skip, take, total)
-    #
-    #
+    def get_param(self, param, default = None):
+        return bottle.request.params.get(param, default)
+
+
+    def get_correlation_id(self):
+        return bottle.request.query.get('correlation_id')
+
+
+    def get_filter_params(self):
+        data = dict(bottle.request.query.decode())
+        data.pop('correlation_id', None)
+        data.pop('skip', None)
+        data.pop('take', None)
+        data.pop('total', None)
+        return FilterParams(data)
+
+
+    def get_paging_params(self):
+        skip = bottle.request.query.get('skip')
+        take = bottle.request.query.get('take')
+        total = bottle.request.query.get('total')
+        return PagingParams(skip, take, total)
+
+
     def get_data(self):
          return bottle.request.json
 

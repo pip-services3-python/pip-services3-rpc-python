@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    tests.rest.test_DummyDirectClient
+    tests.clients.test_DummyDirectClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     :copyright: (c) Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
@@ -10,7 +10,7 @@
 from pip_services_commons.refer import Descriptor, References
 
 from ..DummyController import DummyController
-from ..DummyClientFixture import DummyClientFixture
+from .DummyClientFixture import DummyClientFixture
 from .DummyDirectClient import DummyDirectClient
 
 class TestDummyDirectClient:

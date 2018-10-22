@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    test.rest.DummyDirectClient
+    test.clients.DummyDirectClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Dummy direct client implementation
@@ -9,9 +9,9 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_net.direct import DirectClient
+from pip_services_rpc.clients import DirectClient
 from pip_services_commons.refer import Descriptor
-from ..IDummyClient import IDummyClient
+from .IDummyClient import IDummyClient
 
 class DummyDirectClient(DirectClient, IDummyClient):
 

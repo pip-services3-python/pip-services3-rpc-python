@@ -61,7 +61,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
 
             uri = protocol + "://" + host
             if port != 0:
-                uri = uri + ":" + port
+                uri = uri + ":" + str(port)
             connection.set_uri(uri)
 
         else:

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    test.rest.DummyCommandableHttpService
+    test.services.DummyCommandableHttpService
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Dummy commandable HTTP service
@@ -10,10 +10,10 @@
 """
 
 from pip_services_commons.refer import Descriptor
-from pip_services_net.rest import CommandableHttpService
+from pip_services_rpc.services import CommandableHttpService
 
 class DummyCommandableHttpService(CommandableHttpService):
     
     def __init__(self):
-        super(DummyCommandableHttpService, self).__init__('dummies')
-        self._dependency_resolver.put('controller', Descriptor('pip-services-dummies', 'controller', '*', '*', '*'))
+        super(DummyCommandableHttpService, self).__init__('dummy')
+        self._dependency_resolver.put('controller', Descriptor('pip-services-dummies', 'controller', 'default', '*', '1.0'))

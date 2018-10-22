@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    tests.rest.test_DummyCommandableHttpClient
+    tests.clients.test_DummyCommandableHttpClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     :copyright: (c) Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
@@ -11,9 +11,9 @@ from pip_services_commons.config import ConfigParams
 from pip_services_commons.refer import Descriptor, References
 
 from ..DummyController import DummyController
-from ..DummyClientFixture import DummyClientFixture
+from .DummyClientFixture import DummyClientFixture
 from .DummyCommandableHttpClient import DummyCommandableHttpClient
-from .DummyCommandableHttpService import DummyCommandableHttpService
+from ..services.DummyCommandableHttpService import DummyCommandableHttpService
 
 rest_config = ConfigParams.from_tuples(
     'connection.host', 'localhost',

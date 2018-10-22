@@ -18,7 +18,7 @@ from pip_services_commons.errors import BadRequestException
 from .IDummyController import IDummyController
 from .DummyCommandSet import DummyCommandSet
 
-class DummyController(object, IDummyController, ICommandable):
+class DummyController(IDummyController, ICommandable):
     _lock = None
     _items = None
     _command_set = None

@@ -13,10 +13,10 @@ from pip_services_commons.refer import Descriptor
 from ..services import HttpEndpoint, StatusRestService, HeartbeatRestService
 
 
-Descriptor = Descriptor("pip-services", "factory", "rpc", "default", "1.0");
-HttpEndpointDescriptor = Descriptor("pip-services", "endpoint", "http", "*", "1.0");
-StatusServiceDescriptor = Descriptor("pip-services", "status-service", "http", "*", "1.0");
-HeartbeatServiceDescriptor = Descriptor("pip-services", "heartbeat-service", "http", "*", "1.0");
+_Descriptor = Descriptor("pip-services", "factory", "rpc", "default", "1.0")
+HttpEndpointDescriptor = Descriptor("pip-services", "endpoint", "http", "*", "1.0")
+StatusServiceDescriptor = Descriptor("pip-services", "status-service", "http", "*", "1.0")
+HeartbeatServiceDescriptor = Descriptor("pip-services", "heartbeat-service", "http", "*", "1.0")
 
 class DefaultRpcFactory(Factory):
     def __init__(self):
