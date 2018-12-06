@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_rpc.clients.DirectClient
+    pip_services_commons.direct.DirectClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Direct client implementation

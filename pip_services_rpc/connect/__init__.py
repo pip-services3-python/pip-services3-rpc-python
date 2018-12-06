@@ -9,9 +9,6 @@
     :license: MIT, see LICENSE for more details.
 """
 
-__all__ = ['Dummy', 'DummyCommandSet', 'DummyController', 'IDummyController']
+__all__ = ['HttpConnectionResolver']
 
-from .Dummy import Dummy
-from .DummyCommandSet import DummyCommandSet
-from .DummyController import DummyController
-from .IDummyController import IDummyController
+from .HttpConnectionResolver import HttpConnectionResolver

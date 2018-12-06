@@ -7,7 +7,7 @@
     :license: MIT, see LICENSE for more details.
 """
 from pip_services_commons.config import ConfigParams
-from pip_services_rpc.connect.HttpConnectionResolver import HttpConnectionResolver
+from pip_services_rpc.connect import HttpConnectionResolver
 
 class TestHttpConnectionResolver():
     def test_connection_params(self):
@@ -23,6 +23,7 @@ class TestHttpConnectionResolver():
         assert connection.get_uri() == "http://somewhere.com:123"
 
     def test_connection_uri(self):
+        # pass
         connection_resolver = HttpConnectionResolver()
         connection_resolver.configure(ConfigParams.from_tuples("connection.uri", "https://somewhere.com:123"))
 

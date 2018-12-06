@@ -17,7 +17,10 @@ from pip_services_components.connect import ConnectionResolver
 
 
 class HttpConnectionResolver(IReferenceable, IConfigurable):
-    _connection_resolver = ConnectionResolver()
+    _connection_resolver = None
+
+    def __init__(self):
+        self._connection_resolver = ConnectionResolver()
 
     def configure(self, config):
         self._connection_resolver.configure(config)
@@ -74,6 +77,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         connection = self._connection_resolver.resolve(correlation_id)
         self.validate_connection(correlation_id, connection)
         self.update_connection(connection)
+        
         return connection
 
     def resolve_all(self, correlation_id):

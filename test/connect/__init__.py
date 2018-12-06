@@ -1,14 +1,14 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_rpc.build.__init__
+    pip_services_rpc.services.__init__
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Rpc build module implementation
+    Rpc module implementation
 
     :copyright: Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 
-__all__ = ['DefaultRpcFactory']
+__all__ = ['TestHttpConnectionResolver']
 
-from .DefaultRpcFactory import DefaultRpcFactory
+from .test_HttpConnectionResolver import TestHttpConnectionResolver

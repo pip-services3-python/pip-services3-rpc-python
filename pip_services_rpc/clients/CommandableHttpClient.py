@@ -14,9 +14,9 @@ from .RestClient import RestClient
 class CommandableHttpClient(RestClient):
     _base_route = None
 
-    def __init__(self, base_route):
+    def __init__(self, name):
         super(CommandableHttpClient, self).__init__()
-        self._base_route = base_route
+        self._base_route = name
 
 
     def call_command(self, name, correlation_id, params):

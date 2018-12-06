@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    test.clients.DummyDirectClient
+    test.rest.DummyDirectClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Dummy direct client implementation

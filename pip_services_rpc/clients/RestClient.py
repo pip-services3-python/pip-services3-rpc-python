@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_rpc.clients.RestClient
+    pip_services_commons.rest.RestClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     REST client implementation
@@ -19,53 +19,88 @@ from pip_services_components.log import CompositeLogger
 from pip_services_components.count import CompositeCounters
 from pip_services_commons.errors import ConfigException, UnknownException, InvocationException
 from pip_services_commons.errors import ErrorDescription, ApplicationExceptionFactory
-from pip_services_commons.data import IdGenerator
+from pip_services_commons.data import IdGenerator 
 from ..connect.HttpConnectionResolver import HttpConnectionResolver
 
 class RestClient(IOpenable, IConfigurable, IReferenceable):
-    _default_config = ConfigParams.from_tuples(
-        "connection.protocol", "http",
-        "connection.host", "0.0.0.0",
-        "connection.port", 3000,
-
-        "options.timeout", 10000,
-        "options.request_max_size", 1024 * 1024,
-        "options.connect_timeout", 10000,
-        "options.retries", 3,
-        "options.debug", True
-    )
+    _default_config = None 
 
     _client = None
     _uri = None
-    _timeout = 10000
-    _connection_resolver = HttpConnectionResolver()
-    _logger = CompositeLogger()
-    _counters = CompositeCounters()
-    _options = ConfigParams()
+    _timeout = 1000
+    _connection_resolver = None
+    _logger = None
+    _counters = None
+    _options = None
     _base_route = None
     _retries = 1
-    _headers = {}
-    _connect_timeout = 10000
+    _headers = None
+    _connect_timeout = 1000
 
-    def configure(self, config):
-        config = config.set_defaults(self._default_config)
-        self._connection_resolver.configure(config)
-        self._options.override(config.get_section("options"))
 
-        self._retries = config.get_as_integer_with_default("options.retries", self._retries)
-        self._connect_timeout = config.get_as_integer_with_default("options.connect_timeout", self._connect_timeout)
-        self._timeout = config.get_as_integer_with_default("options.timeout", self._timeout)
+    def __init__(self):
+        self._connection_resolver = HttpConnectionResolver()
+        self._default_config = ConfigParams.from_tuples(
+            "connection.protocol", "http",
+            "connection.host", "0.0.0.0",
+            "connection.port", 3000,
 
-        self._base_route = config.get_as_string_with_default("base_route", self._base_route)
+            "options.timeout", 10000,
+            "options.request_max_size", 1024 * 1024,
+            "options.connect_timeout", 10000,
+            "options.retries", 3,
+            "options.debug", True
+        )
+        self._logger = CompositeLogger()
+        self._counters = CompositeCounters()
+        self._options = ConfigParams()
+        self._headers = {}
+
 
     def set_references(self, references):
         self._logger.set_references(references)
         self._counters.set_references(references)
         self._connection_resolver.set_references(references)
 
+
+    def configure(self, config):
+        config = config.set_defaults(self._default_config)
+        self._connection_resolver.configure(config)
+
+        self._options.override(config.get_section("options"))
+        self._retries = config.get_as_integer_with_default("options.retries", self._retries)
+        self._connect_timeout = config.get_as_integer_with_default("options.connect_timeout", self._connect_timeout)
+        self._timeout = config.get_as_integer_with_default("options.timeout", self._timeout)
+        self._base_route = config.get_as_string_with_default("base_route", self._base_route)
+
     def _instrument(self, correlation_id, name):
         self._logger.trace(correlation_id, "Calling " + name + " method")
         return self._counters.begin_timing(name + ".call_time")
+
+
+    # def _get_connection(self, correlation_id):
+    #     connection = self._connection_resolver.resolve(correlation_id)
+        
+    #     # Check for connection
+    #     if connection == None:
+    #         raise ConfigException(correlation_id, "NO_CONNECTION", "Connection for REST client is not defined")
+        
+    #     # Check for type
+    #     protocol = connection.get_protocol("http")
+    #     if "http" != protocol:
+    #         raise ConfigException(
+    #             correlation_id, "WRONG_PROTOCOL", "Protocol is not supported by REST connection"
+    #         ).with_details("protocol", protocol)
+
+    #     # Check for host
+    #     if connection.get_host() == None:
+    #         raise ConfigException(correlation_id, "NO_HOST", "No host is configured in REST connection")
+
+    #     # Check for port
+    #     if connection.get_port() == 0:
+    #         raise ConfigException(correlation_id, "NO_PORT", "No port is configured in REST connection")
+        
+    #     return connection
 
     def is_opened(self):
         return self._client != None
@@ -74,7 +109,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         if self.is_opened():
             return
 
-        connection = self._connection_resolver.resolve(correlation_id)
+        connection = self._connection_resolver.resolve(correlation_id) #self._get_connection(correlation_id)
 
         self._uri = connection.get_uri()
         if self._uri == None:

@@ -61,5 +61,6 @@ class StatusRestService(RestService):
                                         "uptime", uptime,
                                         "properties", properties,
                                         "components", components)
-        return self.send_result(status)
+        self.send_result(status)
+        # return self.send_result(status)
 

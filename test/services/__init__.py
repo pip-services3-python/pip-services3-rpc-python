@@ -1,0 +1,19 @@
+# -*- coding: utf-8 -*-
+"""
+    pip_services_rpc.clients.__init__
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+    Clients module implementation
+
+    :copyright: Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
+    :license: MIT, see LICENSE for more details.
+"""
+
+__all__ = ['DummyCommandableHttpService', 'DummyRestService']
+# 'TestDummyCommandableHttpService', 'TestDummyRestService', 'TestHttpEndpoint']
+
+from .DummyCommandableHttpService import DummyCommandableHttpService
+from .DummyRestService import DummyRestService
+# from .test_DummyCommandableHttpService import TestDummyCommandableHttpService
+# from .test_DummyRestService import TestDummyRestService
+# from .test_HttpEndpoint import TestHttpEndpoint

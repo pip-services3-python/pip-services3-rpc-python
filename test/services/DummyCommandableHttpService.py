@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    test.services.DummyCommandableHttpService
+    test.rest.DummyCommandableHttpService
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Dummy commandable HTTP service
@@ -15,5 +15,5 @@ from pip_services_rpc.services import CommandableHttpService
 class DummyCommandableHttpService(CommandableHttpService):
     
     def __init__(self):
-        super(DummyCommandableHttpService, self).__init__('dummy')
-        self._dependency_resolver.put('controller', Descriptor('pip-services-dummies', 'controller', 'default', '*', '1.0'))
+        super(DummyCommandableHttpService, self).__init__('dummies')
+        self._dependency_resolver.put('controller', Descriptor('pip-services-dummies', 'controller', '*', '*', '*'))

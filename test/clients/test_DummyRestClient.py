@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 """
-    tests.clients.test_DummyRestClient
+    tests.rest.test_DummyRestClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     :copyright: (c) Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 
+import pytest
+
 from pip_services_commons.config import ConfigParams
-from pip_services_commons.refer import Descriptor, References
+from pip_services_commons.refer import Descriptor, References, Referencer
+from pip_services_commons.run import Opener, Closer
 
 from ..DummyController import DummyController
 from .DummyClientFixture import DummyClientFixture

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_rpc.services.CommandableHttpService
+    pip_services_rpc.rest.CommandableHttpService
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Commandable HTTP service implementation
@@ -16,12 +16,12 @@ from pip_services_commons.run import Parameters
 from .RestService import RestService
 
 class CommandableHttpService(RestService):
-    #_name = None
+    _name = None
     _command_set = None
 
-    def __init__(self, base_route):
+    def __init__(self, name):
         super(CommandableHttpService, self).__init__()
-        self._base_route = base_route
+        self._name = name
         self._dependency_resolver.put('controller', 'none')
 
     def _get_handler(self, command):
@@ -39,13 +39,12 @@ class CommandableHttpService(RestService):
 
         return handler
 
-    def register(self):
+    def add_route(self):
         controller = self._dependency_resolver.get_one_required('controller')
         if not isinstance(controller, ICommandable):
             raise Exception("Controller has to implement ICommandable interface")
         self._command_set = controller.get_command_set()
 
         for command in self._command_set.get_commands():
-            route = command.get_name()
-            route = '/' + route if route[0] != '/' else route
+            route = '/' + self._name + '/' + command.get_name()
             self.register_route('POST', route, None, self._get_handler(command))

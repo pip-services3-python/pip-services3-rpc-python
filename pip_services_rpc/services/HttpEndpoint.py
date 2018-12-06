@@ -27,23 +27,29 @@ from ..connect.HttpConnectionResolver import HttpConnectionResolver
 
 
 class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
-    _default_config = ConfigParams.from_tuples("connection.protocol", "http",
-                                               "connection.host", "0.0.0.0",
-                                               "connection.port", 3000,
-                                               "connection.request_max_size", 1024 * 1024,
-                                               "connection.connect_timeout", 60000,
-                                               "connection.debug", True)
-    _connection_resolver = HttpConnectionResolver()
-    #_dependency_resolver = DependencyResolver()
-    _logger = CompositeLogger()
-    _counters = CompositeCounters()
-
+    _default_config = None
+    _connection_resolver = None
+    _logger = None
+    _counters = None
+    _registrations = None
     _service = None
     _server = None
+    _debug = False
     #_resource = None
     _uri = None
-    _registrations = []
+    #_dependency_resolver = DependencyResolver()
 
+    def __init__(self):
+        self._default_config = ConfigParams.from_tuples("connection.protocol", "http",
+                                                "connection.host", "0.0.0.0",
+                                                "connection.port", 3000,
+                                                "connection.request_max_size", 1024 * 1024,
+                                                "connection.connect_timeout", 60000,
+                                                "connection.debug", True)
+        self._connection_resolver = HttpConnectionResolver()
+        self._logger = CompositeLogger()
+        self._counters = CompositeCounters()
+        self._registrations = []
 
     def configure(self, config):
         config = config.set_defaults(self._default_config)
@@ -62,7 +68,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             return
 
         connection = self._connection_resolver.resolve(correlation_id)
-
+        if connection == None:
+            raise ConfigException(correlation_id, "NO_CONNECTION", "Connection for REST client is not defined")
         self._uri = connection.get_uri()
 
         # Create instance of bottle application
@@ -73,11 +80,13 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._service.route('/', 'OPTIONS', self._options_handler)
         self._service.route('/<path:path>', 'OPTIONS', self._options_handler)
         def start_server():
-            self._service.run(server = self._server, debug = False)
+            self._service.run(server = self._server, debug = self._debug)
 
+        host = connection.get_host()
+        port = connection.get_port()
         # Starting service
         try:
-            self._server = SimpleServer(host = connection.get_host(), port = connection.get_port())
+            self._server = SimpleServer(host = host, port = port)
 
             # Start server in thread
             Thread(target=start_server).start()
@@ -126,6 +135,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                 return handler(*args, **kwargs)
             except Exception as ex:
                 return HttpResponseSender.send_error(ex)
+                # return self.send_error(ex)
 
         self._service.route(route, method, wrapper)
 
@@ -139,3 +149,73 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
     def _options_handler(self, ath = None):
         return
+
+
+    # def _to_json(self, obj):
+    #     if obj == None:
+    #         return None
+
+    #     if isinstance(obj, set):
+    #         obj = list(obj)
+    #     if isinstance(obj, list):
+    #         result = []
+    #         for item in obj:
+    #             item = self._to_json(item)
+    #             result.append(item)
+    #         return result
+
+    #     if isinstance(obj, dict):
+    #         result = {}
+    #         for (k, v) in obj.items():
+    #             v = self._to_json(v)
+    #             result[k] = v
+    #         return result
+        
+    #     if hasattr(obj, 'to_json'):
+    #         return obj.to_json()
+    #     if hasattr(obj, '__dict__'):
+    #         return self._to_json(obj.__dict__)
+    #     return obj
+
+
+    # def send_result(self, result):
+    #     bottle.response.headers['Content-Type'] = 'application/json'
+    #     if result == None: 
+    #         bottle.response.status = 404
+    #         return
+    #     else:
+    #         bottle.response.status = 200
+    #         return json.dumps(result, default=self._to_json)
+
+
+    # def send_created_result(self, result):
+    #     bottle.response.headers['Content-Type'] = 'application/json'
+    #     if result == None: 
+    #         bottle.response.status = 404
+    #         return
+    #     else:
+    #         bottle.response.status = 201
+    #         return json.dumps(result, default=self._to_json)
+
+
+    # def send_deleted_result(self):
+    #     bottle.response.headers['Content-Type'] = 'application/json'
+    #     bottle.response.status = 204
+    #     return
+
+
+    # def send_error(self, error):
+    #     bottle.response.headers['Content-Type'] = 'application/json'
+    #     error = ErrorDescriptionFactory.create(error)
+    #     if error.correlation_id == None:
+    #         error.correlation_id = self.get_correlation_id()
+    #     bottle.response.status = error.status
+    #     return json.dumps(error.to_json())
+
+
+    # def get_param(self, param, default = None):
+    #     return bottle.request.params.get(param, default)
+
+
+    # def get_correlation_id(self):
+    #     return bottle.request.query.get('correlation_id')

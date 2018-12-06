@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    test.clients.DummyCommandableHttpClient
+    test.rest.DummyCommandableHttpClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Dummy commandable HTTP client

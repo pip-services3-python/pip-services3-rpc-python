@@ -6,7 +6,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe",
             "program": "${file}",
             "debugOptions": [
                 "WaitOnAbnormalExit",
@@ -19,7 +19,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe",
             "program": "${workspaceRoot}/test.py",
             "debugOptions": [
                 "WaitOnAbnormalExit",
@@ -32,7 +32,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe",
             "program": "${file}",
             "console": "integratedTerminal",
             "debugOptions": [
@@ -45,7 +45,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe",
             "program": "${file}",
             "console": "externalTerminal",
             "debugOptions": [
@@ -58,7 +58,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe",
             "program": "${workspaceRoot}/manage.py",
             "args": [
                 "runserver",
@@ -76,7 +76,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe",
             "program": "fully qualified path fo 'flask' executable. Generally located along with python interpreter",
             "env": {
                 "FLASK_APP": "${workspaceRoot}/quickstart/app.py"
@@ -97,7 +97,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": false,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe",
             "program": "${workspaceRoot}/run.py",
             "args": [],
             "debugOptions": [
@@ -111,7 +111,7 @@
             "type": "python",
             "request": "launch",
             "stopOnEntry": true,
-            "pythonPath": "${config.python.pythonPath}",
+            "pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe",
             "program": "${workspaceRoot}/console.py",
             "args": [
                 "dev",
