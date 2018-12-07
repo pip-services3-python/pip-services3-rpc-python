@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_commons.rest.RestQueryParams
+    pip_services3_rpc.services.RestQueryParams
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     REST query parameters implementation
     
-    :copyright: Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
+    :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_commons.data import IdGenerator
+from pip_services3_commons.data import IdGenerator
 
 class RestQueryParams(dict):
 

@@ -9,8 +9,8 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_commons.refer import Descriptor
-from pip_services_rpc.services import CommandableHttpService
+from pip_services3_commons.refer import Descriptor
+from pip_services3_rpc.services import CommandableHttpService
 
 class DummyCommandableHttpService(CommandableHttpService):
     

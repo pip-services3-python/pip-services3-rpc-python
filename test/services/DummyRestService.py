@@ -11,9 +11,9 @@
 
 import threading
 
-from pip_services_commons.data import FilterParams, PagingParams, IdGenerator
-from pip_services_commons.refer import Descriptor
-from pip_services_rpc.services import RestService
+from pip_services3_commons.data import FilterParams, PagingParams, IdGenerator
+from pip_services3_commons.refer import Descriptor
+from pip_services3_rpc.services import RestService
 
 # from ..IDummyService import IDummyService
 

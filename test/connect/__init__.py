@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_rpc.services.__init__
+    pip_services3_rpc.services.__init__
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Rpc module implementation

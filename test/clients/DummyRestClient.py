@@ -9,9 +9,9 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_rpc.clients import RestClient
-from pip_services_rpc.services import RestQueryParams
-from pip_services_commons.data import DataPage
+from pip_services3_rpc.clients import RestClient
+from pip_services3_rpc.services import RestQueryParams
+from pip_services3_commons.data import DataPage
 from .IDummyClient import IDummyClient
 
 class DummyRestClient(RestClient, IDummyClient):

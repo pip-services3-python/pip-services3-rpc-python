@@ -11,9 +11,9 @@
 
 import threading
 
-from pip_services_commons.data import FilterParams, PagingParams, DataPage, IdGenerator
-from pip_services_commons.commands import ICommandable
-from pip_services_commons.errors import BadRequestException
+from pip_services3_commons.data import FilterParams, PagingParams, DataPage, IdGenerator
+from pip_services3_commons.commands import ICommandable
+from pip_services3_commons.errors import BadRequestException
 
 from .IDummyController import IDummyController
 from .DummyCommandSet import DummyCommandSet

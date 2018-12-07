@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_rpc.rest.__init__
+    pip_services3_rpc.rest.__init__
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Net rest module initialization

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_rpc.rest.SimpleServer
+    pip_services3_rpc.rest.SimpleServer
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
     Simple WSGI web server with shutdown hook

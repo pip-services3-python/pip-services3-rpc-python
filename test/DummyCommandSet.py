@@ -9,8 +9,8 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services_commons.data import FilterParams, PagingParams
-from pip_services_commons.commands import Command, CommandSet
+from pip_services3_commons.data import FilterParams, PagingParams
+from pip_services3_commons.commands import Command, CommandSet
 
 from .IDummyController import IDummyController
 

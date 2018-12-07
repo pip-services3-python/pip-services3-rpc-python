@@ -9,9 +9,9 @@
 
 import pytest
 
-from pip_services_commons.config import ConfigParams
-from pip_services_commons.refer import Descriptor, References, Referencer
-from pip_services_commons.run import Opener, Closer
+from pip_services3_commons.config import ConfigParams
+from pip_services3_commons.refer import Descriptor, References, Referencer
+from pip_services3_commons.run import Opener, Closer
 
 from ..DummyController import DummyController
 from .DummyClientFixture import DummyClientFixture

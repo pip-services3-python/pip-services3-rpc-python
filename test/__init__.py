@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-    pip_services_rpc.clients.__init__
+    pip_services3_rpc.clients.__init__
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     Clients module implementation
