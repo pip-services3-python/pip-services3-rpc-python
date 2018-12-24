@@ -75,8 +75,7 @@ class CommandableHttpClient(RestClient):
 
         :param params: command parameters.
 
-        Returns:
-            result of the command.
+        :return: result of the command.
         """
         timing = self._instrument(correlation_id, self._base_route + '.' + name)
         try:

@@ -69,7 +69,7 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.IOpenable.IOpenable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code></p>
 <p>Used for creating HTTP endpoints. An endpoint is a URL, at which a given service can be accessed by a client.</p>
 <p>### Configuration parameters ###</p>
-<p>Parameters to pass to the [[configure]] method for component configuration:</p>
+<p>Parameters to pass to the <i>configure()</i> method for component configuration:</p>
 <ul class="simple">
 <li><dl class="first docutils">
 <dt>connection(s) - the connection resolver’s connections;</dt>
@@ -85,18 +85,18 @@
 </li>
 </ul>
 <p>### References ###</p>
-<p>A logger, counters, and a connection resolver can be referenced by passing the following references to the object’s [[setReferences]] method:</p>
+<p>A logger, counters, and a connection resolver can be referenced by passing the following references to the object’s <i>setReferences</i> method:</p>
 <ul class="simple">
-<li><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
-<li><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
-<li><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+    <li><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.log.ILogger.html">ILogger</a> components to pass log messages</li>
+    <li><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.count.ICounters.html">ICounters</a> components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> services to resolve connection</li>
 </ul>
 <dl class="docutils">
 <dt>Example:</dt>
 <dd><dl class="first last docutils">
 <dt>def my_method(_config, _references):</dt>
 <dd><p class="first">endpoint = HttpEndpoint()
-if (_config)</p>
+<dd>if (_config)</p>
 <blockquote>
 <div>endpoint.configure(_config)</div></blockquote>
 <dl class="docutils">
@@ -105,7 +105,7 @@ if (_config)</p>
 </dl>
 <p>…</p>
 <p class="last">endpoint.open(correlationId)
-…</p>
+<p>…</p>
 </dd>
 </dl>
 </dd>
@@ -229,15 +229,15 @@ if (_config)</p>
 <code class="descname">set_references</code><span class="sig-paren">(</span><em>references</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.HttpEndpoint.set_references" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets references to this endpoint’s logger, counters, and connection resolver.</p>
 <ul class="simple">
-<li><em>:logger:</em>:<a href="#id7"><span class="problematic" id="id8">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
-<li><em>:counters:</em>:<a href="#id9"><span class="problematic" id="id10">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
-<li><em>:discovery:</em>:<a href="#id11"><span class="problematic" id="id12">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+    <li><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.log.ILogger.html">ILogger</a> components to pass log messages</li>
+    <li><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.count.ICounters.html">ICounters</a> components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> services to resolve connection</li>
 </ul>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>references</strong> – an IReferences object, containing references to a logger, counters, and a connection resolver.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>references</strong> – an <a href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.refer.IReferences.html">IReferences</a> object, containing references to a logger, counters, and a connection resolver.</td>
 </tr>
 </tbody>
 </table>

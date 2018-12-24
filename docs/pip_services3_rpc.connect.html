@@ -79,13 +79,13 @@
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver">
 <em class="property">class </em><code class="descclassname">pip_services3_rpc.connect.</code><code class="descname">HttpConnectionResolver</code><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code></p>
-<p>Helper class to retrieve connections for HTTP-based services abd clients. In addition to regular functions of ConnectionResolver is able to parse <a class="reference external" href="http://">http://</a> URIs and validate connection parameters before returning them.</p>
+<p>Helper class to retrieve connections for HTTP-based services abd clients. In addition to regular functions of ConnectionResolver is able to parse <i>http://</i> URIs and validate connection parameters before returning them.</p>
 <p>### Configuration parameters ###</p>
 <ul class="simple">
 <li><dl class="first docutils">
 <dt>connection:</dt>
 <dd><ul class="first last">
-<li>discovery_key:               (optional) a key to retrieve the connection from IDiscovery</li>
+<li>discovery_key:               (optional) a key to retrieve the connection from <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a></li>
 <li>…                          other connection parameters</li>
 </ul>
 </dd>
@@ -105,15 +105,15 @@
 </ul>
 <p>### References ###</p>
 <ul class="simple">
-<li><em>:discovery:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+<li><em>:discovery:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0        (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> services to resolve connection</li>
 </ul>
 <dl class="docutils">
 <dt>Example:</dt>
 <dd>config = ConfigParams.from_tuples(“connection.host”, “10.1.1.100”,”connection.port”, 8080)
-connectionResolver = HttpConnectionResolver()
-connectionResolver.configure(config)
-connectionResolver.set_references(references)
-params = connectionResolver.resolve(“123”)</dd>
+<dd>connectionResolver = HttpConnectionResolver()
+<dd>connectionResolver.configure(config)
+<dd>connectionResolver.set_references(references)
+<dd>params = connectionResolver.resolve(“123”)</dd>
 </dl>
 <dl class="method">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver.configure">
@@ -146,7 +146,7 @@ params = connectionResolver.resolve(“123”)</dd>
 <dl class="method">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver.resolve">
 <code class="descname">resolve</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.resolve" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resolves a single component connection. If connections are configured to be retrieved from Discovery service it finds a IDiscovery and resolves the connection there.</p>
+<dd><p>Resolves a single component connection. If connections are configured to be retrieved from Discovery service it finds a <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> and resolves the connection there.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -162,7 +162,7 @@ params = connectionResolver.resolve(“123”)</dd>
 <dl class="method">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver.resolve_all">
 <code class="descname">resolve_all</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.resolve_all" title="Permalink to this definition">¶</a></dt>
-<dd><p>Resolves all component connection. If connections are configured to be retrieved from Discovery service it finds a IDiscovery and resolves the connection there.</p>
+<dd><p>Resolves all component connection. If connections are configured to be retrieved from Discovery service it finds a <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> and resolves the connection there.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />

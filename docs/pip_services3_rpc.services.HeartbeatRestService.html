@@ -75,13 +75,13 @@
 <li><dl class="first docutils">
 <dt>dependencies:</dt>
 <dd><ul class="first last">
-<li>endpoint:              override for HTTP Endpoint dependency</li>
+<li>endpoint:              override for <a href="https://pip-services3-python.github.io/pip-services3-rpc-python/pip_services3_rpc.services.HttpEndpoint.html">HTTP Endpoint</a> dependency</li>
 </ul>
 </dd>
 </dl>
 </li>
 <li>connection(s):</li>
-<li>discovery_key:         (optional) a key to retrieve the connection from IDiscovery</li>
+<li>discovery_key:         (optional) a key to retrieve the connection from <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a></li>
 <li>protocol:              connection protocol: http or https</li>
 <li>host:                  host name or IP address</li>
 <li>port:                  port number</li>
@@ -89,10 +89,10 @@
 </ul>
 <p>### References ###</p>
 <ul class="simple">
-<li><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
-<li><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
-<li><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
-<li><em>:endpoint:http:</em>:1.0          (optional) HttpEndpoint reference</li>
+    <li><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.log.ILogger.html">ILogger</a> components to pass log messages</li>
+    <li><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.count.ICounters.html">ICounters</a> components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> services to resolve connection</li>
+<li><em>:endpoint:http:</em>:1.0          (optional) <a href="https://pip-services3-python.github.io/pip-services3-rpc-python/pip_services3_rpc.services.HttpEndpoint.html">HttpEndpoint</a> reference</li>
 </ul>
 <dl class="docutils">
 <dt>Example:</dt>
@@ -103,7 +103,7 @@ service.configure(ConfigParams.from_tuples(“route”, “ping”,</p>
 “connection.host”, “localhost”,
 “connection.port”, 8080))</div></blockquote>
 <p class="last">service.open(“123”)
-…</p>
+<p>…</p>
 </dd>
 </dl>
 <dl class="method">

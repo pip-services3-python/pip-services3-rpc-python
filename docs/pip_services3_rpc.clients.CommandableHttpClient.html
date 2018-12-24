@@ -68,14 +68,14 @@
 <em class="property">class </em><code class="descclassname">pip_services3_rpc.clients.CommandableHttpClient.</code><code class="descname">CommandableHttpClient</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.clients.RestClient.html#pip_services3_rpc.clients.RestClient.RestClient" title="pip_services3_rpc.clients.RestClient.RestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.clients.RestClient.RestClient</span></code></a></p>
 <p>Abstract client that calls commandable HTTP service.
-Commandable services are generated automatically for ICommandable objects. Each command is exposed as POST operation that receives all parameters in body object.</p>
+Commandable services are generated automatically for <a href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.commands.ICommandable.html">ICommandable</a> objects. Each command is exposed as POST operation that receives all parameters in body object.</p>
 <p>### Configuration parameters ###</p>
 <p>base_route:              base route for remote URI</p>
 <ul class="simple">
 <li><dl class="first docutils">
 <dt>connection(s):</dt>
 <dd><ul class="first last">
-<li>discovery_key:         (optional) a key to retrieve the connection from IDiscovery</li>
+<li>discovery_key:         (optional) a key to retrieve the connection from <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a></li>
 <li>protocol:              connection protocol: http or https</li>
 <li>host:                  host name or IP address</li>
 <li>port:                  port number</li>
@@ -97,29 +97,29 @@ Commandable services are generated automatically for ICommandable objects. Each 
 </ul>
 <p>### References ###</p>
 <ul class="simple">
-<li><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
-<li><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
-<li><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+    <li><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.log.ILogger.html">ILogger</a> components to pass log messages</li>
+    <li><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.count.ICounters.html">ICounters</a> components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> services to resolve connection</li>
 </ul>
 <dl class="docutils">
-<dt>Example:</dt>
-<dd><dl class="first docutils">
-<dt>class MyCommandableHttpClient(CommandableHttpClient, IMyClient):</dt>
-<dd><p class="first">…</p>
-<dl class="docutils">
-<dt>def get_data(self, correlation_id, id):</dt>
-<dd>return self.call_command(“get_data”, correlation_id, MyData(id))</dd>
-</dl>
-<p class="last">…</p>
-</dd>
-</dl>
-<p>client = MyCommandableHttpClient()
-client.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
-<blockquote>
-<div>“connection.host”, “localhost”,
-“connection.port”, 8080))</div></blockquote>
-<p class="last">data = client.getData(“123”, “1”)
-…</p>
+    <dt>Example:</dt>
+    <dd><dl class="first docutils">
+    <dt>class MyCommandableHttpClient(CommandableHttpClient, IMyClient):</dt>
+    <dd><p class="first">…</p>
+    <dl class="docutils">
+    <dt>def get_data(self, correlation_id, id):</dt>
+    <dd>return self.call_command(“get_data”, correlation_id, MyData(id))</dd>
+    </dl>
+    <p class="last">…</p>
+    </dd>
+    </dl>
+    <p>client = MyCommandableHttpClient()
+    <p>client.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
+    <blockquote>
+    <div>“connection.host”, “localhost”,
+    “connection.port”, 8080))</div></blockquote>
+    <p class="last">data = client.getData(“123”, “1”)
+    <p>…</p>
 </dd>
 </dl>
 <dl class="method">
@@ -134,15 +134,14 @@ client.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,
 <li><strong>name</strong> – a name of the command to call.</li>
 <li><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</li>
 <li><strong>params</strong> – command parameters.</li>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">result of the command.</p>
+</td>
+</tr>
 </ul>
 </td>
 </tr>
 </tbody>
 </table>
-<dl class="docutils">
-<dt>Returns:</dt>
-<dd>result of the command.</dd>
-</dl>
 </dd></dl>
 
 </dd></dl>

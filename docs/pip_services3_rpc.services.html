@@ -151,19 +151,18 @@
 <dd><dl class="first docutils">
 <dt>def __init__(self):</dt>
 <dd>super(MyCommandableHttpService, self).__init__()
-self._dependencyResolver.put(“controller”, Descriptor(“mygroup”,”controller”,”*”,”*”,”1.0”))</dd>
+<dd>self._dependencyResolver.put(“controller”, Descriptor(“mygroup”,”controller”,”*”,”*”,”1.0”))</dd>
 </dl>
 <p class="last">…</p>
 </dd>
 </dl>
 <p>service = MyCommandableHttpService()
-service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
-<blockquote>
-<div>“connection.host”, “localhost”,
-“connection.port”, 8080))</div></blockquote>
-<p class="last">service.set_references(References.from_tuples(Descriptor(“mygroup”,”controller”,”default”,”default”,”1.0”), controller))
-service.open(“123”)
-…</p>
+<dd>service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
+<dd>“connection.host”, “localhost”,
+<dd>“connection.port”, 8080))
+<dd>service.set_references(References.from_tuples(Descriptor(“mygroup”,”controller”,”default”,”default”,”1.0”), controller))
+<dd>service.open(“123”)
+<dd>…</p>
 </dd>
 </dl>
 <dl class="method">
@@ -219,22 +218,21 @@ service.open(“123”)
 <dl class="last docutils">
 <dt>def __init__(self):</dt>
 <dd>super(MyRestService, self).__init__()
-self._dependencyResolver.put(“controller”, Descriptor(“mygroup”,”controller”,”*”,”*”,”1.0”))</dd>
+<dd>self._dependencyResolver.put(“controller”, Descriptor(“mygroup”,”controller”,”*”,”*”,”1.0”))</dd>
 <dt>def set_references(self, references):</dt>
 <dd>super(MyRestService, self).set_references(references)
-self._controller = self._dependencyResolver.get_required(“controller”)</dd>
+<dd>self._controller = self._dependencyResolver.get_required(“controller”)</dd>
 <dt>def register():</dt>
 <dd>…</dd>
 </dl>
 </dd>
 </dl>
 <p>service = MyRestService()
-service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
-<blockquote>
-<div>“connection.host”, “localhost”,
-“connection.port”, 8080))</div></blockquote>
-<p class="last">service.set_references(References.from_tuples(Descriptor(“mygroup”,”controller”,”default”,”default”,”1.0”), controller))
-service.open(“123”)</p>
+<dd>service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
+<dd>“connection.host”, “localhost”,
+“connection.port”, 8080))
+<dd>service.set_references(References.from_tuples(Descriptor(“mygroup”,”controller”,”default”,”default”,”1.0”), controller))
+<dd>service.open(“123”)</p>
 </dd>
 </dl>
 <dl class="method">
@@ -533,7 +531,7 @@ service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”
 <div>“connection.host”, “localhost”,
 “connection.port”, 8080))</div></blockquote>
 <p class="last">service.open(“123”)
-…</p>
+<p>…</p>
 </dd>
 </dl>
 <dl class="method">
@@ -661,16 +659,16 @@ service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”
 <dd><dl class="first last docutils">
 <dt>def my_method(_config, _references):</dt>
 <dd><p class="first">endpoint = HttpEndpoint()
-if (_config)</p>
-<blockquote>
-<div>endpoint.configure(_config)</div></blockquote>
+<dd>
+<dt>if (_config)
+<dd>endpoint.configure(_config)
 <dl class="docutils">
 <dt>if (_references)</dt>
 <dd>endpoint.setReferences(_references)</dd>
 </dl>
 <p>…</p>
 <p class="last">endpoint.open(correlationId)
-…</p>
+<p>…</p>
 </dd>
 </dl>
 </dd>
