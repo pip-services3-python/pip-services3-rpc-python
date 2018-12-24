@@ -75,8 +75,7 @@ class StatusRestService(RestService):
         """
         Configures component by passing configuration parameters.
 
-        Args:
-            config: configuration parameters to be set.
+        :param config: configuration parameters to be set.
         """
         super(StatusRestService, self).configure(config)
 
@@ -86,8 +85,7 @@ class StatusRestService(RestService):
         """
         Sets references to dependent components.
 
-        Args:
-            references: references to locate the component dependencies.
+        :param references: references to locate the component dependencies.
         """
         self._references_ = references
 

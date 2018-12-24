@@ -1,0 +1,7 @@
+pip\_services3\_rpc.services.StatusRestService module
+=====================================================
+
+.. automodule:: pip_services3_rpc.services.StatusRestService
+    :members:
+    :undoc-members:
+    :show-inheritance:

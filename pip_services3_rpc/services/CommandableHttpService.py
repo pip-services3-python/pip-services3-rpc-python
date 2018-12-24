@@ -62,8 +62,7 @@ class CommandableHttpService(RestService):
         """
         Creates a new instance of the service.
 
-        Args:
-            name: a service base route.
+        :param name: a service base route.
         """
         super(CommandableHttpService, self).__init__()
         self._name = name

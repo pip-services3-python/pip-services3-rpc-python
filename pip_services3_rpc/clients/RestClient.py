@@ -104,8 +104,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         Sets references to dependent components.
 
-        Args:
-            references: references to locate the component dependencies.
+        :param references: references to locate the component dependencies.
         """
         self._logger.set_references(references)
         self._counters.set_references(references)
@@ -116,8 +115,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         Configures component by passing configuration parameters.
 
-        Args:
-            config: configuration parameters to be set.
+        :param config: configuration parameters to be set.
         """
         config = config.set_defaults(self._default_config)
         self._connection_resolver.configure(config)
@@ -132,13 +130,11 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         Adds instrumentation to log calls and measure call time. It returns a Timing object that is used to end the time measurement.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-            name: a method name.
+        :param name: a method name.
 
-        Returns:
-            Timing object to end the time measurement.
+        :return: Timing object to end the time measurement.
         """
         self._logger.trace(correlation_id, "Calling " + name + " method")
         return self._counters.begin_timing(name + ".call_time")
@@ -172,8 +168,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         Checks if the component is opened.
 
-        Returns:
-            true if the component has been opened and false otherwise.
+        :return: true if the component has been opened and false otherwise.
         """
         return self._client != None
 
@@ -181,8 +176,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         Opens the component.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         if self.is_opened():
             return
@@ -205,8 +199,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         Closes component and frees used resources.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         if self._client != None:
             self._logger.debug(correlation_id, "Disconnected from " + self._uri)
@@ -246,19 +239,17 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         Calls a remote method via HTTP/REST protocol.
 
-        Args:
-            method: HTTP method: "get", "head", "post", "put", "delete"
+        :param method: HTTP method: "get", "head", "post", "put", "delete"
 
-            route: a command route. Base route will be added to this route
+        :param route: a command route. Base route will be added to this route
 
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-            params: (optional) query parameters.
+        :param params: (optional) query parameters.
 
-            data: (optional) body object.
+        :param data: (optional) body object.
 
-        Returns:
-            result object
+        :return: result object
         """
         method = method.upper()
                 

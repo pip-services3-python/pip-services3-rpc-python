@@ -54,8 +54,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         """
         Configures component by passing configuration parameters.
 
-        Args:
-            config: configuration parameters to be set.
+        :param config: configuration parameters to be set.
         """
         self._connection_resolver.configure(config)
 
@@ -63,8 +62,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         """
         Sets references to dependent components.
 
-        Args:
-            references: references to locate the component dependencies.
+        :param references: references to locate the component dependencies.
         """
         self._connection_resolver.set_references(references)
 
@@ -117,11 +115,9 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         """
         Resolves a single component connection. If connections are configured to be retrieved from Discovery service it finds a IDiscovery and resolves the connection there.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-        Returns:
-            resolved connection.
+        :return: resolved connection.
         """
         connection = self._connection_resolver.resolve(correlation_id)
         self.validate_connection(correlation_id, connection)
@@ -133,11 +129,9 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         """
         Resolves all component connection. If connections are configured to be retrieved from Discovery service it finds a IDiscovery and resolves the connection there.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-        Returns:
-            resolved connections.
+        :return: resolved connections.
         """
         connections = self._connection_resolver.resolve_all(correlation_id)
         for connection in connections:
@@ -150,8 +144,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         """
         Registers the given connection in all referenced discovery services. This method can be used for dynamic service discovery.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         connection = self._connection_resolver.resolve(correlation_id)
         self.validate_connection(correlation_id, connection)

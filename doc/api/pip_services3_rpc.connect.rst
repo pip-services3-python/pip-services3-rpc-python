@@ -1,0 +1,17 @@
+pip\_services3\_rpc.connect package
+===================================
+
+Submodules
+----------
+
+.. toctree::
+
+   pip_services3_rpc.connect.HttpConnectionResolver
+
+Module contents
+---------------
+
+.. automodule:: pip_services3_rpc.connect
+    :members:
+    :undoc-members:
+    :show-inheritance:

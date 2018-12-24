@@ -69,8 +69,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         Configures component by passing configuration parameters.
 
-        Args:
-            config: configuration parameters to be set.
+        :param config: configuration parameters to be set.
         """
         self._dependency_resolver.configure(config)
 
@@ -78,8 +77,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         Sets references to dependent components.
 
-        Args:
-            references: references to locate the component dependencies.
+        :param references: references to locate the component dependencies.
         """
         self._logger.set_references(references)
         self._counters.set_references(references)
@@ -90,13 +88,11 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         Adds instrumentation to log calls and measure call time. It returns a Timing object that is used to end the time measurement.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-            name: a method name.
+        :param name: a method name.
 
-        Returns:
-            Timing object to end the time measurement.
+        :return: Timing object to end the time measurement.
         """
         self._logger.trace(correlation_id, "Executing " + name + " method")
         return self._counters.begin_timing(name + ".call_time")
@@ -105,8 +101,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         Checks if the component is opened.
 
-        Returns:
-            true if the component has been opened and false otherwise.
+        :return: true if the component has been opened and false otherwise.
         """
         return self._opened
 
@@ -114,8 +109,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         Opens the component.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         if self._opened:
             return
@@ -130,8 +124,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         Closes component and frees used resources.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         if self._opened:
             self._logger.info(correlation_id, 'Closed direct client')
