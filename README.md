@@ -10,7 +10,7 @@ It provides synchronous and asynchronous communication components
 Quick Links:
 
 * [Downloads](https://github.com/pip-services/pip-services-net-python/blob/master/doc/Downloads.md)
-* [API Reference](http://htmlpreview.github.io/?https://github.com/pip-services/pip-services-net-python/blob/master/doc/api/index.html)
+* [API Reference](https://pip-services3-python.github.io/pip-services3-rpc-python/)
 * [Building and Testing](https://github.com/pip-services/pip-services-net-python/blob/master/doc/Development.md)
 * [Contributing](https://github.com/pip-services/pip-services-net-python/blob/master/doc/Development.md/#contrib)
 
