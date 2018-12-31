@@ -74,7 +74,6 @@ class CommandableHttpService(RestService):
             params = self.get_data()
             correlation_id = params['correlation_id'] if 'correlation_id' in params else None
             args = Parameters.from_value(params)
-
             timing = self._instrument(correlation_id, self._name + '.' + command.get_name())
             try:
                 result = command.execute(correlation_id, args)

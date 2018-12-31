@@ -88,5 +88,5 @@ class HttpResponseSender():
     #         return self._to_json(obj.__dict__)
     #     return obj
 
-    # def get_correlation_id(self):
-    #     return bottle.request.query.get('correlation_id')
+    def get_correlation_id(self):
+        return bottle.request.query.get('correlation_id')

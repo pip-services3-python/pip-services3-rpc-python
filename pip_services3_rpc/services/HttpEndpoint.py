@@ -233,7 +233,6 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                     params = self.get_data()
                     correlation_id = params['correlation_id'] if 'correlation_id' in params else None
                     error = schema.validate_and_throw_exception(correlation_id, params, False)
-
                 return handler(*args, **kwargs)
             except Exception as ex:
                 return HttpResponseSender.send_error(ex)
@@ -242,7 +241,10 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._service.route(route, method, wrapper)
 
     def get_data(self):
-         return bottle.request.json
+        if bottle.request.json:
+            return bottle.request.json
+        else: 
+            return None
 
     def _enable_cors(self):
         bottle.response.headers['Access-Control-Allow-Origin'] = '*'
@@ -315,9 +317,9 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     #     return json.dumps(error.to_json())
 
 
-    # def get_param(self, param, default = None):
-    #     return bottle.request.params.get(param, default)
+    def get_param(self, param, default = None):
+        return bottle.request.params.get(param, default)
 
 
-    # def get_correlation_id(self):
-    #     return bottle.request.query.get('correlation_id')
+    def get_correlation_id(self):
+        return bottle.request.query.get('correlation_id')

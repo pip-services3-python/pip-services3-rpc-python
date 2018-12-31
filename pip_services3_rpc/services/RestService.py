@@ -261,7 +261,6 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
             bottle.response.status = 200
             return json.dumps(result, default=self._to_json)
 
-
     def send_created_result(self, result):
         """
         Creates a callback function that sends newly created object as JSON. That callack function call be called directly or passed as a parameter to business logic components.
@@ -352,7 +351,13 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
 
     def get_data(self):
-        return bottle.request.json
+        data = bottle.request.json
+        if isinstance(data, str):
+            return json.loads(bottle.request.json)
+        elif bottle.request.json:
+            return bottle.request.json
+        else: 
+            return None
 
 
     def register_route(self, method, route, schema, handler):
@@ -370,7 +375,6 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         if self._endpoint == None:
             return
-
         if self._base_route != None and len(self._base_route) > 0:
             base_route = self._base_route
             if base_route[0] != '/':

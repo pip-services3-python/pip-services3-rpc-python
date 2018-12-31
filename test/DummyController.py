@@ -75,7 +75,6 @@ class DummyController(IDummyController, ICommandable):
 
     def create(self, correlation_id, item):
         ##raise BadRequestException(correlation_id, 'TEST', 'Test error')
-
         self._lock.acquire()
         try:
             if 'id' not in item or item['id'] == None:
@@ -84,7 +83,7 @@ class DummyController(IDummyController, ICommandable):
             self._items.append(item)
         finally:
             self._lock.release()
-
+        
         return item
 
     def update(self, correlation_id, new_item):

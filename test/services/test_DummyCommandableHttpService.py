@@ -62,26 +62,23 @@ class TestDummyCommandableHttpService():
     # #todo
     def test_crud_operations(self):
         time.sleep(2)
-        # pass
-        dummy1 = self.invoke("/dummy/create_dummy",  DUMMY1)
-        # dummy1 = self.invoke("/dummy/create_dummy", Parameters.from_tuples("dummy", DUMMY1))
-        # dummy1 = self.invoke("/status", Parameters.from_tuples("dummy", DUMMY1))
-
+        dummy1 = self.invoke("/dummies/create_dummy", Parameters.from_tuples("dummy", DUMMY1))
+        
         assert None != dummy1
-        assert None != dummy1['id']
         assert DUMMY1['key'] == dummy1['key']
-        assert DUMMY1['content'] == dummy1.content['content']
+        assert DUMMY1['content'] == dummy1['content']
 
     # todo return dummy object from response
     def invoke(self, route, entity):
-        # data=json.dumps(entity)
-        # print("send request", data)
+        # # First example
+        # params = {}
+        # response = requests.post("http://localhost:3001" + route, params=params, json=json.dumps(entity))
+        # # TODO: return only status: <Response [200]> ????
+        # return response
         
-        # response = requests.post("http://localhost:3001" + route, data=data)
-        # print("responce", response)
-        # return response.json()
+        # Second example
+        ######################
         params = {}
-        params['correlation_id'] = IdGenerator.next_short()
         route = "http://localhost:3001" + route
         response = None
         timeout = 10000
@@ -89,10 +86,8 @@ class TestDummyCommandableHttpService():
             # Call the service
             data = json.dumps(entity)
             response = requests.request('POST', route, params=params, json=data, timeout=timeout)
-            print("response ", response)
             return response.json()
         except Exception as ex:
-            print("response error")
             # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
             # raise error
             return False
