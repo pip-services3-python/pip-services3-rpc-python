@@ -24,7 +24,7 @@ from .DummyCommandableHttpService import DummyCommandableHttpService
 
 rest_config = ConfigParams.from_tuples(
     'connection.host', 'localhost',
-    'connection.port', 3001
+    'connection.port', 3002
 )
 # rest_config = ConfigParams.from_tuples("connection.protocol", "http",
 #                                          "connection.host", "localhost",
@@ -72,14 +72,14 @@ class TestDummyCommandableHttpService():
     def invoke(self, route, entity):
         # # First example
         # params = {}
-        # response = requests.post("http://localhost:3001" + route, params=params, json=json.dumps(entity))
+        # response = requests.post("http://localhost:3002" + route, params=params, json=json.dumps(entity))
         # # TODO: return only status: <Response [200]> ????
         # return response
         
         # Second example
         ######################
         params = {}
-        route = "http://localhost:3001" + route
+        route = "http://localhost:3002" + route
         response = None
         timeout = 10000
         try:
