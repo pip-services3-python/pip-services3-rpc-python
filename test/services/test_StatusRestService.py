@@ -15,37 +15,30 @@ import requests
 from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.refer import References, Descriptor
 from pip_services3_commons.run import Parameters
-from pip_services3_commons.data import IdGenerator
-
-from ..Dummy import Dummy
-from ..DummyController import DummyController
-from ..services.DummyRestService import DummyRestService
+from pip_services3_components.info import ContextInfo
+from pip_services3_rpc.services import StatusRestService
 
 
 rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
     'connection.host', 'localhost',
-    'connection.port', 3003
+    'connection.port', 3004
 )
-
-
-DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
-DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
-
-#todo return dummy object from response in invoke()
-class TestDummyRestService():
-    controller = None
+ 
+class TestStatusRestService():
     service = None
 
     @classmethod
     def setup_class(cls):
-        cls.controller = DummyController()
-
-        cls.service = DummyRestService()
+        cls.service = StatusRestService()
         cls.service.configure(rest_config)
 
+        contextInfo = ContextInfo()
+        contextInfo.name = "Test"
+        contextInfo.description = "This is a test container"
+
         cls.references = References.from_tuples(
-            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
+            Descriptor("pip-services", "context-info", "default", "default", "1.0"), contextInfo,
             Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service
         )
 
@@ -58,27 +51,24 @@ class TestDummyRestService():
 
     def teardown_method(self, method):
         self.service.close(None)
-
-    # #todo
-    def test_crud_operations(self):
+ 
+    def test_status(self):
         time.sleep(2)
-        dummy1 = self.invoke("/dummies", json.loads(json.dumps(DUMMY1)))
+        result = self.invoke("/status")
 
-        assert None != dummy1
-        assert DUMMY1['key'] == dummy1['key']
-        assert DUMMY1['content'] == dummy1['content']
+        assert None != result
+ 
 
     # todo return dummy object from response
-    def invoke(self, route, entity):
+    def invoke(self, route):
         params = { }
-        route = "http://localhost:3003" + route
+        route = "http://localhost:3004" + route
         response = None
         timeout = 10000
         try:
             # Call the service
-            data = json.dumps(entity)
-            response = requests.request('POST', route, params=params, json=data, timeout=timeout)
-            return response.json()
+            response = requests.request('GET', route, params=params,  timeout=timeout)
+            return response 
         except Exception as ex:
             # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
             # raise error
