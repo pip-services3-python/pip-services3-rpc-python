@@ -76,7 +76,8 @@ class TestDummyRestService():
         timeout = 10000
         try:
             # Call the service
-            response = requests.request('POST', route, params=params, json=json.dumps(entity), timeout=timeout)
+            respons
+            e = requests.request('POST', route, params=params, json=json.dumps(entity), timeout=timeout)
             return response.json()
         except Exception as ex:
             # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
