@@ -28,6 +28,7 @@ rest_config = ConfigParams.from_tuples(
     'connection.port', 3003
 )
 
+
 DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
 DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
 
@@ -61,32 +62,23 @@ class TestDummyRestService():
     # #todo
     def test_crud_operations(self):
         time.sleep(2)
-        dummy1 = self.invoke("/dummies/create_dummy", Parameters.from_tuples("dummy", DUMMY1))
-        print("dummy1", dummy1)
+        dummy1 = self.invoke("/dummies", json.loads(json.dumps(DUMMY1)))
+
         assert None != dummy1
         assert DUMMY1['key'] == dummy1['key']
         assert DUMMY1['content'] == dummy1['content']
 
     # todo return dummy object from response
     def invoke(self, route, entity):
-        # First example
-        params = {}
-        response = requests.post("http://localhost:3003" + route, params=params, json=json.dumps(entity))
-        # TODO: return only status: <Response [200]> ????
-        return response
-        
-        # # Second example
-        # ######################
-        # params = {}
-        # route = "http://localhost:3003" + route
-        # response = None
-        # timeout = 10000
-        # try:
-        #     # Call the service
-        #     data = json.dumps(entity)
-        #     response = requests.request('POST', route, params=params, json=data, timeout=timeout)
-        #     return response.json()
-        # except Exception as ex:
-        #     # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
-        #     # raise error
-        #     return False
+        params = { }
+        route = "http://localhost:3003" + route
+        response = None
+        timeout = 10000
+        try:
+            # Call the service
+            response = requests.request('POST', route, params=params, json=json.dumps(entity), timeout=timeout)
+            return response.json()
+        except Exception as ex:
+            # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
+            # raise error
+            return False
