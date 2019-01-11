@@ -99,8 +99,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             - "connection.port" - the target port;
             - "connection.uri" - the target URI.
 
-        Args:
-            config: configuration parameters, containing a "connection(s)" section.
+        :param config: configuration parameters, containing a "connection(s)" section.
         """
         config = config.set_defaults(self._default_config)
         self._connection_resolver.configure(config)
@@ -113,8 +112,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
         - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
 
-        Args:
-            references: an IReferences object, containing references to a logger, counters, and a connection resolver.
+        :param references: an IReferences object, containing references to a logger, counters, and a connection resolver.
         """
         self._logger.set_references(references)
         self._counters.set_references(references)
@@ -124,8 +122,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         Checks if the component is opened.
 
-        Returns:
-            whether or not this endpoint is open with an actively listening REST server.
+        :return: whether or not this endpoint is open with an actively listening REST server.
         """
         return self._server != None
 
@@ -133,8 +130,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         Opens a connection using the parameters resolved by the referenced connection resolver and creates a REST server (service) using the set options and parameters.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         if self.is_opened():
             return
@@ -177,8 +173,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         Closes this endpoint and the REST server (service) that was opened earlier.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         try:
             if self._server != None:
@@ -194,8 +189,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         Registers a registerable object for dynamic endpoint discovery.
 
-        Args:
-            registration: the registration to add.
+        :param registration: the registration to add.
         """
         self._registrations.append(registration)
 
@@ -203,8 +197,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         Unregisters a registerable object, so that it is no longer used in dynamic endpoint discovery.
 
-        Args:
-            registration: the registration to remove.
+        :param registration: the registration to remove.
         """
         self._registrations.remove(registration)
 
@@ -216,14 +209,13 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         Registers an action in this objects REST server (service) by the given method and route.
 
-        Args:
-            method: the HTTP method of the route.
+        :param method: the HTTP method of the route.
 
-            route: the route to register in this object's REST server (service).
+        :param route: the route to register in this object's REST server (service).
 
-            schema: the schema to use for parameter validation.
+        :param schema: the schema to use for parameter validation.
 
-            handler: the action to perform at the given route.
+        :param handler: the action to perform at the given route.
         """
         method = method.upper()
 

@@ -49,11 +49,9 @@ class HttpResponseSender():
         """
         Sends error serialized as ErrorDescription object and appropriate HTTP status code. If status code is not defined, it uses 500 status code.
 
-        Args:
-            error: an error object to be sent.
+        :param error: an error object to be sent.
 
-        Returns:
-            HTTP response status
+        :return: HTTP response status
         """
         bottle.response.headers['Content-Type'] = 'application/json'
         error = ErrorDescriptionFactory.create(error)

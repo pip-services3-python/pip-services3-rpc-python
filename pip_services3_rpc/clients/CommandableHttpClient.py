@@ -13,7 +13,8 @@ from .RestClient import RestClient
 
 class CommandableHttpClient(RestClient):
     """
-    Abstract client that calls commandable HTTP service. Commandable services are generated automatically for [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/interfaces/commands.icommandable.html ICommandable objects]]. Each command is exposed as POST operation that receives all parameters in body object.
+    Abstract client that calls commandable HTTP service.
+    Commandable services are generated automatically for ICommandable objects. Each command is exposed as POST operation that receives all parameters in body object.
 
     ### Configuration parameters ###
 
@@ -58,8 +59,7 @@ class CommandableHttpClient(RestClient):
         """
         Creates a new instance of the client.
 
-        Args:
-            name: a base route for remote service.
+        :param name: a base route for remote service.
         """
         super(CommandableHttpClient, self).__init__()
         self._base_route = name
@@ -69,15 +69,13 @@ class CommandableHttpClient(RestClient):
         """
         Calls a remote method via HTTP commadable protocol. The call is made via POST operation and all parameters are sent in body object. The complete route to remote method is defined as baseRoute + "/" + name.
 
-        Args:
-            name: a name of the command to call.
+        :param name: a name of the command to call.
 
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-            params: command parameters.
+        :param params: command parameters.
 
-        Returns:
-            result of the command.
+        :return: result of the command.
         """
         timing = self._instrument(correlation_id, self._base_route + '.' + name)
         try:

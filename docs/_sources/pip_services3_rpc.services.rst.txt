@@ -1,0 +1,25 @@
+pip\_services3\_rpc.services package
+====================================
+
+Submodules
+----------
+
+.. toctree::
+
+   pip_services3_rpc.services.CommandableHttpService
+   pip_services3_rpc.services.HeartbeatRestService
+   pip_services3_rpc.services.HttpEndpoint
+   pip_services3_rpc.services.HttpResponseSender
+   pip_services3_rpc.services.IRegisterable
+   pip_services3_rpc.services.RestQueryParams
+   pip_services3_rpc.services.RestService
+   pip_services3_rpc.services.SimpleServer
+   pip_services3_rpc.services.StatusRestService
+
+Module contents
+---------------
+
+.. automodule:: pip_services3_rpc.services
+    :members:
+    :undoc-members:
+    :show-inheritance:

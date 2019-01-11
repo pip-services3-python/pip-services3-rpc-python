@@ -1,0 +1,903 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pip_services3_rpc.services package &#8212; Pip.Services RPC for Python API</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pip_services3_rpc.services.CommandableHttpService module" href="pip_services3_rpc.services.CommandableHttpService.html" />
+    <link rel="prev" title="pip_services3_rpc.connect.HttpConnectionResolver module" href="pip_services3_rpc.connect.HttpConnectionResolver.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pip_services3_rpc.services.CommandableHttpService.html" title="pip_services3_rpc.services.CommandableHttpService module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pip_services3_rpc.connect.HttpConnectionResolver.html" title="pip_services3_rpc.connect.HttpConnectionResolver module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Pip.Services RPC for Python API</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pip_services3_rpc</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pip_services3_rpc.html" accesskey="U">pip_services3_rpc package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pip-services3-rpc-services-package">
+<h1>pip_services3_rpc.services package<a class="headerlink" href="#pip-services3-rpc-services-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.CommandableHttpService.html">pip_services3_rpc.services.CommandableHttpService module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.CommandableHttpService.html#pip-services3-rpc-services-commandablehttpservice">pip_services3_rpc.services.CommandableHttpService</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.HeartbeatRestService.html">pip_services3_rpc.services.HeartbeatRestService module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.HeartbeatRestService.html#pip-services3-rpc-services-heartbeatrestservice">pip_services3_rpc.services.HeartbeatRestService</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.HttpEndpoint.html">pip_services3_rpc.services.HttpEndpoint module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.HttpEndpoint.html#pip-services3-rpc-services-httpendpoint">pip_services3_rpc.services.HttpEndpoint</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.HttpResponseSender.html">pip_services3_rpc.services.HttpResponseSender module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.HttpResponseSender.html#pip-services3-rpc-services-httpresponsesender">pip_services3_rpc.services.HttpResponseSender</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.IRegisterable.html">pip_services3_rpc.services.IRegisterable module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.IRegisterable.html#pip-services3-rpc-services-iregisterable">pip_services3_rpc.services.IRegisterable</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.RestQueryParams.html">pip_services3_rpc.services.RestQueryParams module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.RestQueryParams.html#pip-services3-rpc-services-restqueryparams">pip_services3_rpc.services.RestQueryParams</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.RestService.html">pip_services3_rpc.services.RestService module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.RestService.html#pip-services3-rpc-services-restservice">pip_services3_rpc.services.RestService</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.SimpleServer.html">pip_services3_rpc.services.SimpleServer module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.SimpleServer.html#pip-services3-rpc-rest-simpleserver">pip_services3_rpc.rest.SimpleServer</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.StatusRestService.html">pip_services3_rpc.services.StatusRestService module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.StatusRestService.html#pip-services3-rpc-services-statusrestservice">pip_services3_rpc.services.StatusRestService</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-pip_services3_rpc.services">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pip_services3_rpc.services" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pip-services3-rpc-services-init">
+<h3>pip_services3_rpc.services.__init__<a class="headerlink" href="#pip-services3-rpc-services-init" title="Permalink to this headline">¶</a></h3>
+<p>Rpc module implementation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">MIT, see LICENSE for more details.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="pip_services3_rpc.services.CommandableHttpService">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.services.</code><code class="descname">CommandableHttpService</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.services.RestService.html#pip_services3_rpc.services.RestService.RestService" title="pip_services3_rpc.services.RestService.RestService"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.RestService.RestService</span></code></a></p>
+<p>Abstract service that receives remove calls via HTTP/REST protocol to operations automatically generated for commands defined in ICommandable components. Each command is exposed as POST operation that receives all parameters in body object. Commandable services require only 3 lines of code to implement a robust external HTTP-based remote interface.</p>
+<p>### Configuration parameters ###</p>
+<ul class="simple">
+<li>base_route:              base route for remote URI</li>
+<li><dl class="first docutils">
+<dt>dependencies:</dt>
+<dd><ul class="first last">
+<li>endpoint:              override for HTTP Endpoint dependency</li>
+<li>controller:            override for Controller dependency</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>connection(s):</dt>
+<dd><ul class="first last">
+<li>discovery_key:         (optional) a key to retrieve the connection from IDiscovery</li>
+<li>protocol:              connection protocol: http or https</li>
+<li>host:                  host name or IP address</li>
+<li>port:                  port number</li>
+<li>uri:                   resource URI or connection string with all parameters in it</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>### References ###</p>
+<ul class="simple">
+<li><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
+<li><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+<li><em>:endpoint:http:</em>:1.0          (optional) HttpEndpoint reference</li>
+</ul>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><dl class="first docutils">
+<dt>class MyCommandableHttpService(CommandableHttpService):</dt>
+<dd><dl class="first docutils">
+<dt>def __init__(self):</dt>
+<dd>super(MyCommandableHttpService, self).__init__()
+self._dependencyResolver.put(“controller”, Descriptor(“mygroup”,”controller”,”*”,”*”,”1.0”))</dd>
+</dl>
+<p class="last">…</p>
+</dd>
+</dl>
+<p>service = MyCommandableHttpService()
+service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
+<blockquote>
+<div>“connection.host”, “localhost”,
+“connection.port”, 8080))</div></blockquote>
+<p class="last">service.set_references(References.from_tuples(Descriptor(“mygroup”,”controller”,”default”,”default”,”1.0”), controller))
+service.open(“123”)
+…</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pip_services3_rpc.services.CommandableHttpService.add_route">
+<code class="descname">add_route</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.add_route" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pip_services3_rpc.services.RestService">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.services.</code><code class="descname">RestService</code><a class="headerlink" href="#pip_services3_rpc.services.RestService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.IOpenable.IOpenable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IUnreferenceable.IUnreferenceable</span></code>, <a class="reference internal" href="pip_services3_rpc.services.IRegisterable.html#pip_services3_rpc.services.IRegisterable.IRegisterable" title="pip_services3_rpc.services.IRegisterable.IRegisterable"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.IRegisterable.IRegisterable</span></code></a></p>
+<p>Abstract service that receives remove calls via HTTP/REST protocol.</p>
+<p>### Configuration parameters ###</p>
+<ul class="simple">
+<li>base_route:              base route for remote URI</li>
+<li><dl class="first docutils">
+<dt>dependencies:</dt>
+<dd><ul class="first last">
+<li>endpoint:              override for HTTP Endpoint dependency</li>
+<li>controller:            override for Controller dependency</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>connection(s):</dt>
+<dd><ul class="first last">
+<li>discovery_key:         (optional) a key to retrieve the connection from IDiscovery</li>
+<li>protocol:              connection protocol: http or https</li>
+<li>host:                  host name or IP address</li>
+<li>port:                  port number</li>
+<li>uri:                   resource URI or connection string with all parameters in it</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>### References ###</p>
+<ul class="simple">
+<li><em>:logger:</em>:<a href="#id7"><span class="problematic" id="id8">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
+<li><em>:counters:</em>:<a href="#id9"><span class="problematic" id="id10">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id11"><span class="problematic" id="id12">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+<li><em>:endpoint:http:</em>:1.0          (optional) HttpEndpoint reference</li>
+</ul>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><dl class="first docutils">
+<dt>class MyRestService(RestService):</dt>
+<dd><p class="first">_controller = None
+…</p>
+<dl class="last docutils">
+<dt>def __init__(self):</dt>
+<dd>super(MyRestService, self).__init__()
+self._dependencyResolver.put(“controller”, Descriptor(“mygroup”,”controller”,”*”,”*”,”1.0”))</dd>
+<dt>def set_references(self, references):</dt>
+<dd>super(MyRestService, self).set_references(references)
+self._controller = self._dependencyResolver.get_required(“controller”)</dd>
+<dt>def register():</dt>
+<dd>…</dd>
+</dl>
+</dd>
+</dl>
+<p>service = MyRestService()
+service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
+<blockquote>
+<div>“connection.host”, “localhost”,
+“connection.port”, 8080))</div></blockquote>
+<p class="last">service.set_references(References.from_tuples(Descriptor(“mygroup”,”controller”,”default”,”default”,”1.0”), controller))
+service.open(“123”)</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.add_route">
+<code class="descname">add_route</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.add_route" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.close">
+<code class="descname">close</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes component and frees used resources.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.configure">
+<code class="descname">configure</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures component by passing configuration parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> – configuration parameters to be set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.create_endpoint">
+<code class="descname">create_endpoint</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.create_endpoint" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.get_correlation_id">
+<code class="descname">get_correlation_id</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.get_correlation_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.get_data">
+<code class="descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.get_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.get_filter_params">
+<code class="descname">get_filter_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.get_filter_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.get_paging_params">
+<code class="descname">get_paging_params</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.get_paging_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.get_param">
+<code class="descname">get_param</code><span class="sig-paren">(</span><em>param</em>, <em>default=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.get_param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.is_opened">
+<code class="descname">is_opened</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.is_opened" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the component is opened.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">true if the component has been opened and false otherwise.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens the component.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.register_route">
+<code class="descname">register_route</code><span class="sig-paren">(</span><em>method</em>, <em>route</em>, <em>schema</em>, <em>handler</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.register_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers an action in this objects REST server (service) by the given method and route.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>method</strong> – the HTTP method of the route.</li>
+<li><strong>route</strong> – the route to register in this object’s REST server (service).</li>
+<li><strong>schema</strong> – the schema to use for parameter validation.</li>
+<li><strong>handler</strong> – the action to perform at the given route.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.send_created_result">
+<code class="descname">send_created_result</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.send_created_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a callback function that sends newly created object as JSON. That callack function call be called directly or passed as a parameter to business logic components.</p>
+<p>If object is not null it returns 201 status code. For null results it returns
+204 status code. If error occur it sends ErrorDescription with approproate status code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>result</strong> – a body object to result.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">execution result.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.send_deleted_result">
+<code class="descname">send_deleted_result</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.send_deleted_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a callback function that sends newly created object as JSON. That callack function call be called directly or passed as a parameter to business logic components.</p>
+<p>If object is not null it returns 200 status code. For null results it returns
+204 status code. If error occur it sends ErrorDescription with approproate status code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">execution result.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.send_error">
+<code class="descname">send_error</code><span class="sig-paren">(</span><em>error</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.send_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends error serialized as ErrorDescription object and appropriate HTTP status code. If status code is not defined, it uses 500 status code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>error</strong> – an error object to be sent.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.send_result">
+<code class="descname">send_result</code><span class="sig-paren">(</span><em>result</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.send_result" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a callback function that sends result as JSON object. That callack function call be called directly or passed as a parameter to business logic components.</p>
+<p>If object is not null it returns 200 status code. For null results it returns
+204 status code. If error occur it sends ErrorDescription with approproate status code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>result</strong> – a body object to result.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">execution result.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.set_references">
+<code class="descname">set_references</code><span class="sig-paren">(</span><em>references</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.set_references" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets references to dependent components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>references</strong> – references to locate the component dependencies.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestService.unset_references">
+<code class="descname">unset_references</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestService.unset_references" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unsets (clears) previously set references to dependent components.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pip_services3_rpc.services.RestQueryParams">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.services.</code><code class="descname">RestQueryParams</code><span class="sig-paren">(</span><em>correlation_id=None</em>, <em>filter=None</em>, <em>paging=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestQueryParams" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></p>
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestQueryParams.add_correlation_id">
+<code class="descname">add_correlation_id</code><span class="sig-paren">(</span><em>correlation_id=None</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestQueryParams.add_correlation_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestQueryParams.add_filter_params">
+<code class="descname">add_filter_params</code><span class="sig-paren">(</span><em>filter</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestQueryParams.add_filter_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.RestQueryParams.add_paging_params">
+<code class="descname">add_paging_params</code><span class="sig-paren">(</span><em>paging</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.RestQueryParams.add_paging_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pip_services3_rpc.services.SimpleServer">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.services.</code><code class="descname">SimpleServer</code><span class="sig-paren">(</span><em>host='127.0.0.1'</em>, <em>port=8080</em>, <em>**options</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.SimpleServer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">bottle.WSGIRefServer</span></code></p>
+<dl class="method">
+<dt id="pip_services3_rpc.services.SimpleServer.run">
+<code class="descname">run</code><span class="sig-paren">(</span><em>app</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.SimpleServer.run" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.SimpleServer.shutdown">
+<code class="descname">shutdown</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.SimpleServer.shutdown" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pip_services3_rpc.services.StatusRestService">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.services.</code><code class="descname">StatusRestService</code><a class="headerlink" href="#pip_services3_rpc.services.StatusRestService" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.services.RestService.html#pip_services3_rpc.services.RestService.RestService" title="pip_services3_rpc.services.RestService.RestService"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.RestService.RestService</span></code></a></p>
+<p>Service that returns microservice status information via HTTP/REST protocol. The service responds on /status route (can be changed) with a JSON object:</p>
+<dl class="docutils">
+<dt>{</dt>
+<dd><ul class="first last simple">
+<li>“id”:            unique container id (usually hostname)</li>
+<li>“name”:          container name (from ContextInfo)</li>
+<li>“description”:   container description (from ContextInfo)</li>
+<li>“start_time”:    time when container was started</li>
+<li>“current_time”:  current time in UTC</li>
+<li>“uptime”:        duration since container start time in milliseconds</li>
+<li>“properties”:    additional container properties (from ContextInfo)</li>
+<li>“components”:    descriptors of components registered in the container</li>
+</ul>
+</dd>
+</dl>
+<p>}</p>
+<p>### Configuration parameters ###</p>
+<ul class="simple">
+<li>base_route:              base route for remote URI</li>
+<li><dl class="first docutils">
+<dt>dependencies:</dt>
+<dd><ul class="first last">
+<li>endpoint:              override for HTTP Endpoint dependency</li>
+<li>controller:            override for Controller dependency</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>connection(s):</dt>
+<dd><ul class="first last">
+<li>discovery_key:         (optional) a key to retrieve the connection from IDiscovery</li>
+<li>protocol:              connection protocol: http or https</li>
+<li>host:                  host name or IP address</li>
+<li>port:                  port number</li>
+<li>uri:                   resource URI or connection string with all parameters in it</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>### References ###</p>
+<ul class="simple">
+<li><em>:logger:</em>:<a href="#id13"><span class="problematic" id="id14">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
+<li><em>:counters:</em>:<a href="#id15"><span class="problematic" id="id16">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id17"><span class="problematic" id="id18">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+<li><em>:endpoint:http:</em>:1.0          (optional) HttpEndpoint reference</li>
+</ul>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><p class="first">service = StatusService()
+service.configure(ConfigParams.from_tuples(“connection.protocol”, “http”,</p>
+<blockquote>
+<div>“connection.host”, “localhost”,
+“connection.port”, 8080))</div></blockquote>
+<p class="last">service.open(“123”)
+…</p>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pip_services3_rpc.services.StatusRestService.configure">
+<code class="descname">configure</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.StatusRestService.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures component by passing configuration parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> – configuration parameters to be set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.StatusRestService.register">
+<code class="descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.StatusRestService.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers all service routes in HTTP endpoint.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.StatusRestService.set_references">
+<code class="descname">set_references</code><span class="sig-paren">(</span><em>references</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.StatusRestService.set_references" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets references to dependent components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>references</strong> – references to locate the component dependencies.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.StatusRestService.status">
+<code class="descname">status</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.StatusRestService.status" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pip_services3_rpc.services.IRegisterable">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.services.</code><code class="descname">IRegisterable</code><a class="headerlink" href="#pip_services3_rpc.services.IRegisterable" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Interface to perform on-demand registrations.</p>
+<dl class="method">
+<dt id="pip_services3_rpc.services.IRegisterable.register">
+<code class="descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.IRegisterable.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Perform required registration steps.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pip_services3_rpc.services.HttpResponseSender">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.services.</code><code class="descname">HttpResponseSender</code><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseSender" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Helper class that handles HTTP-based responses.</p>
+<dl class="staticmethod">
+<dt id="pip_services3_rpc.services.HttpResponseSender.send_created_result">
+<em class="property">static </em><code class="descname">send_created_result</code><span class="sig-paren">(</span><em>result</em>, <em>to_json</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseSender.send_created_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pip_services3_rpc.services.HttpResponseSender.send_deleted_result">
+<em class="property">static </em><code class="descname">send_deleted_result</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseSender.send_deleted_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="staticmethod">
+<dt id="pip_services3_rpc.services.HttpResponseSender.send_error">
+<em class="property">static </em><code class="descname">send_error</code><span class="sig-paren">(</span><em>error</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseSender.send_error" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sends error serialized as ErrorDescription object and appropriate HTTP status code. If status code is not defined, it uses 500 status code.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>error</strong> – an error object to be sent.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">HTTP response status</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="pip_services3_rpc.services.HttpResponseSender.send_result">
+<em class="property">static </em><code class="descname">send_result</code><span class="sig-paren">(</span><em>result</em>, <em>to_json</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseSender.send_result" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="class">
+<dt id="pip_services3_rpc.services.HttpEndpoint">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.services.</code><code class="descname">HttpEndpoint</code><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.IOpenable.IOpenable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code></p>
+<p>Used for creating HTTP endpoints. An endpoint is a URL, at which a given service can be accessed by a client.</p>
+<p>### Configuration parameters ###</p>
+<p>Parameters to pass to the [[configure]] method for component configuration:</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>connection(s) - the connection resolver’s connections;</dt>
+<dd><ul class="first last">
+<li>“connection.discovery_key” - the key to use for connection resolving in a discovery service;</li>
+<li>“connection.protocol” - the connection’s protocol;</li>
+<li>“connection.host” - the target host;</li>
+<li>“connection.port” - the target port;</li>
+<li>“connection.uri” - the target URI.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>### References ###</p>
+<p>A logger, counters, and a connection resolver can be referenced by passing the following references to the object’s [[setReferences]] method:</p>
+<ul class="simple">
+<li><em>:logger:</em>:<a href="#id19"><span class="problematic" id="id20">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
+<li><em>:counters:</em>:<a href="#id21"><span class="problematic" id="id22">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id23"><span class="problematic" id="id24">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+</ul>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd><dl class="first last docutils">
+<dt>def my_method(_config, _references):</dt>
+<dd><p class="first">endpoint = HttpEndpoint()
+if (_config)</p>
+<blockquote>
+<div>endpoint.configure(_config)</div></blockquote>
+<dl class="docutils">
+<dt>if (_references)</dt>
+<dd>endpoint.setReferences(_references)</dd>
+</dl>
+<p>…</p>
+<p class="last">endpoint.open(correlationId)
+…</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.close">
+<code class="descname">close</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.close" title="Permalink to this definition">¶</a></dt>
+<dd><p>Closes this endpoint and the REST server (service) that was opened earlier.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.configure">
+<code class="descname">configure</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures this HttpEndpoint using the given configuration parameters.</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>connection(s) - the connection resolver’s connections;</dt>
+<dd><ul class="first last">
+<li>“connection.discovery_key” - the key to use for connection resolving in a discovery service;</li>
+<li>“connection.protocol” - the connection’s protocol;</li>
+<li>“connection.host” - the target host;</li>
+<li>“connection.port” - the target port;</li>
+<li>“connection.uri” - the target URI.</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> – configuration parameters, containing a “connection(s)” section.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.get_data">
+<code class="descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.get_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.is_opened">
+<code class="descname">is_opened</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.is_opened" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if the component is opened.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">whether or not this endpoint is open with an actively listening REST server.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.open">
+<code class="descname">open</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.open" title="Permalink to this definition">¶</a></dt>
+<dd><p>Opens a connection using the parameters resolved by the referenced connection resolver and creates a REST server (service) using the set options and parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.perform_registrations">
+<code class="descname">perform_registrations</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.perform_registrations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>registration</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers a registerable object for dynamic endpoint discovery.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>registration</strong> – the registration to add.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.register_route">
+<code class="descname">register_route</code><span class="sig-paren">(</span><em>method</em>, <em>route</em>, <em>schema</em>, <em>handler</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.register_route" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers an action in this objects REST server (service) by the given method and route.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>method</strong> – the HTTP method of the route.</li>
+<li><strong>route</strong> – the route to register in this object’s REST server (service).</li>
+<li><strong>schema</strong> – the schema to use for parameter validation.</li>
+<li><strong>handler</strong> – the action to perform at the given route.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.set_references">
+<code class="descname">set_references</code><span class="sig-paren">(</span><em>references</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.set_references" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets references to this endpoint’s logger, counters, and connection resolver.</p>
+<ul class="simple">
+<li><em>:logger:</em>:<a href="#id25"><span class="problematic" id="id26">*</span></a>:1.0         (optional) ILogger components to pass log messages</li>
+<li><em>:counters:</em>:<a href="#id27"><span class="problematic" id="id28">*</span></a>:1.0         (optional) ICounters components to pass collected measurements</li>
+<li><em>:discovery:</em>:<a href="#id29"><span class="problematic" id="id30">*</span></a>:1.0        (optional) IDiscovery services to resolve connection</li>
+</ul>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>references</strong> – an IReferences object, containing references to a logger, counters, and a connection resolver.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.services.HttpEndpoint.unregister">
+<code class="descname">unregister</code><span class="sig-paren">(</span><em>registration</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.unregister" title="Permalink to this definition">¶</a></dt>
+<dd><p>Unregisters a registerable object, so that it is no longer used in dynamic endpoint discovery.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>registration</strong> – the registration to remove.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pip_services3_rpc.services package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pip_services3_rpc.services">Module contents</a><ul>
+<li><a class="reference internal" href="#pip-services3-rpc-services-init">pip_services3_rpc.services.__init__</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pip_services3_rpc.connect.HttpConnectionResolver.html"
+                        title="previous chapter">pip_services3_rpc.connect.HttpConnectionResolver module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pip_services3_rpc.services.CommandableHttpService.html"
+                        title="next chapter">pip_services3_rpc.services.CommandableHttpService module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pip_services3_rpc.services.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pip_services3_rpc.services.CommandableHttpService.html" title="pip_services3_rpc.services.CommandableHttpService module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pip_services3_rpc.connect.HttpConnectionResolver.html" title="pip_services3_rpc.connect.HttpConnectionResolver module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Pip.Services RPC for Python API</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pip_services3_rpc</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pip_services3_rpc.html" >pip_services3_rpc package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Conceptual Vision Consulting LLC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

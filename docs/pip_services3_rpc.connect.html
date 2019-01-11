@@ -1,0 +1,280 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>pip_services3_rpc.connect package &#8212; Pip.Services RPC for Python API</title>
+    <link rel="stylesheet" href="_static/classic.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="pip_services3_rpc.connect.HttpConnectionResolver module" href="pip_services3_rpc.connect.HttpConnectionResolver.html" />
+    <link rel="prev" title="pip_services3_rpc.clients.RestClient module" href="pip_services3_rpc.clients.RestClient.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pip_services3_rpc.connect.HttpConnectionResolver.html" title="pip_services3_rpc.connect.HttpConnectionResolver module"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="pip_services3_rpc.clients.RestClient.html" title="pip_services3_rpc.clients.RestClient module"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Pip.Services RPC for Python API</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pip_services3_rpc</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pip_services3_rpc.html" accesskey="U">pip_services3_rpc package</a> &#187;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="pip-services3-rpc-connect-package">
+<h1>pip_services3_rpc.connect package<a class="headerlink" href="#pip-services3-rpc-connect-package" title="Permalink to this headline">¶</a></h1>
+<div class="section" id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.connect.HttpConnectionResolver.html">pip_services3_rpc.connect.HttpConnectionResolver module</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.connect.HttpConnectionResolver.html#pip-services3-rpc-connect-httpconnectionresolver">pip_services3_rpc.connect.HttpConnectionResolver</a></li>
+</ul>
+</li>
+</ul>
+</div>
+</div>
+<div class="section" id="module-pip_services3_rpc.connect">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-pip_services3_rpc.connect" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="pip-services3-rpc-clients-init">
+<h3>pip_services3_rpc.clients.__init__<a class="headerlink" href="#pip-services3-rpc-clients-init" title="Permalink to this headline">¶</a></h3>
+<p>Clients module implementation</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">copyright:</th><td class="field-body">Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">license:</th><td class="field-body">MIT, see LICENSE for more details.</td>
+</tr>
+</tbody>
+</table>
+<dl class="class">
+<dt id="pip_services3_rpc.connect.HttpConnectionResolver">
+<em class="property">class </em><code class="descclassname">pip_services3_rpc.connect.</code><code class="descname">HttpConnectionResolver</code><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code></p>
+<p>Helper class to retrieve connections for HTTP-based services abd clients. In addition to regular functions of ConnectionResolver is able to parse <i>http://</i> URIs and validate connection parameters before returning them.</p>
+<p>### Configuration parameters ###</p>
+<ul class="simple">
+<li><dl class="first docutils">
+<dt>connection:</dt>
+<dd><ul class="first last">
+<li>discovery_key:               (optional) a key to retrieve the connection from <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a></li>
+<li>…                          other connection parameters</li>
+</ul>
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>connections:                   alternative to connection</dt>
+<dd><ul class="first last">
+<li>[connection params 1]:       first connection parameters</li>
+<li>…</li>
+<li>[connection params N]:       Nth connection parameters</li>
+<li>…</li>
+</ul>
+</dd>
+</dl>
+</li>
+</ul>
+<p>### References ###</p>
+<ul class="simple">
+<li><em>:discovery:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0        (optional) <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> services to resolve connection</li>
+</ul>
+<dl class="docutils">
+<dt>Example:</dt>
+<dd>config = ConfigParams.from_tuples(“connection.host”, “10.1.1.100”,”connection.port”, 8080)
+<dd>connectionResolver = HttpConnectionResolver()
+<dd>connectionResolver.configure(config)
+<dd>connectionResolver.set_references(references)
+<dd>params = connectionResolver.resolve(“123”)</dd>
+</dl>
+<dl class="method">
+<dt id="pip_services3_rpc.connect.HttpConnectionResolver.configure">
+<code class="descname">configure</code><span class="sig-paren">(</span><em>config</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures component by passing configuration parameters.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>config</strong> – configuration parameters to be set.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.connect.HttpConnectionResolver.register">
+<code class="descname">register</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers the given connection in all referenced discovery services. This method can be used for dynamic service discovery.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.connect.HttpConnectionResolver.resolve">
+<code class="descname">resolve</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.resolve" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolves a single component connection. If connections are configured to be retrieved from Discovery service it finds a <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> and resolves the connection there.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">resolved connection.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.connect.HttpConnectionResolver.resolve_all">
+<code class="descname">resolve_all</code><span class="sig-paren">(</span><em>correlation_id</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.resolve_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Resolves all component connection. If connections are configured to be retrieved from Discovery service it finds a <a href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html">IDiscovery</a> and resolves the connection there.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">resolved connections.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.connect.HttpConnectionResolver.set_references">
+<code class="descname">set_references</code><span class="sig-paren">(</span><em>references</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.set_references" title="Permalink to this definition">¶</a></dt>
+<dd><p>Sets references to dependent components.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>references</strong> – references to locate the component dependencies.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.connect.HttpConnectionResolver.update_connection">
+<code class="descname">update_connection</code><span class="sig-paren">(</span><em>connection</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.update_connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="pip_services3_rpc.connect.HttpConnectionResolver.validate_connection">
+<code class="descname">validate_connection</code><span class="sig-paren">(</span><em>correlation_id</em>, <em>connection</em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.validate_connection" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</div>
+</div>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="index.html">Table of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">pip_services3_rpc.connect package</a><ul>
+<li><a class="reference internal" href="#submodules">Submodules</a></li>
+<li><a class="reference internal" href="#module-pip_services3_rpc.connect">Module contents</a><ul>
+<li><a class="reference internal" href="#pip-services3-rpc-clients-init">pip_services3_rpc.clients.__init__</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="pip_services3_rpc.clients.RestClient.html"
+                        title="previous chapter">pip_services3_rpc.clients.RestClient module</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="pip_services3_rpc.connect.HttpConnectionResolver.html"
+                        title="next chapter">pip_services3_rpc.connect.HttpConnectionResolver module</a></p>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/pip_services3_rpc.connect.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="pip_services3_rpc.connect.HttpConnectionResolver.html" title="pip_services3_rpc.connect.HttpConnectionResolver module"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="pip_services3_rpc.clients.RestClient.html" title="pip_services3_rpc.clients.RestClient module"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">Pip.Services RPC for Python API</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="modules.html" >pip_services3_rpc</a> &#187;</li>
+          <li class="nav-item nav-item-2"><a href="pip_services3_rpc.html" >pip_services3_rpc package</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2018, Conceptual Vision Consulting LLC.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.8.1.
+    </div>
+  </body>
+</html>

@@ -102,8 +102,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Adds instrumentation to log calls and measure call time. It returns a Timing object that is used to end the time measurement.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
 
             name: a method name.
         """
@@ -115,8 +114,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Sets references to dependent components.
 
-        Args:
-            references: references to locate the component dependencies.
+        :param references: references to locate the component dependencies.
         """
         self._references = references
         self._logger.set_references(references)
@@ -136,8 +134,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Configures component by passing configuration parameters.
 
-        Args:
-            config: configuration parameters to be set.
+        :param config: configuration parameters to be set.
         """
         config = config.set_defaults(self._default_config)
         self._config = config
@@ -166,8 +163,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Checks if the component is opened.
 
-        Returns:
-            true if the component has been opened and false otherwise.
+        :return: true if the component has been opened and false otherwise.
         """
         return self._opened
 
@@ -175,8 +171,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Opens the component.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         if self.is_opened():
             return
@@ -199,8 +194,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Closes component and frees used resources.
 
-        Args:
-            correlation_id: (optional) transaction id to trace execution through call chain.
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         if not self._opened:
             return
@@ -247,11 +241,9 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         If object is not null it returns 200 status code. For null results it returns
         204 status code. If error occur it sends ErrorDescription with approproate status code.
 
-        Args:
-            result: a body object to result.
+        :param result: a body object to result.
 
-        Returns:
-            execution result.
+        :return: execution result.
         """
         bottle.response.headers['Content-Type'] = 'application/json'
         if result == None: 
@@ -268,11 +260,9 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         If object is not null it returns 201 status code. For null results it returns
         204 status code. If error occur it sends ErrorDescription with approproate status code.
 
-        Args:
-            result: a body object to result.
+        :param result: a body object to result.
 
-        Returns:
-            execution result.
+        :return: execution result.
         """
         bottle.response.headers['Content-Type'] = 'application/json'
         if result == None: 
@@ -290,8 +280,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         If object is not null it returns 200 status code. For null results it returns
         204 status code. If error occur it sends ErrorDescription with approproate status code.
 
-        Returns:
-            execution result.
+        :return: execution result.
         """
         bottle.response.headers['Content-Type'] = 'application/json'
         bottle.response.status = 204
@@ -302,8 +291,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Sends error serialized as ErrorDescription object and appropriate HTTP status code. If status code is not defined, it uses 500 status code.
 
-        Args:
-            error: an error object to be sent.
+        :param error: an error object to be sent.
         """
         bottle.response.headers['Content-Type'] = 'application/json'
         error = ErrorDescriptionFactory.create(error)
@@ -364,14 +352,13 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Registers an action in this objects REST server (service) by the given method and route.
 
-        Args:
-            method: the HTTP method of the route.
+        :param method: the HTTP method of the route.
 
-            route: the route to register in this object's REST server (service).
+        :param route: the route to register in this object's REST server (service).
 
-            schema: the schema to use for parameter validation.
+        :param schema: the schema to use for parameter validation.
 
-            handler: the action to perform at the given route.
+        :param handler: the action to perform at the given route.
         """
         if self._endpoint == None:
             return
