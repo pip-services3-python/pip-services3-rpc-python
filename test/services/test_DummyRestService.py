@@ -61,11 +61,25 @@ class TestDummyRestService():
 
     def test_crud_operations(self):
         time.sleep(2)
+        # Create one dummy
         dummy1 = self.invoke("/dummies", DUMMY1)
 
         assert None != dummy1
         assert DUMMY1['key'] == dummy1['key']
         assert DUMMY1['content'] == dummy1['content']
+
+        # Create another dummy
+        dummy2 = self.invoke("/dummies", DUMMY2)
+
+        assert None != dummy2
+        assert DUMMY2['key'] == dummy2['key']
+        assert DUMMY2['content'] == dummy2['content']
+
+        # # Get all dummies
+        # dummies = self.invoke("/dummies", )
+        #
+        # assert None != dummies
+        # assert 2 == len(dummies['data'])
 
     # todo return dummy object from response
     def invoke(self, route, entity):
