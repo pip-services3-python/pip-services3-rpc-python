@@ -62,13 +62,43 @@ class TestDummyCommandableHttpService():
     # #todo
     def test_crud_operations(self):
         time.sleep(2)
+        # Create one dummy
         dummy1 = self.invoke("/dummies/create_dummy", Parameters.from_tuples("dummy", DUMMY1))
         
         assert None != dummy1
         assert DUMMY1['key'] == dummy1['key']
         assert DUMMY1['content'] == dummy1['content']
 
-    # todo return dummy object from response
+        # Create another dummy
+        dummy2 = self.invoke("/dummies/create_dummy", Parameters.from_tuples("dummy", DUMMY2))
+
+        assert None != dummy2
+        assert DUMMY2['key'] == dummy2['key']
+        assert DUMMY2['content'] == dummy2['content']
+
+        # Get all dummies
+        dummies = self.invoke("/dummies/get_dummies", Parameters.from_tuples("dummies"))
+
+        assert None != dummies
+        assert 2 == len(dummies['data'])
+
+        # Update the dummy
+        dummy1['content'] = "Updated Content 1"
+        dummy = self.invoke("/dummies/update_dummy", Parameters.from_tuples("dummy", dummy1))
+
+        assert None != dummy
+        assert dummy1['id'] == dummy['id']
+        assert dummy1['key'] == dummy['key']
+        assert "Updated Content 1" == dummy['content']
+
+        # Delete the dummy
+        self.invoke("/dummies/delete_dummy_by_id", Parameters.from_tuples("dummy_id", dummy1['id']))
+
+        # Try to get deleted dummy
+        get_dummy = self.invoke("/dummies/get_dummy_by_id", Parameters.from_tuples("dummy_id", dummy1['id']))
+        assert False == get_dummy
+
+
     def invoke(self, route, entity):
         # # First example
         # params = {}
