@@ -32,7 +32,6 @@ rest_config = ConfigParams.from_tuples(
 DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
 DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
 
-#todo return dummy object from response in invoke()
 class TestDummyRestService():
     controller = None
     service = None
@@ -75,13 +74,6 @@ class TestDummyRestService():
         assert DUMMY2['key'] == dummy2['key']
         assert DUMMY2['content'] == dummy2['content']
 
-        # # Get all dummies
-        # dummies = self.invoke("/dummies", )
-        #
-        # assert None != dummies
-        # assert 2 == len(dummies['data'])
-
-    # todo return dummy object from response
     def invoke(self, route, entity):
         params = { }
         route = "http://localhost:3003" + route
@@ -93,6 +85,4 @@ class TestDummyRestService():
             response = requests.request('POST', route, params=params, json=data, timeout=timeout)
             return response.json()
         except Exception as ex:
-            # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
-            # raise error
             return False

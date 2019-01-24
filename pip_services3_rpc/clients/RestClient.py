@@ -139,31 +139,6 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         self._logger.trace(correlation_id, "Calling " + name + " method")
         return self._counters.begin_timing(name + ".call_time")
 
-
-    # def _get_connection(self, correlation_id):
-    #     connection = self._connection_resolver.resolve(correlation_id)
-        
-    #     # Check for connection
-    #     if connection == None:
-    #         raise ConfigException(correlation_id, "NO_CONNECTION", "Connection for REST client is not defined")
-        
-    #     # Check for type
-    #     protocol = connection.get_protocol("http")
-    #     if "http" != protocol:
-    #         raise ConfigException(
-    #             correlation_id, "WRONG_PROTOCOL", "Protocol is not supported by REST connection"
-    #         ).with_details("protocol", protocol)
-
-    #     # Check for host
-    #     if connection.get_host() == None:
-    #         raise ConfigException(correlation_id, "NO_HOST", "No host is configured in REST connection")
-
-    #     # Check for port
-    #     if connection.get_port() == 0:
-    #         raise ConfigException(correlation_id, "NO_PORT", "No port is configured in REST connection")
-        
-    #     return connection
-
     def is_opened(self):
         """
         Checks if the component is opened.
@@ -181,7 +156,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         if self.is_opened():
             return
 
-        connection = self._connection_resolver.resolve(correlation_id) #self._get_connection(correlation_id)
+        connection = self._connection_resolver.resolve(correlation_id)
 
         self._uri = connection.get_uri()
         if self._uri == None:

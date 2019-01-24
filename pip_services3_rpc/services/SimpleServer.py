@@ -14,13 +14,13 @@ import time
 from bottle import WSGIRefServer
 
 class SimpleServer(WSGIRefServer):
-    def run(self, app): # pragma: no cover
+    def run(self, app):
         from wsgiref.simple_server import WSGIRequestHandler, WSGIServer
         from wsgiref.simple_server import make_server
         import socket
 
         class FixedHandler(WSGIRequestHandler):
-            def address_string(self): # Prevent reverse DNS lookups please.
+            def address_string(self):
                 return self.client_address[0]
             def log_request(*args, **kw):
                 if not self.quiet:
@@ -29,17 +29,16 @@ class SimpleServer(WSGIRefServer):
         handler_cls = self.options.get('handler_class', FixedHandler)
         server_cls  = self.options.get('server_class', WSGIServer)
 
-        if ':' in self.host: # Fix wsgiref for IPv6 addresses.
+        if ':' in self.host:
             if getattr(server_cls, 'address_family') == socket.AF_INET:
                 class server_cls(server_cls):
                     address_family = socket.AF_INET6
 
         srv = make_server(self.host, self.port, app, server_cls, handler_cls)
-        self.srv = srv ### THIS IS THE ONLY CHANGE TO THE ORIGINAL CLASS METHOD!
+        self.srv = srv
         srv.serve_forever()
 
-    def shutdown(self): ### ADD SHUTDOWN METHOD.
-        # Wait because server run may not be active
+    def shutdown(self):
         attempts = 100
         while attempts > 0:
             if hasattr(self, 'srv'):
@@ -50,5 +49,3 @@ class SimpleServer(WSGIRefServer):
                 break
             attempts -= 1
             time.sleep(0.1)
-
-        # self.server.server_close()

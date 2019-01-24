@@ -104,7 +104,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
 
-            name: a method name.
+        :param name: a method name.
         """
         self._logger.trace(correlation_id, "Executing " + name + " method")
         return self._counters.begin_timing(name + ".exec_time")
@@ -185,7 +185,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
             self._endpoint.open(correlation_id)
 
         self._opened = True
-        # regester route
+        # register route
         if self._registered != True:
             self.add_route()
             self._registered = True
@@ -299,20 +299,6 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
             error.correlation_id = self.get_correlation_id()
         bottle.response.status = error.status
         return json.dumps(error.to_json())
-
-    # def send_result(self, result):
-    #     return HttpResponseSender.send_result(result)
-
-    # def send_created_result(self, result):
-    #     return HttpResponseSender.send_created_result(result)
-
-    # def send_deleted_result(self):
-    #     return HttpResponseSender.send_deleted_result()
-
-
-    # def send_error(self, error):
-    #     return HttpResponseSender.send_error(error)
-
 
     def get_param(self, param, default = None):
         return bottle.request.params.get(param, default)

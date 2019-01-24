@@ -73,7 +73,6 @@ class TestHttpEndpointService():
         assert DUMMY1['key'] == dummy1['key']
         assert DUMMY1['content'] == dummy1['content']
 
-    # todo return dummy object from response
     def invoke(self, route, entity):
         params = { }
         route = "http://localhost:3005" + route
@@ -85,6 +84,4 @@ class TestHttpEndpointService():
             response = requests.request('POST', route, params=params, json=data, timeout=timeout)
             return response.json()
         except Exception as ex:
-            # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
-            # raise error
             return False

@@ -10,10 +10,6 @@
 """
 
 __all__ = ['DummyCommandableHttpService', 'DummyRestService']
-# 'TestDummyCommandableHttpService', 'TestDummyRestService', 'TestHttpEndpoint']
 
 from .DummyCommandableHttpService import DummyCommandableHttpService
 from .DummyRestService import DummyRestService
-# from .test_DummyCommandableHttpService import TestDummyCommandableHttpService
-# from .test_DummyRestService import TestDummyRestService
-# from .test_HttpEndpoint import TestHttpEndpoint

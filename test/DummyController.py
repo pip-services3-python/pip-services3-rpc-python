@@ -74,7 +74,6 @@ class DummyController(IDummyController, ICommandable):
         return None
 
     def create(self, correlation_id, item):
-        ##raise BadRequestException(correlation_id, 'TEST', 'Test error')
         self._lock.acquire()
         try:
             if 'id' not in item or item['id'] == None:

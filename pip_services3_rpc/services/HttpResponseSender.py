@@ -55,36 +55,8 @@ class HttpResponseSender():
         """
         bottle.response.headers['Content-Type'] = 'application/json'
         error = ErrorDescriptionFactory.create(error)
-        # if error.correlation_id == None:
-        #     error.correlation_id = self.get_correlation_id()
         bottle.response.status = error.status
         return json.dumps(error.to_json())
-
-    # def _to_json(self, obj):
-    #     if obj == None:
-    #         return None
-
-    #     if isinstance(obj, set):
-    #         obj = list(obj)
-    #     if isinstance(obj, list):
-    #         result = []
-    #         for item in obj:
-    #             item = self._to_json(item)
-    #             result.append(item)
-    #         return result
-
-    #     if isinstance(obj, dict):
-    #         result = {}
-    #         for (k, v) in obj.items():
-    #             v = self._to_json(v)
-    #             result[k] = v
-    #         return result
-
-    #     if hasattr(obj, 'to_json'):
-    #         return obj.to_json()
-    #     if hasattr(obj, '__dict__'):
-    #         return self._to_json(obj.__dict__)
-    #     return obj
 
     def get_correlation_id(self):
         return bottle.request.query.get('correlation_id')

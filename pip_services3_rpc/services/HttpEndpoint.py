@@ -69,9 +69,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     _service = None
     _server = None
     _debug = False
-    #_resource = None
     _uri = None
-    #_dependency_resolver = DependencyResolver()
 
     def __init__(self):
         """
@@ -160,7 +158,6 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             Thread(target=start_server).start()
 
             # Give 2 sec for initialization
-            #time.sleep(2)
             self._connection_resolver.register(correlation_id)
             self._logger.debug(correlation_id, "Opened REST service at %s", self._uri)
         except Exception as ex:
@@ -228,7 +225,6 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                 return handler(*args, **kwargs)
             except Exception as ex:
                 return HttpResponseSender.send_error(ex)
-                # return self.send_error(ex)
 
         self._service.route(route, method, wrapper)
 
@@ -245,69 +241,6 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
     def _options_handler(self, ath = None):
         return
-
-
-    # def _to_json(self, obj):
-    #     if obj == None:
-    #         return None
-
-    #     if isinstance(obj, set):
-    #         obj = list(obj)
-    #     if isinstance(obj, list):
-    #         result = []
-    #         for item in obj:
-    #             item = self._to_json(item)
-    #             result.append(item)
-    #         return result
-
-    #     if isinstance(obj, dict):
-    #         result = {}
-    #         for (k, v) in obj.items():
-    #             v = self._to_json(v)
-    #             result[k] = v
-    #         return result
-        
-    #     if hasattr(obj, 'to_json'):
-    #         return obj.to_json()
-    #     if hasattr(obj, '__dict__'):
-    #         return self._to_json(obj.__dict__)
-    #     return obj
-
-
-    # def send_result(self, result):
-    #     bottle.response.headers['Content-Type'] = 'application/json'
-    #     if result == None: 
-    #         bottle.response.status = 404
-    #         return
-    #     else:
-    #         bottle.response.status = 200
-    #         return json.dumps(result, default=self._to_json)
-
-
-    # def send_created_result(self, result):
-    #     bottle.response.headers['Content-Type'] = 'application/json'
-    #     if result == None: 
-    #         bottle.response.status = 404
-    #         return
-    #     else:
-    #         bottle.response.status = 201
-    #         return json.dumps(result, default=self._to_json)
-
-
-    # def send_deleted_result(self):
-    #     bottle.response.headers['Content-Type'] = 'application/json'
-    #     bottle.response.status = 204
-    #     return
-
-
-    # def send_error(self, error):
-    #     bottle.response.headers['Content-Type'] = 'application/json'
-    #     error = ErrorDescriptionFactory.create(error)
-    #     if error.correlation_id == None:
-    #         error.correlation_id = self.get_correlation_id()
-    #     bottle.response.status = error.status
-    #     return json.dumps(error.to_json())
-
 
     def get_param(self, param, default = None):
         return bottle.request.params.get(param, default)

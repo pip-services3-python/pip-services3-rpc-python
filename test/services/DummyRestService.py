@@ -15,8 +15,6 @@ from pip_services3_commons.data import FilterParams, PagingParams, IdGenerator
 from pip_services3_commons.refer import Descriptor
 from pip_services3_rpc.services import RestService
 
-# from ..IDummyService import IDummyService
-
 class DummyRestService(RestService):
     _logic = None
 
@@ -24,7 +22,6 @@ class DummyRestService(RestService):
         super(DummyRestService, self).__init__()
 
     def set_references(self, references):
-        # Locate reference to dummy persistence component
         self._logic = references.get_one_required(
             Descriptor("pip-services-dummies", "controller", "*", "*", "*")
         )

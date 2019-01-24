@@ -26,9 +26,7 @@ rest_config = ConfigParams.from_tuples(
     'connection.host', 'localhost',
     'connection.port', 3002
 )
-# rest_config = ConfigParams.from_tuples("connection.protocol", "http",
-#                                          "connection.host", "localhost",
-#                                          "connection.port", 3000)
+
 DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
 DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
 
@@ -100,14 +98,6 @@ class TestDummyCommandableHttpService():
 
 
     def invoke(self, route, entity):
-        # # First example
-        # params = {}
-        # response = requests.post("http://localhost:3002" + route, params=params, json=json.dumps(entity))
-        # # TODO: return only status: <Response [200]> ????
-        # return response
-        
-        # Second example
-        ######################
         params = {}
         route = "http://localhost:3002" + route
         response = None
@@ -118,6 +108,4 @@ class TestDummyCommandableHttpService():
             response = requests.request('POST', route, params=params, json=data, timeout=timeout)
             return response.json()
         except Exception as ex:
-            # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
-            # raise error
             return False

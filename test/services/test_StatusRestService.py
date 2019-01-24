@@ -57,9 +57,7 @@ class TestStatusRestService():
         result = self.invoke("/status")
 
         assert None != result
- 
 
-    # todo return dummy object from response
     def invoke(self, route):
         params = { }
         route = "http://localhost:3004" + route
@@ -70,6 +68,4 @@ class TestStatusRestService():
             response = requests.request('GET', route, params=params,  timeout=timeout)
             return response 
         except Exception as ex:
-            # error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
-            # raise error
             return False

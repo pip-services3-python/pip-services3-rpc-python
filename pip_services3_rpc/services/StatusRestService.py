@@ -120,5 +120,4 @@ class StatusRestService(RestService):
                                         "properties", properties,
                                         "components", components)
         self.send_result(status)
-        # return self.send_result(status)
 
