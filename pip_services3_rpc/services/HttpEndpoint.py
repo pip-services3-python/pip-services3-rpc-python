@@ -139,14 +139,14 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._uri = connection.get_uri()
 
         # Create instance of bottle application
-        self._service = bottle.Bottle(catchall = True, autojson = True)
+        self._service = bottle.Bottle(catchall=True, autojson=True)
 
         # Enable CORS requests
         self._service.add_hook('after_request', self._enable_cors)
         self._service.route('/', 'OPTIONS', self._options_handler)
         self._service.route('/<path:path>', 'OPTIONS', self._options_handler)
         def start_server():
-            self._service.run(server = self._server, debug = self._debug)
+            self._service.run(server=self._server, debug=self._debug)
 
         host = connection.get_host()
         port = connection.get_port()
@@ -225,7 +225,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                 return handler(*args, **kwargs)
             except Exception as ex:
                 return HttpResponseSender.send_error(ex)
-
+        if route[0] != '/':
+            route = '/' + route
         self._service.route(route, method, wrapper)
 
     def get_data(self):
@@ -239,7 +240,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         bottle.response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
         bottle.response.headers['Access-Control-Allow-Headers'] = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
 
-    def _options_handler(self, ath = None):
+    def _options_handler(self, ath=None):
         return
 
     def get_param(self, param, default = None):
