@@ -88,6 +88,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
     _config = None
     _references = None
     _base_route = None
+    _endpoint = None
     _opened = None
 
     def __init__(self):
