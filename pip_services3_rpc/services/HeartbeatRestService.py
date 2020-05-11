@@ -65,11 +65,11 @@ class HeartbeatRestService(RestService):
         super(HeartbeatRestService, self).configure(config)
         self._route = config.get_as_string_with_default("route", self._route)
 
-    def register(self):
+    def add_route(self):
         """
         Registers all service routes in HTTP endpoint.
         """
-        self.register_route("GET", self._route, self.heartbeat())
+        self.register_route("GET", self._route, None, self.heartbeat)
 
     def heartbeat(self):
         """
@@ -78,6 +78,7 @@ class HeartbeatRestService(RestService):
         :return: http response to the request.
         """
         result = StringConverter.to_string(datetime.datetime.now())
+        print('RESPONSEee: {}'.format(result))
         return self.send_result(result)
 
 

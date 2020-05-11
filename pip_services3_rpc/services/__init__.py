@@ -9,14 +9,17 @@
     :license: MIT, see LICENSE for more details.
 """
 
-__all__ = ['CommandableHttpService', 'RestService', 'RestQueryParams', 'SimpleServer',
-'StatusRestService', 'IRegisterable', 'HttpResponseSender', 'HttpEndpoint']
+__all__ = ['CommandableHttpService', 'RestService', 'RestOperations', 'RestQueryParams', 'SimpleServer',
+           'StatusRestService', 'IRegisterable', 'HttpResponseSender', 'HttpEndpoint', 'HeartbeatRestService', 'HeartBeatOperations']
 
 from .CommandableHttpService import CommandableHttpService
 from .RestService import RestService
+from .RestOperations import RestOperations
 from .RestQueryParams import RestQueryParams
 from .SimpleServer import SimpleServer
 from .HttpEndpoint import HttpEndpoint
 from .HttpResponseSender import HttpResponseSender
 from .IRegisterable import IRegisterable
 from .StatusRestService import StatusRestService
+from .HeartbeatRestService import HeartbeatRestService
+from .HeartBeatOperations import HeartBeatOperations
