@@ -66,7 +66,6 @@ class TestHttpEndpointService():
 
 
     def test_crud_operations(self):
-        time.sleep(2)
         dummy1 = self.invoke("/api/v1/dummies", DUMMY1)
 
         assert None != dummy1

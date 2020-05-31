@@ -2,12 +2,13 @@
 """
     tests.rest.test_DummyCommandableHttpClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     :copyright: (c) Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
 
 import pytest
+import time
 
 from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.refer import Descriptor, References, Referencer
@@ -23,6 +24,7 @@ rest_config = ConfigParams.from_tuples(
     'connection.port', 3001
 )
 
+
 class TestDummyCommandableHttpClient:
     references = None
     fixture = None
@@ -30,7 +32,7 @@ class TestDummyCommandableHttpClient:
     @classmethod
     def setup_class(cls):
         cls.controller = DummyController()
-        
+
         cls.service = DummyCommandableHttpService()
         cls.service.configure(rest_config)
 
@@ -38,8 +40,8 @@ class TestDummyCommandableHttpClient:
         cls.client.configure(rest_config)
 
         cls.references = References.from_tuples(
-            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller, 
-            Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service, 
+            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
+            Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service,
             Descriptor("pip-services-dummies", "client", "http", "default", "1.0"), cls.client
         )
         cls.client.set_references(cls.references)
@@ -47,14 +49,14 @@ class TestDummyCommandableHttpClient:
 
         cls.fixture = DummyClientFixture(cls.client)
 
-    def setup_method(self, method):
-        self.service.open(None)
-        self.client.open(None)
+        cls.service.open(None)
+        cls.client.open(None)
+        time.sleep(1)
 
-    def teardown_method(self, method):
-        self.service.close(None)
-        self.client.close(None)
-        
+    @classmethod
+    def teardown_class(cls):
+        cls.service.close(None)
+        cls.client.close(None)
+
     def test_crud_operations(self):
         self.fixture.test_crud_operations()
-

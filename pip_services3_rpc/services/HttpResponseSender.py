@@ -18,15 +18,26 @@ class HttpResponseSender():
     """
     Helper class that handles HTTP-based responses.
     """
+
     @staticmethod
     def send_result(result, to_json):
         bottle.response.headers['Content-Type'] = 'application/json'
-        if result == None:
+        if result is None:
             bottle.response.status = 404
             return
         else:
             bottle.response.status = 200
             return json.dumps(result, default=to_json)
+
+    @staticmethod
+    def send_empty_result(result, to_json):
+        bottle.response.headers['Content-Type'] = 'application/json'
+        if result is None:
+            bottle.response.status = 204
+            return json.dumps(result, default=to_json)
+        else:
+            bottle.response.status = 404
+            return
 
     @staticmethod
     def send_created_result(result, to_json):

@@ -14,6 +14,7 @@ from pip_services3_commons.convert import StringConverter
 
 from .RestService import RestService
 
+
 class HeartbeatRestService(RestService):
     """
     Service returns heartbeat via HTTP/REST protocol.The service responds on /heartbeat route (can be changed) with a string with the current time in UTC. This service route can be used to health checks by loadbalancers and container orchestrators.
@@ -78,7 +79,4 @@ class HeartbeatRestService(RestService):
         :return: http response to the request.
         """
         result = StringConverter.to_string(datetime.datetime.now())
-        print('RESPONSEee: {}'.format(result))
         return self.send_result(result)
-
-

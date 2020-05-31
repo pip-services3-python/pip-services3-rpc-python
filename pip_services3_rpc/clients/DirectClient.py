@@ -16,6 +16,7 @@ from pip_services3_components.log import CompositeLogger
 from pip_services3_components.count import CompositeCounters
 from pip_services3_commons.errors import ConnectionException
 
+
 class DirectClient(IConfigurable, IReferenceable, IOpenable):
     """
     Abstract client that calls controller directly in the same memory space. It is used when multiple microservices are deployed in a single container (monolyth) and communication between them can be done by direct calls rather then through the network.
@@ -97,6 +98,22 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         self._logger.trace(correlation_id, "Executing " + name + " method")
         return self._counters.begin_timing(name + ".call_time")
 
+    def _instrument_error(self, correlation_id, name, err, result, callback):
+        """
+        Adds instrumentation to error handling.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+        :param name: a method name.
+        :param err: an occured error
+        :param result: (optional) an execution result
+        :param callback: (optional) an execution callback
+        """
+        if err is not None:
+            self._logger.error(correlation_id, err, 'Failed to call {} method'.format(name))
+            self._counters.increment_one(name + '.call_errors')
+        if callback:
+            callback(err, result)
+
     def is_opened(self):
         """
         Checks if the component is opened.
@@ -113,7 +130,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         if self._opened:
             return
-        
+
         if self._controller == None:
             raise ConnectionException(correlation_id, 'NO_CONTROLLER', 'Controller references is missing')
 
@@ -130,4 +147,3 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
             self._logger.info(correlation_id, 'Closed direct client')
 
         self._opened = False
-

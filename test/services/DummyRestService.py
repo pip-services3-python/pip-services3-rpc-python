@@ -13,9 +13,11 @@ import threading
 
 from pip_services3_commons.data import FilterParams, PagingParams, IdGenerator
 from pip_services3_commons.refer import Descriptor
-from pip_services3_rpc.services import RestService
+from pip_services3_rpc.services import RestService, RestOperations, AboutOperations,\
+                                        StatusOperations, HeartBeatOperations
 
-class DummyRestService(RestService):
+
+class DummyRestService(RestService, AboutOperations, StatusOperations, HeartBeatOperations):
     _logic = None
 
     def __init__(self):
@@ -59,6 +61,18 @@ class DummyRestService(RestService):
     def unhandled_error(self):
         raise TypeError('Test unhandled error')
 
+    def send_bad_request(self, req, message):
+        return self._send_bad_request(req, message)
+
+    def get_aboutt(self, req=None, res=None):
+        return self.get_about(req, res)
+
+    def get_status(self):
+        return self.status()
+
+    def heart(self):
+        return self.heartbeat(None, None)
+
     def add_route(self):
         self.register_route('get', '/dummies', None, self.get_page_by_filter)
         self.register_route('get', '/dummies/<id>', None, self.get_one_by_id)
@@ -67,3 +81,6 @@ class DummyRestService(RestService):
         self.register_route('delete', '/dummies/<id>', None, self.delete_by_id)
         self.register_route('get', '/dummies/handled_error', None, self.handled_error)
         self.register_route('get', '/dummies/unhandled_error', None, self.unhandled_error)
+        self.register_route('post', '/dummies/about', None, self.get_aboutt)
+        self.register_route('post', '/dummies/status', None, self.get_status)
+        self.register_route('get', '/heartbeat', None, self.heart)

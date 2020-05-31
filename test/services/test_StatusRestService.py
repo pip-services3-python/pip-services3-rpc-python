@@ -53,7 +53,6 @@ class TestStatusRestService():
         self.service.close(None)
  
     def test_status(self):
-        time.sleep(2)
         result = self.invoke("/status")
 
         assert None != result

@@ -48,4 +48,3 @@ class SimpleServer(WSGIRefServer):
                     pass
                 break
             attempts -= 1
-            time.sleep(0.1)

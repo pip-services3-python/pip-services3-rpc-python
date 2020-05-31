@@ -22,6 +22,7 @@ from pip_services3_commons.errors import ErrorDescription, ApplicationExceptionF
 from pip_services3_commons.data import IdGenerator
 from ..connect.HttpConnectionResolver import HttpConnectionResolver
 
+
 class RestClient(IOpenable, IConfigurable, IReferenceable):
     """
     Abstract client that calls remove endpoints using HTTP/REST protocol.
@@ -63,7 +64,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         data = client.getData("123", "1")
         ...
     """
-    _default_config = None 
+    _default_config = None
 
     _client = None
     _uri = None
@@ -76,7 +77,6 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
     _retries = 1
     _headers = None
     _connect_timeout = 1000
-
 
     def __init__(self):
         """
@@ -99,7 +99,6 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         self._options = ConfigParams()
         self._headers = {}
 
-
     def set_references(self, references):
         """
         Sets references to dependent components.
@@ -109,7 +108,6 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         self._logger.set_references(references)
         self._counters.set_references(references)
         self._connection_resolver.set_references(references)
-
 
     def configure(self, config):
         """
@@ -131,13 +129,30 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         Adds instrumentation to log calls and measure call time. It returns a Timing object that is used to end the time measurement.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
-
         :param name: a method name.
-
         :return: Timing object to end the time measurement.
         """
+        TYPE_NAME = self.__class__.__name__ or 'unknown-target'
         self._logger.trace(correlation_id, "Calling " + name + " method")
-        return self._counters.begin_timing(name + ".call_time")
+        self._counters.increment_one(TYPE_NAME + '.' + name + '.call_count')
+        return self._counters.begin_timing(TYPE_NAME + '.' + name + '.call_count')
+
+    def _instrument_error(self, correlation_id, name, err, result=None, callback=None):
+        """
+        Adds instrumentation to error handling.
+
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+        :param name: a method name.
+        :param err: an occured error
+        :param result: (optional) an execution result
+        :param callback: (optional) an execution callback
+        """
+        if err is not None:
+            TYPE_NAME = self.__class__.__name__ or 'unknown-target'
+            self._logger.error(correlation_id, err, 'Failed to call {} method of {}'.format(name, TYPE_NAME))
+            self._counters.increment_one(name + '.call_errors')
+        if callback:
+            callback(err, result)
 
     def is_opened(self):
         """
@@ -145,7 +160,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         :return: true if the component has been opened and false otherwise.
         """
-        return self._client != None
+        return self._client is not None
 
     def open(self, correlation_id):
         """
@@ -159,7 +174,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         connection = self._connection_resolver.resolve(correlation_id)
 
         self._uri = connection.get_uri()
-        if self._uri == None:
+        if self._uri is None:
             protocol = connection.get_protocol("http")
             host = connection.get_host()
             port = connection.get_port()
@@ -169,22 +184,20 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         self._logger.debug(correlation_id, "Connected via REST to " + self._uri)
 
-
     def close(self, correlation_id):
         """
         Closes component and frees used resources.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
-        if self._client != None:
+        if self._client is not None:
             self._logger.debug(correlation_id, "Disconnected from " + self._uri)
 
         self._client = None
         self._uri = None
 
-
     def _to_json(self, obj):
-        if obj == None:
+        if obj is None:
             return None
 
         if isinstance(obj, set):
@@ -202,15 +215,14 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
                 v = self._to_json(v)
                 result[k] = v
             return result
-        
+
         if hasattr(obj, 'to_json'):
             return obj.to_json()
         if hasattr(obj, '__dict__'):
             return self._to_json(obj.__dict__)
         return obj
 
-
-    def call(self, method, route, correlation_id = None, params = None, data = None):
+    def call(self, method, route, correlation_id=None, params=None, data=None):
         """
         Calls a remote method via HTTP/REST protocol.
 
@@ -227,9 +239,9 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         :return: result object
         """
         method = method.upper()
-                
+
         params = params or {}
-        if correlation_id != None:
+        if correlation_id is not None:
             params['correlation_id'] = correlation_id
         else:
             params['correlation_id'] = IdGenerator.next_short()
@@ -237,7 +249,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         route = self._uri + route
         response = None
         result = None
-                    
+
         try:
             # Call the service
             data = self._to_json(data)
@@ -255,7 +267,8 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         except:
             # Data is not in JSON
             if response.status_code < 400:
-                raise UnknownException(correlation_id, 'FORMAT_ERROR', 'Failed to deserialize JSON data: ' + response.text) \
+                raise UnknownException(correlation_id, 'FORMAT_ERROR',
+                                       'Failed to deserialize JSON data: ' + response.text) \
                     .with_details('response', response.text)
             else:
                 raise UnknownException(correlation_id, 'UNKNOWN', 'Unknown error occured: ' + response.text) \

@@ -59,7 +59,6 @@ class TestDummyRestService():
         self.service.close(None)
 
     def test_crud_operations(self):
-        time.sleep(2)
         # Create one dummy
         dummy1 = self.invoke("/dummies", DUMMY1)
 
@@ -73,6 +72,8 @@ class TestDummyRestService():
         assert None != dummy2
         assert DUMMY2['key'] == dummy2['key']
         assert DUMMY2['content'] == dummy2['content']
+
+        # dummy_del = self.invoke('/dummies/<id>')
 
     def invoke(self, route, entity):
         params = { }

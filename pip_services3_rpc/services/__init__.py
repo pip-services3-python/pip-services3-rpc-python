@@ -10,7 +10,8 @@
 """
 
 __all__ = ['CommandableHttpService', 'RestService', 'RestOperations', 'RestQueryParams', 'SimpleServer',
-           'StatusRestService', 'IRegisterable', 'HttpResponseSender', 'HttpEndpoint', 'HeartbeatRestService', 'HeartBeatOperations']
+           'StatusRestService', 'IRegisterable', 'HttpResponseSender', 'HttpEndpoint', 'HeartbeatRestService',
+           'HeartBeatOperations', 'AboutOperations', 'HttpResponseDetector', 'StatusOperations']
 
 from .CommandableHttpService import CommandableHttpService
 from .RestService import RestService
@@ -23,3 +24,6 @@ from .IRegisterable import IRegisterable
 from .StatusRestService import StatusRestService
 from .HeartbeatRestService import HeartbeatRestService
 from .HeartBeatOperations import HeartBeatOperations
+from .HttpResponseDetector import HttpResponseDetector
+from .AboutOperations import AboutOperations
+from .StatusOperations import StatusOperations

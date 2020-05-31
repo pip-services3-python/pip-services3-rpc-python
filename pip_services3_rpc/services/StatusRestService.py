@@ -16,6 +16,7 @@ from pip_services3_commons.run import Parameters
 
 from .RestService import RestService
 
+
 class StatusRestService(RestService):
     """
     Service that returns microservice status information via HTTP/REST protocol. The service responds on /status route (can be changed) with a JSON object:
@@ -100,11 +101,11 @@ class StatusRestService(RestService):
         self.register_route("GET", self._route, self.status())
 
     def status(self):
-        id = self._context_info.get_context_id() if self._context_info != None else ""
-        name = self._context_info.get_name() if self._context_info != None else "unknown"
-        description = self._context_info.get_description() if self._context_info != None else ""
-        uptime = datetime.datetime.now().time() - self._start_time.time()
-        properties = self._context_info.get_properties() if self._context_info != None else ""
+        id = self._context_info.context_id if self._context_info != None else ""
+        name = self._context_info.name if self._context_info != None else "unknown"
+        description = self._context_info.description if self._context_info != None else ""
+        uptime = (datetime.datetime.now() - self._start_time).total_seconds() * 1000
+        properties = self._context_info.properties if self._context_info != None else ""
 
         components = []
         if self._references_ != None:
@@ -120,4 +121,3 @@ class StatusRestService(RestService):
                                         "properties", properties,
                                         "components", components)
         self.send_result(status)
-

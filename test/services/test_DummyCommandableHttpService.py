@@ -59,7 +59,6 @@ class TestDummyCommandableHttpService():
 
     # #todo
     def test_crud_operations(self):
-        time.sleep(2)
         # Create one dummy
         dummy1 = self.invoke("/dummies/create_dummy", Parameters.from_tuples("dummy", DUMMY1))
         
