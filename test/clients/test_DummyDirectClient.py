@@ -37,9 +37,11 @@ class TestDummyDirectClient:
 
     def setup_method(self, method):
         self.client.open(None)
+        pass
 
     def teardown_method(self, method):
         self.client.close(None)
+        pass
         
     def test_crud_operations(self):
         self.fixture.test_crud_operations()

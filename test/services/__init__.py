@@ -13,3 +13,4 @@ __all__ = ['DummyCommandableHttpService', 'DummyRestService']
 
 from .DummyCommandableHttpService import DummyCommandableHttpService
 from .DummyRestService import DummyRestService
+from .DummyRestOperations import DummyRestOperations

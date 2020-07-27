@@ -71,6 +71,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         :param references: references to locate the component dependencies.
         """
         self._connection_resolver.set_references(references)
+        self._credential_resolver.set_references(references)
 
     def __validate_connection(self, correlation_id, connection, credential=None):
 

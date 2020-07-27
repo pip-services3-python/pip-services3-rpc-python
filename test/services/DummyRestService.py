@@ -13,74 +13,37 @@ import threading
 
 from pip_services3_commons.data import FilterParams, PagingParams, IdGenerator
 from pip_services3_commons.refer import Descriptor
-from pip_services3_rpc.services import RestService, RestOperations, AboutOperations,\
-                                        StatusOperations, HeartBeatOperations
+from pip_services3_rpc.services import RestService
+from .DummyRestOperations import DummyRestOperations 
+from pip_services3_rpc.services import AboutOperations
 
+class DummyRestService(RestService):
 
-class DummyRestService(RestService, AboutOperations, StatusOperations, HeartBeatOperations):
-    _logic = None
+    _operations = None
+    _number_of_calls = 0
 
     def __init__(self):
         super(DummyRestService, self).__init__()
+        self._operations = DummyRestOperations()
 
     def set_references(self, references):
-        self._logic = references.get_one_required(
-            Descriptor("pip-services-dummies", "controller", "*", "*", "*")
-        )
-
         super(DummyRestService, self).set_references(references)
+        self._operations.set_references(references)
 
-    def get_page_by_filter(self):
-        correlation_id = self.get_correlation_id()
-        filter = self.get_filter_params()
-        paging = self.get_paging_params()
-        return self.send_result(self._logic.get_page_by_filter(correlation_id, filter, paging))
+    def get_number_of_calls() -> int:
+        return self._number_of_calls
 
-    def get_one_by_id(self, id):
-        correlation_id = self.get_correlation_id()
-        return self.send_result(self._logic.get_one_by_id(correlation_id, id))
+    def _increment_number_of_calls(): 
+        self._number_of_calls += 1
 
-    def create(self):
-        correlation_id = self.get_correlation_id()
-        entity = self.get_data()
-        return self.send_created_result(self._logic.create(correlation_id, entity))
-
-    def update(self, id):
-        correlation_id = self.get_correlation_id()
-        entity = self.get_data()
-        return self.send_result(self._logic.update(correlation_id, entity))
-
-    def delete_by_id(self, id):
-        correlation_id = self.get_correlation_id()
-        self._logic.delete_by_id(correlation_id, id)
-        return self.send_deleted_result()
-
-    def handled_error(self):
-        raise UnsupportedError('NotSupported', 'Test handled error')
-
-    def unhandled_error(self):
-        raise TypeError('Test unhandled error')
-
-    def send_bad_request(self, req, message):
-        return self._send_bad_request(req, message)
-
-    def get_aboutt(self, req=None, res=None):
-        return self.get_about(req, res)
-
-    def get_status(self):
-        return self.status()
-
-    def heart(self):
-        return self.heartbeat(None, None)
-
-    def add_route(self):
-        self.register_route('get', '/dummies', None, self.get_page_by_filter)
-        self.register_route('get', '/dummies/<id>', None, self.get_one_by_id)
-        self.register_route('post', '/dummies', None, self.create)
-        self.register_route('put', '/dummies/<id>', None, self.update)
-        self.register_route('delete', '/dummies/<id>', None, self.delete_by_id)
-        self.register_route('get', '/dummies/handled_error', None, self.handled_error)
-        self.register_route('get', '/dummies/unhandled_error', None, self.unhandled_error)
-        self.register_route('post', '/dummies/about', None, self.get_aboutt)
-        self.register_route('post', '/dummies/status', None, self.get_status)
-        self.register_route('get', '/heartbeat', None, self.heart)
+    def register(self):
+        # TODO: realize interseptor
+        # self.register_interceptor('/dummies', self._increment_number_of_calls)
+        self.register_route('get', '/dummies', None, self._operations.get_page_by_filter)
+        self.register_route('get', '/dummies/<id>', None, self._operations.get_one_by_id)
+        self.register_route('post', '/dummies', None, self._operations.create)
+        self.register_route('put', '/dummies/<id>', None, self._operations.update)
+        self.register_route('delete', '/dummies/<id>', None, self._operations.delete_by_id)
+        self.register_route('get', '/dummies/handled_error', None, self._operations.handled_error)
+        self.register_route('get', '/dummies/unhandled_error', None, self._operations.unhandled_error)
+        self.register_route('post', '/about', None, AboutOperations().get_about)

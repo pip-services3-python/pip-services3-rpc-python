@@ -61,7 +61,7 @@ class StatusRestService(RestService):
           ...
     """
     _start_time = datetime.datetime.now()
-    _references_ = None
+    _references2 = None
     _context_info = None
     _route = "status"
 
@@ -88,36 +88,38 @@ class StatusRestService(RestService):
 
         :param references: references to locate the component dependencies.
         """
-        self._references_ = references
-
+        self._references2 = references
         super(StatusRestService, self).set_references(references)
-
         self._context_info = self._dependency_resolver.get_one_optional("context-info")
 
     def register(self):
         """
         Registers all service routes in HTTP endpoint.
         """
-        self.register_route("GET", self._route, self.status())
+        # self.register_route("GET", self._route, lambda req, res: self.status(req, res))
+        self.register_route("GET", self._route, None, self.status)
 
+    # def status(self, req=None, res=None):
     def status(self):
-        id = self._context_info.context_id if self._context_info != None else ""
-        name = self._context_info.name if self._context_info != None else "unknown"
-        description = self._context_info.description if self._context_info != None else ""
+        _id = self._context_info.context_id if not (self._context_info is None) else ""
+        name = self._context_info.name if not (self._context_info is None) else "unknown"
+        description = self._context_info.description if not (self._context_info is None) else ""
         uptime = (datetime.datetime.now() - self._start_time).total_seconds() * 1000
-        properties = self._context_info.properties if self._context_info != None else ""
+        properties = self._context_info.properties if not (self._context_info is None) else ""
 
         components = []
-        if self._references_ != None:
-            for locator in self._references_.get_all_locators():
-                components.append(locator.__str__)
+        if not (self._references2 is None):
+            for locator in self._references2.get_all_locators():
+                components.append(locator.__str__())
 
-        status = Parameters.from_tuples("id", id,
+        status = Parameters.from_tuples("id", _id,
                                         "name", name,
                                         "description", description,
                                         "start_time", StringConverter.to_string(self._start_time),
                                         "current_time", StringConverter.to_string(datetime.datetime.now()),
                                         "uptime", uptime,
                                         "properties", properties,
-                                        "components", components)
+                                        "components", components
+                                        )
         self.send_result(status)
+ 

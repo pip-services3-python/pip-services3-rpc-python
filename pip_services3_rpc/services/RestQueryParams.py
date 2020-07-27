@@ -20,23 +20,23 @@ class RestQueryParams(dict):
 
     def add_correlation_id(self, correlation_id = None):
         # Automatically generate short ids for now
-        if correlation_id == None:
+        if correlation_id is None:
             correlation_id = IdGenerator.next_short()
 
         self['correlation_id'] = correlation_id
 
     def add_filter_params(self, filter):
-        if filter == None: return
+        if filter is None: return
 
         for key, value in filter.items():
             self[key] = value
 
     def add_paging_params(self, paging):
-        if paging == None: return
+        if paging is None: return
 
-        if paging.total != None:
+        if not (paging.total is None):
             self['total'] = paging.total
-        if paging.skip != None:
+        if not (paging.skip is None):
             self['skip'] = paging.skip
-        if paging.take != None:
+        if not (paging.take is None):
             self['take'] = paging.take

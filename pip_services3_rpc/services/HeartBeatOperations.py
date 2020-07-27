@@ -9,7 +9,7 @@ from .RestOperations import RestOperations
 
 class HeartBeatOperations(RestOperations):
     def __init__(self):
-        super(HeartBeatOperations, ).__init__()
+        super(HeartBeatOperations, self).__init__()
 
     def get_heart_beat_operation(self):
         return lambda req, res: self.heartbeat(req, res)

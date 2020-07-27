@@ -20,6 +20,7 @@ from .DummyCommandableHttpClient import DummyCommandableHttpClient
 from ..services.DummyCommandableHttpService import DummyCommandableHttpService
 
 rest_config = ConfigParams.from_tuples(
+    "connection.protocol", "http",
     'connection.host', 'localhost',
     'connection.port', 3001
 )
@@ -41,8 +42,7 @@ class TestDummyCommandableHttpClient:
 
         cls.references = References.from_tuples(
             Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
-            Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service,
-            Descriptor("pip-services-dummies", "client", "http", "default", "1.0"), cls.client
+            Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service
         )
         cls.client.set_references(cls.references)
         cls.service.set_references(cls.references)
@@ -57,6 +57,7 @@ class TestDummyCommandableHttpClient:
     def teardown_class(cls):
         cls.service.close(None)
         cls.client.close(None)
+        pass
 
     def test_crud_operations(self):
         self.fixture.test_crud_operations()

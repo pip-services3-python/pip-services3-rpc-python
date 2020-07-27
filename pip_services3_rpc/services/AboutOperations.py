@@ -11,13 +11,13 @@ from pip_services3_components.info.ContextInfo import ContextInfo
 from .HttpResponseDetector import HttpResponseDetector
 from .RestService import RestService
 from .RestOperations import RestOperations
-
+from .HttpResponseSender import HttpResponseSender
 
 class AboutOperations(RestOperations):
     _context_info = None
 
     def set_references(self, references):
-        super().set_references(references)
+        super(AboutOperations, self).set_references(references)
 
         self._context_info = references.get_one_optional(
             Descriptor('pip-services', 'context-info', '*', '*', '*')
@@ -47,17 +47,16 @@ class AboutOperations(RestOperations):
     def get_network_adresses(self):
         return self.__get_external_addr()
 
-    def get_about(self, req, res):
+    def get_about(self, req=None, res=None):
         if req is None:
             req = bottle.request
-
         about = {
             'server': {
-                'name': self._context_info.name if self._context_info != None else "unknown",
-                'description': self._context_info.description if self._context_info != None else "",
-                'properties': self._context_info.properties if self._context_info != None else "",
-                'uptime': self._context_info.uptime if self._context_info is not None else None,
-                'start_time': self._context_info.start_time if self._context_info is not None else None,
+                'name': self._context_info.name if not (self._context_info is None) else "unknown",
+                'description': self._context_info.description if not (self._context_info is None) else "",
+                'properties': self._context_info.properties if not (self._context_info is None) else "",
+                'uptime': self._context_info.uptime if not (self._context_info is None) else None,
+                'start_time': self._context_info.start_time if not (self._context_info is None) else None,
                 'current_time': datetime.datetime.now().isoformat(),
                 'protocol': req.method,
                 'host': HttpResponseDetector.detect_server_host(req),
@@ -74,4 +73,5 @@ class AboutOperations(RestOperations):
         }
         bottle.response.headers['Content-Type'] = 'application/json'
         bottle.response.status = 200
-        return json.dumps(about, default=RestService._to_json)
+
+        return self._send_result(about)

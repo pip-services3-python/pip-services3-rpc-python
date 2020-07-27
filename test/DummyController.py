@@ -29,16 +29,16 @@ class DummyController(IDummyController, ICommandable):
 
 
     def get_command_set(self):
-        if self._command_set == None:
+        if self._command_set is None:
             self._command_set = DummyCommandSet(self)
         return self._command_set
 
 
-    def get_page_by_filter(self, correlation_id, filter, paging):
-        filter = filter if filter != None else FilterParams()
-        key = filter.get_as_nullable_string("key")
+    def get_page_by_filter(self, correlation_id, filters, paging):
+        filters = filters if not (filters is None) else FilterParams()
+        key = filters.get_as_nullable_string("key")
         
-        paging = paging if paging != None else PagingParams()
+        paging = paging if not (paging is None) else PagingParams()
         skip = paging.get_skip(0)
         take = paging.get_take(100)
         
@@ -46,7 +46,7 @@ class DummyController(IDummyController, ICommandable):
         self._lock.acquire()
         try:
             for item in self._items:
-                if key != None and key != item['key']:
+                if not (key is None) and key != item['key']:
                     continue
                 
                 skip -= 1
@@ -76,7 +76,7 @@ class DummyController(IDummyController, ICommandable):
     def create(self, correlation_id, item):
         self._lock.acquire()
         try:
-            if 'id' not in item or item['id'] == None:
+            if 'id' not in item or item['id'] is None:
                 item['id'] = IdGenerator.next_long()
 
             self._items.append(item)

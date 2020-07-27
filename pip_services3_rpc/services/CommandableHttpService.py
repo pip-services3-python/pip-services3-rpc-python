@@ -55,17 +55,16 @@ class CommandableHttpService(RestService):
           service.open("123")
           ...
     """
-    _name = None
     _command_set = None
 
-    def __init__(self, name):
+    def __init__(self, base_route: str):
         """
         Creates a new instance of the service.
 
-        :param name: a service base route.
+        :param base_route: a service base route.
         """
         super(CommandableHttpService, self).__init__()
-        self._name = name
+        self._base_route = base_route
         self._dependency_resolver.put('controller', 'none')
 
     def _get_handler(self, command):
@@ -73,7 +72,7 @@ class CommandableHttpService(RestService):
             params = self.get_data()
             correlation_id = params['correlation_id'] if 'correlation_id' in params else None
             args = Parameters.from_value(params)
-            timing = self._instrument(correlation_id, self._name + '.' + command.get_name())
+            timing = self._instrument(correlation_id, self._base_route + '.' + command.get_name())
             try:
                 result = command.execute(correlation_id, args)
                 return self.send_result(result)
@@ -82,12 +81,15 @@ class CommandableHttpService(RestService):
 
         return handler
 
-    def add_route(self):
+    def register(self):
         controller = self._dependency_resolver.get_one_required('controller')
         if not isinstance(controller, ICommandable):
             raise Exception("Controller has to implement ICommandable interface")
         self._command_set = controller.get_command_set()
 
         for command in self._command_set.get_commands():
-            route = '/' + self._name + '/' + command.get_name()
+            route = self.fix_route(command.get_name())
+            # if route[0] != '/':
+            #     route = '/' + route #self._base_route + '/' + command.get_name()
+
             self.register_route('POST', route, None, self._get_handler(command))

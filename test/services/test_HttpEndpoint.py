@@ -27,7 +27,7 @@ DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
 rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
     'connection.host', 'localhost',
-    'connection.port', 3005
+    'connection.port', 3004
 )
  
 class TestHttpEndpointService():
@@ -74,7 +74,7 @@ class TestHttpEndpointService():
 
     def invoke(self, route, entity):
         params = { }
-        route = "http://localhost:3005" + route
+        route = "http://localhost:3004" + route
         response = None
         timeout = 10000
         try:

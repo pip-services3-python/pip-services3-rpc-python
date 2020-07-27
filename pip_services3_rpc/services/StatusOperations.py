@@ -21,7 +21,7 @@ class StatusOperations(RestOperations):
     _context_info = None
 
     def __init__(self):
-        super().__init__()
+        super(StatusOperations, self).__init__()
         self._dependency_resolver.put((
             'context-info',
             Descriptor('pip-services', 'context-info', 'default', '*', '1.0')
@@ -35,7 +35,7 @@ class StatusOperations(RestOperations):
         '''
 
         self._references2 = references
-        super().set_references(references)
+        super(StatusOperations, self).set_references(references)
 
         self._context_info = self._dependency_resolver.get_one_optional('context-info')
 
@@ -49,20 +49,20 @@ class StatusOperations(RestOperations):
         :param req: an HTTP request
         :param res: an HTTP response
         '''
-        id = self._context_info.context_id if self._context_info != None else ''
-        name = self._context_info.name if self._context_info != None else 'unknown'
-        description = self._context_info.description if self._context_info != None else ''
+        _id = self._context_info.context_id if not (self._context_info is None) else ''
+        name = self._context_info.name if not (self._context_info is None) else 'unknown'
+        description = self._context_info.description if not (self._context_info is None) else ''
         uptime = datetime.datetime.fromtimestamp((
                 datetime.datetime.now().timestamp() - self._start_time.timestamp()),
                                                  pytz.utc).strftime("%H:%M:%S")
-        properties = self._context_info.properties if self._context_info != None else ''
+        properties = self._context_info.properties if not (self._context_info is None) else ''
 
         components = []
         if self._references2 is not None:
             for locator in self._references2.get_all_locators():
                 components.append(locator.__str__)
 
-        status = {'id': id,
+        status = {'id': _id,
                   'name': name,
                   'description': description,
                   'start_time': StringConverter.to_string(self._start_time),
@@ -70,7 +70,6 @@ class StatusOperations(RestOperations):
                   'uptime': uptime,
                   'properties': properties,
                   'components': components}
-
         bottle.response.headers['Content-Type'] = 'application/json'
         bottle.response.status = 200
         return json.dumps(status, default=RestService._to_json)

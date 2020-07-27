@@ -95,8 +95,8 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
 
         :return: Timing object to end the time measurement.
         """
-        self._logger.trace(correlation_id, "Executing " + name + " method")
-        return self._counters.begin_timing(name + ".call_time")
+        self._logger.trace(correlation_id, f"Executing {name} method")
+        return self._counters.begin_timing(f"{name} .call_time")
 
     def _instrument_error(self, correlation_id, name, err, result, callback):
         """
@@ -109,8 +109,8 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         :param callback: (optional) an execution callback
         """
         if err is not None:
-            self._logger.error(correlation_id, err, 'Failed to call {} method'.format(name))
-            self._counters.increment_one(name + '.call_errors')
+            self._logger.error(correlation_id, err, f'Failed to call {name} method')
+            self._counters.increment_one(f"{name}.call_errors")
         if callback:
             callback(err, result)
 
@@ -131,7 +131,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         if self._opened:
             return
 
-        if self._controller == None:
+        if self._controller is None:
             raise ConnectionException(correlation_id, 'NO_CONTROLLER', 'Controller references is missing')
 
         self._opened = True

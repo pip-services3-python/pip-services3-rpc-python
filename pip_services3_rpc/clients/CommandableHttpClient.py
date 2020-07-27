@@ -8,10 +8,10 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-
+from abc import ABC
 from .RestClient import RestClient
 
-class CommandableHttpClient(RestClient):
+class CommandableHttpClient(RestClient, ABC):
     """
     Abstract client that calls commandable HTTP service.
     Commandable services are generated automatically for ICommandable objects. Each command is exposed as POST operation that receives all parameters in body object.
@@ -79,7 +79,12 @@ class CommandableHttpClient(RestClient):
         """
         timing = self._instrument(correlation_id, self._base_route + '.' + name)
         try:
-            route = '/'  + self._base_route + '/' + name
-            return self.call('POST', route, correlation_id, None, params)
+            # route = self.fix_route(self._base_route) + self.fix_route(name)
+            # if self._base_route and self._base_route[0] != '/':
+            #     route = '/'  + self._base_route + '/' + name
+            # else:
+            #     route = self._base_route + '/' + name
+
+            return self.call('POST', name, correlation_id, None, params)
         finally:
             timing.end_timing()

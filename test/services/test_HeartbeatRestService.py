@@ -11,7 +11,7 @@ from pip_services3_rpc.services.HeartbeatRestService import HeartbeatRestService
 rest_config = ConfigParams.from_tuples(
     'connection.protocol', 'http',
     'connection.host', 'localhost',
-    'connection.port', 3008
+    'connection.port', 3003
 )
 
 
@@ -37,7 +37,7 @@ class TestHeartBeatrestService:
 
     def invoke(self, route='/heartbeat', entity=None):
         params = {}
-        route = "http://localhost:3008" + route
+        route = "http://localhost:3003" + route
         response = None
         timeout = 10000
         try:

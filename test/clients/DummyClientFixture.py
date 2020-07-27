@@ -23,7 +23,7 @@ class DummyClientFixture:
     def test_crud_operations(self):
         # Create one dummy
         dummy1 = self._client.create(None, DUMMY1)
-
+        
         assert None != dummy1
         assert None != dummy1['id']
         assert DUMMY1['key'] == dummy1['key']

@@ -20,39 +20,43 @@ class HttpResponseSender():
     """
 
     @staticmethod
-    def send_result(result, to_json):
+    def send_result(result):
         bottle.response.headers['Content-Type'] = 'application/json'
         if result is None:
             bottle.response.status = 404
             return
         else:
             bottle.response.status = 200
-            return json.dumps(result, default=to_json)
+            return json.dumps(result, default=HttpResponseSender._to_json)
 
     @staticmethod
-    def send_empty_result(result, to_json):
+    def send_empty_result(result):
         bottle.response.headers['Content-Type'] = 'application/json'
         if result is None:
             bottle.response.status = 204
-            return json.dumps(result, default=to_json)
+            return json.dumps(result, default=HttpResponseSender._to_json)
         else:
             bottle.response.status = 404
             return
 
     @staticmethod
-    def send_created_result(result, to_json):
+    def send_created_result(result):
         bottle.response.headers['Content-Type'] = 'application/json'
-        if result == None:
-            bottle.response.status = 404
+        if result is None:
+            bottle.response.status = 204
             return
         else:
             bottle.response.status = 201
-            return json.dumps(result, default=to_json)
+            return json.dumps(result, default=HttpResponseSender._to_json)
 
     @staticmethod
-    def send_deleted_result():
+    def send_deleted_result(result=None):
         bottle.response.headers['Content-Type'] = 'application/json'
-        bottle.response.status = 204
+        if result is None:
+            bottle.response.status = 204
+            return
+
+        bottle.response.status = 200
         return
 
     @staticmethod
@@ -64,10 +68,43 @@ class HttpResponseSender():
 
         :return: HTTP response status
         """
+
+        # TODO:
+        # let result = _.pick(error, 'code', 'status', 'name', 'details', 'component', 'message', 'stack', 'cause');
+        # result = _.defaults(result, { code: 'Undefined', status: 500, message: 'Unknown error' });
+
         bottle.response.headers['Content-Type'] = 'application/json'
         error = ErrorDescriptionFactory.create(error)
         bottle.response.status = error.status
         return json.dumps(error.to_json())
 
+    @staticmethod
+    def _to_json(obj):
+        if obj is None:
+            return None
+
+        if isinstance(obj, set):
+            obj = list(obj)
+        if isinstance(obj, list):
+            result = []
+            for item in obj:
+                item = self._to_json(item)
+                result.append(item)
+            return result
+
+        if isinstance(obj, dict):
+            result = {}
+            for (k, v) in obj.items():
+                v = self._to_json(v)
+                result[k] = v
+            return result
+        
+        if hasattr(obj, 'to_json'):
+            return obj.to_json()
+        if hasattr(obj, '__dict__'):
+            return self._to_json(obj.__dict__)
+        return obj
+
+    @staticmethod
     def get_correlation_id(self):
         return bottle.request.query.get('correlation_id')

@@ -133,9 +133,9 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         :return: Timing object to end the time measurement.
         """
         TYPE_NAME = self.__class__.__name__ or 'unknown-target'
-        self._logger.trace(correlation_id, "Calling " + name + " method")
-        self._counters.increment_one(TYPE_NAME + '.' + name + '.call_count')
-        return self._counters.begin_timing(TYPE_NAME + '.' + name + '.call_count')
+        self._logger.trace(correlation_id, f"Calling {name} method {TYPE_NAME}")
+        self._counters.increment_one(f"{TYPE_NAME}.{name}.call_count")
+        return self._counters.begin_timing(f"{TYPE_NAME}.{name}.call_count")
 
     def _instrument_error(self, correlation_id, name, err, result=None, callback=None):
         """
@@ -149,8 +149,8 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         if err is not None:
             TYPE_NAME = self.__class__.__name__ or 'unknown-target'
-            self._logger.error(correlation_id, err, 'Failed to call {} method of {}'.format(name, TYPE_NAME))
-            self._counters.increment_one(name + '.call_errors')
+            self._logger.error(correlation_id, err, f"Failed to call {name} method of {TYPE_NAME}")
+            self._counters.increment_one(f"{name}.call_errors")
         if callback:
             callback(err, result)
 
@@ -174,11 +174,13 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         connection = self._connection_resolver.resolve(correlation_id)
 
         self._uri = connection.get_uri()
-        if self._uri is None:
-            protocol = connection.get_protocol("http")
-            host = connection.get_host()
-            port = connection.get_port()
-            self._uri = protocol + "://" + host + ":" + str(port)
+
+        # TODO:
+        # if self._uri is None:
+        #     protocol = connection.get_protocol("http")
+        #     host = connection.get_host()
+        #     port = connection.get_port()
+        #     self._uri = protocol + "://" + host + ":" + str(port)
 
         self._client = requests
 
@@ -222,6 +224,57 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
             return self._to_json(obj.__dict__)
         return obj
 
+    def fix_route(self, route) -> str:
+        if (route is not None and len(route) > 0):
+            if (route[0] != '/'):
+                route = f'/{route}'
+            return route
+        
+        return ''
+
+    def createRequestRoute(self, route):
+        builder = ''
+        # TODO: with os.path.join(path1, path2)
+        if (self._uri is not None and len(self._uri) > 0):
+            builder = self._uri
+
+        
+            builder += self.fix_route(self._base_route)
+        
+
+        if (route[0] != '/'):
+            builder += '/'
+        builder += route
+        
+        return builder
+
+    def add_correlation_id(self, correlation_id=None, params=None):
+        params = params or {}
+        if not (correlation_id is None):
+            params['correlation_id'] = correlation_id
+        
+        return params
+
+    def add_filter_params(self, params=None, filters=None):
+        params = params or {}
+        if not (filters is None):
+             params.update(filters)
+        
+        return params
+
+    def add_paging_params(self, params=None, paging=None):
+        params = params or {}
+        if not (paging is None):
+            if not (paging['total'] is None):
+                params['total'] = paging['total']
+            if not (paging['skip'] is None):
+                params['skip'] = paging['skip']
+            if not (paging['take'] is None):
+                params['take'] = paging['take']
+            #params.update(paging)
+        
+        return params
+
     def call(self, method, route, correlation_id=None, params=None, data=None):
         """
         Calls a remote method via HTTP/REST protocol.
@@ -240,13 +293,8 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         method = method.upper()
 
-        params = params or {}
-        if correlation_id is not None:
-            params['correlation_id'] = correlation_id
-        else:
-            params['correlation_id'] = IdGenerator.next_short()
-
-        route = self._uri + route
+        route = self.createRequestRoute(route)
+        params = self.add_correlation_id(correlation_id=correlation_id, params=params)
         response = None
         result = None
 
@@ -254,6 +302,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
             # Call the service
             data = self._to_json(data)
             response = requests.request(method, route, params=params, json=data, timeout=self._timeout)
+
         except Exception as ex:
             error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
             raise error

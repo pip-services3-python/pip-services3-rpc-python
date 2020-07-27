@@ -83,7 +83,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
     _dependency_resolver = None
     _logger = None
     _counters = None
-    _registered = None
+    # _registered = None
     _local_endpoint = None
     _config = None
     _references = None
@@ -92,9 +92,9 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
     _opened = None
 
     def __init__(self):
-        self._default_config = ConfigParams.from_tuples("base_route", "",
+        self._default_config = ConfigParams.from_tuples("base_route", None,
                                                 "dependencies.endpoint", "*:endpoint:http:*:1.0")
-        self._registered = False
+        # self._registered = False
         self._dependency_resolver = DependencyResolver()
         self._logger = CompositeLogger()
         self._counters = CompositeCounters()
@@ -123,7 +123,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         self._dependency_resolver.set_references(references)
         self._endpoint = self._dependency_resolver.get_one_optional('endpoint')
 
-        if self._endpoint == None:
+        if self._endpoint is None:
             self._endpoint = self.create_endpoint()
             self._local_endpoint = True
         else:
@@ -146,19 +146,31 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         Unsets (clears) previously set references to dependent components.
         """
-        if self._endpoint != None:
+        if not (self._endpoint is None):
             self._endpoint.unregister(self)
             self._endpoint = None
 
     def create_endpoint(self):
         endpoint = HttpEndpoint()
-        if self._config != None:
+        if not (self._config is None):
             endpoint.configure(self._config)
 
-        if self._references != None:
+        if not (self._references is None):
             endpoint.set_references(self._references)
 
         return endpoint
+
+    def _instrument(self, correlation_id, name):
+        self._logger.trace(correlation_id, f"Executing {name} method")
+        self._counters.increment_one(f"{name}.exec_count")
+        return self._counters.begin_timing(f"{name}.exec_time")
+
+    def _instrument_error(self, correlation_id, name, error, result, callback):
+        if not (error is None):
+            self._logger.error(correlation_id, error, f"Failed to execute {name} method")
+            self._counters.increment_one(f"{name}.exec_error")
+        if not (callback is None):
+            callback(error, result)
 
     def is_opened(self):
         """
@@ -174,10 +186,11 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
+
         if self.is_opened():
             return
 
-        if self._endpoint == None:
+        if self._endpoint is None:
             self._endpoint = self.create_endpoint()
             self._endpoint.register(self)
             self._local_endpoint = True
@@ -186,10 +199,10 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
             self._endpoint.open(correlation_id)
 
         self._opened = True
-        # register route
-        if self._registered != True:
-            self.add_route()
-            self._registered = True
+        # # register route
+        # if self._registered != True:
+        #     self.add_route()
+        #     self._registered = True
 
     def close(self, correlation_id):
         """
@@ -200,40 +213,13 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         if not self._opened:
             return
 
-        if self._endpoint == None:
+        if self._endpoint is None:
             raise InvalidStateException(correlation_id, "NO_ENDPOINT", "HTTP endpoint is missing")
 
         if self._local_endpoint:
             self._endpoint.close(correlation_id)
 
         self._opened = False
-
-    def _to_json(self, obj):
-        if obj == None:
-            return None
-
-        if isinstance(obj, set):
-            obj = list(obj)
-        if isinstance(obj, list):
-            result = []
-            for item in obj:
-                item = self._to_json(item)
-                result.append(item)
-            return result
-
-        if isinstance(obj, dict):
-            result = {}
-            for (k, v) in obj.items():
-                v = self._to_json(v)
-                result[k] = v
-            return result
-        
-        if hasattr(obj, 'to_json'):
-            return obj.to_json()
-        if hasattr(obj, '__dict__'):
-            return self._to_json(obj.__dict__)
-        return obj
-
 
     def send_result(self, result):
         """
@@ -246,13 +232,8 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :return: execution result.
         """
-        bottle.response.headers['Content-Type'] = 'application/json'
-        if result == None: 
-            bottle.response.status = 404
-            return
-        else:
-            bottle.response.status = 200
-            return json.dumps(result, default=self._to_json)
+ 
+        return HttpResponseSender.send_result(result)
 
     def send_created_result(self, result):
         """
@@ -265,13 +246,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :return: execution result.
         """
-        bottle.response.headers['Content-Type'] = 'application/json'
-        if result == None: 
-            bottle.response.status = 404
-            return
-        else:
-            bottle.response.status = 201
-            return json.dumps(result, default=self._to_json)
+        return HttpResponseSender.send_created_result(result)
 
 
     def send_deleted_result(self):
@@ -283,9 +258,8 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :return: execution result.
         """
-        bottle.response.headers['Content-Type'] = 'application/json'
-        bottle.response.status = 204
-        return
+ 
+        return HttpResponseSender.send_deleted_result()
 
 
     def send_error(self, error):
@@ -294,46 +268,16 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :param error: an error object to be sent.
         """
-        bottle.response.headers['Content-Type'] = 'application/json'
-        error = ErrorDescriptionFactory.create(error)
-        if error.correlation_id == None:
-            error.correlation_id = self.get_correlation_id()
-        bottle.response.status = error.status
-        return json.dumps(error.to_json())
+ 
+        return HttpResponseSender.send_error(error)
 
-    def get_param(self, param, default = None):
-        return bottle.request.params.get(param, default)
-
-
-    def get_correlation_id(self):
-        return bottle.request.query.get('correlation_id')
-
-
-    def get_filter_params(self):
-        data = dict(bottle.request.query.decode())
-        data.pop('correlation_id', None)
-        data.pop('skip', None)
-        data.pop('take', None)
-        data.pop('total', None)
-        return FilterParams(data)
-
-
-    def get_paging_params(self):
-        skip = bottle.request.query.get('skip')
-        take = bottle.request.query.get('take')
-        total = bottle.request.query.get('total')
-        return PagingParams(skip, take, total)
-
-
-    def get_data(self):
-        data = bottle.request.json
-        if isinstance(data, str):
-            return json.loads(bottle.request.json)
-        elif bottle.request.json:
-            return bottle.request.json
-        else: 
-            return None
-
+    def fix_route(self, route) -> str:
+        if (route is not None and len(route) > 0):
+            if (route[0] != '/'):
+                route = f'/{route}'
+            return route
+        
+        return ''
 
     def register_route(self, method, route, schema, handler):
         """
@@ -347,14 +291,39 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :param handler: the action to perform at the given route.
         """
-        if self._endpoint == None:
+        if self._endpoint is None:
             return
-        if self._base_route != None and len(self._base_route) > 0:
-            base_route = self._base_route
-            if base_route[0] != '/':
-                base_route = '/' + base_route
-            route = base_route + route
+
+        route = f"{self.fix_route(self._base_route)}{self.fix_route(route)}"
+        # if not (self._base_route is None) and len(self._base_route) > 0:
+        #     base_route = self._base_route
+        #     if base_route[0] != '/':
+        #         base_route = '/' + base_route
+        #     if route[0] != '/':
+        #         base_route = base_route + '/'
+        #     route = base_route + route
         self._endpoint.register_route(method, route, schema, handler)
 
-    def add_route(self):
+    def register(self):
         pass
+
+    def get_data(self):
+        data = bottle.request.json
+        if isinstance(data, str):
+            return json.loads(bottle.request.json)
+        elif bottle.request.json:
+            return bottle.request.json
+        else: 
+            return None
+            
+    def get_request_param(self):
+
+        if (not (bottle is None)) and (not (bottle.request is None)) and (not (bottle.request.params is None)):
+            return bottle.request.params
+        else:
+            return {}
+
+
+    # TODO: Add:
+    # registerRouteWithAuth
+    # registerInterceptor

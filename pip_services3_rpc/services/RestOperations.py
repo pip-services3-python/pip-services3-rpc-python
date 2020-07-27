@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from abc import ABC
+import bottle
+import json
+import time
 
 from pip_services3_commons.config.IConfigurable import IConfigurable
 from pip_services3_commons.config.ConfigParams import ConfigParams
@@ -32,38 +35,71 @@ class RestOperations(IConfigurable, IReferenceable, ABC):
         self._counters.set_references(references)
         self._dependency_resolver.set_references(references)
 
-    def _get_correlation_id(self, req=None, res=None):
-        return req.params.correlation_id
+    def get_param(self, param, default = None):
+        return bottle.request.params.get(param, default)
 
-    def _get_filter_params(self, req=None, res=None):
-        _res = {}
-        for key in req.query.keys():
-            if key not in ['skip', 'take', 'total']:
-                _res[key] = req.query[key]
-        return FilterParams.from_value(_res)
 
-    def _get_paging_params(self, req=None, res=None):
-        _res = {}
-        for key in req.query.keys():
-            if key in ['skip', 'take', 'total']:
-                _res[key] = req.query[key]
+    def _get_correlation_id(self):
+        return bottle.request.query.get('correlation_id')
 
-        return FilterParams.from_value(_res)
 
-    def _send_result(self, req=None, res=None):
-        return HttpResponseSender.send_result(req, res)
+    def _get_filter_params(self):
+        data = dict(bottle.request.query.decode())
+        data.pop('correlation_id', None)
+        data.pop('skip', None)
+        data.pop('take', None)
+        data.pop('total', None)
+        return FilterParams(data)
 
-    def _send_empty_result(self, req=None, res=None):
-        return HttpResponseSender.send_empty_result(req, res)
 
-    def _send_created_result(self, req=None, res=None):
-        return HttpResponseSender.send_created_result(req, res)
+    def _get_paging_params(self):
+        skip = bottle.request.query.get('skip')
+        take = bottle.request.query.get('take')
+        total = bottle.request.query.get('total')
+        return PagingParams(skip, take, total)
 
-    def _send_deleted_result(self, req=None, res=None):
+
+    def _get_data(self):
+        data = bottle.request.json
+        if isinstance(data, str):
+            return json.loads(bottle.request.json)
+        elif bottle.request.json:
+            return bottle.request.json
+        else: 
+            return None
+
+    # def _get_correlation_id(self, req=None, res=None):
+    #     return req.params.correlation_id
+
+    # def _get_filter_params(self, req=None, res=None):
+    #     _res = {}
+    #     for key in req.query.keys():
+    #         if key not in ['skip', 'take', 'total']:
+    #             _res[key] = req.query[key]
+    #     return FilterParams.from_value(_res)
+
+    # def _get_paging_params(self, req=None, res=None):
+    #     _res = {}
+    #     for key in req.query.keys():
+    #         if key in ['skip', 'take', 'total']:
+    #             _res[key] = req.query[key]
+
+    #     return FilterParams.from_value(_res)
+
+    def _send_result(self, res=None):
+        return HttpResponseSender.send_result(res)
+
+    def _send_empty_result(self, res=None):
+        return HttpResponseSender.send_empty_result(res)
+
+    def _send_created_result(self, res=None):
+        return HttpResponseSender.send_created_result(res)
+
+    def _send_deleted_result(self):
         return HttpResponseSender.send_deleted_result()
 
-    def _send_error(self, req=None, res=None):
-        HttpResponseSender.send_error(req)
+    def _send_error(self, error=None):
+        HttpResponseSender.send_error(error)
 
     def _send_bad_request(self, req, message):
         correlation_id = self._get_correlation_id(req)

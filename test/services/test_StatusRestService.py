@@ -22,7 +22,7 @@ from pip_services3_rpc.services import StatusRestService
 rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
     'connection.host', 'localhost',
-    'connection.port', 3004
+    'connection.port', 3002
 )
  
 class TestStatusRestService():
@@ -59,7 +59,7 @@ class TestStatusRestService():
 
     def invoke(self, route):
         params = { }
-        route = "http://localhost:3004" + route
+        route = "http://localhost:3002" + route
         response = None
         timeout = 10000
         try:

@@ -26,6 +26,14 @@ from .HttpResponseSender import HttpResponseSender
 from ..connect.HttpConnectionResolver import HttpConnectionResolver
 
 
+    #TODO:
+    #
+    # addCompatibility
+    # noCache
+    # doMaintenance
+    # registerRouteWithAuth
+    # RegisterInterceptor
+
 class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     """
     Used for creating HTTP endpoints. An endpoint is a URL, at which a given service can be accessed by a client.
@@ -70,6 +78,9 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     _server = None
     _debug = False
     _uri = None
+    _file_max_size = 200*1024*1024
+    _maintenance_enabled = False
+    _protocol_upgrade_enabled = False
 
     def __init__(self):
         """
@@ -78,7 +89,12 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._default_config = ConfigParams.from_tuples("connection.protocol", "http",
                                                 "connection.host", "0.0.0.0",
                                                 "connection.port", 3000,
-                                                "connection.request_max_size", 1024 * 1024,
+                                                "credential.ssl_key_file", None,
+                                                "credential.ssl_crt_file", None,
+                                                "credential.ssl_ca_file", None,
+                                                "options.maintenance_enabled", False,
+                                                "options.request_max_size", 1024*1024,
+                                                "options.file_max_size", 200*1024*1024,
                                                 "connection.connect_timeout", 60000,
                                                 "connection.debug", True)
         self._connection_resolver = HttpConnectionResolver()
@@ -101,6 +117,10 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         config = config.set_defaults(self._default_config)
         self._connection_resolver.configure(config)
+        self._file_max_size = config.get_as_boolean_with_default('options.maintenance_enabled', self._file_max_size)
+        self._maintenance_enabled = config.get_as_long_with_default('options.file_max_size', self._maintenance_enabled)
+        self._protocol_upgrade_enabled = config.get_as_boolean_with_default('options.protocol_upgrade_enabled', self._protocol_upgrade_enabled)
+        self._debug = config.get_as_boolean_with_default('connection.debug', self._debug)
 
     def set_references(self, references):
         """
@@ -122,7 +142,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
         :return: whether or not this endpoint is open with an actively listening REST server.
         """
-        return self._server != None
+        return not (self._server is None)
 
     def open(self, correlation_id):
         """
@@ -134,9 +154,16 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             return
 
         connection = self._connection_resolver.resolve(correlation_id)
-        if connection == None:
+        if connection is None:
             raise ConfigException(correlation_id, "NO_CONNECTION", "Connection for REST client is not defined")
         self._uri = connection.get_uri()
+
+        #TODO: 
+        # verify https with bottle
+        # see nodeJS
+        # options = {}
+
+        # options.handleUpgrades = this._protocolUpgradeEnabled;
 
         # Create instance of bottle application
         self._service = bottle.Bottle(catchall=True, autojson=True)
@@ -145,8 +172,25 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._service.add_hook('after_request', self._enable_cors)
         self._service.route('/', 'OPTIONS', self._options_handler)
         self._service.route('/<path:path>', 'OPTIONS', self._options_handler)
+
+        #TODO
+        #    let cors = corsMiddleware({
+        #             preflightMaxAge: 5, //Optional
+        #             origins: ['*'],
+        #             allowHeaders: ['Authenticate', 'x-session-id'],
+        #             exposeHeaders: ['Authenticate', 'x-session-id']
+        #           });
+        # add cors params to bottle ??
+        
+        # Register routes
+        # self.perform_registrations()
+    
         def start_server():
             self._service.run(server=self._server, debug=self._debug)
+
+
+
+        # self.perform_registrations()
 
         host = connection.get_host()
         port = connection.get_port()
@@ -159,7 +203,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
             # Give 2 sec for initialization
             self._connection_resolver.register(correlation_id)
-            self._logger.debug(correlation_id, "Opened REST service at %s", self._uri)
+            self._logger.debug(correlation_id, f"Opened REST service at {self._uri}", )
+            self.perform_registrations()
         except Exception as ex:
             self._server = None
 
@@ -173,7 +218,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         try:
-            if self._server != None:
+            if not (self._server is None):
                 self._server.shutdown()
                 self._logger.debug(correlation_id, "Closed REST service at %s", self._uri)
 
@@ -202,6 +247,14 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         for registration in self._registrations:
             registration.register()
 
+    def fix_route(self, route) -> str:
+        if (route is not None and len(route) > 0):
+            if (route[0] != '/'):
+                route = f'/{route}'
+            return route
+        
+        return ''
+
     def register_route(self, method, route, schema, handler):
         """
         Registers an action in this objects REST server (service) by the given method and route.
@@ -215,6 +268,10 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         :param handler: the action to perform at the given route.
         """
         method = method.upper()
+        # if method == 'DELETE':
+        #     method = 'DEL'
+
+        route = self.fix_route(route)
 
         def wrapper(*args, **kwargs):
             try:
@@ -225,8 +282,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                 return handler(*args, **kwargs)
             except Exception as ex:
                 return HttpResponseSender.send_error(ex)
-        if route[0] != '/':
-            route = '/' + route
+
         self._service.route(route, method, wrapper)
 
     def get_data(self):
@@ -234,6 +290,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             return bottle.request.json
         else: 
             return None
+
 
     def _enable_cors(self):
         bottle.response.headers['Access-Control-Allow-Origin'] = '*'
@@ -249,3 +306,5 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
     def get_correlation_id(self):
         return bottle.request.query.get('correlation_id')
+
+

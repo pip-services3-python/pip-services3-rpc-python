@@ -19,6 +19,7 @@ from .DummyRestClient import DummyRestClient
 from ..services.DummyRestService import DummyRestService
 
 rest_config = ConfigParams.from_tuples(
+    "connection.protocol", "http",
     'connection.host', 'localhost',
     'connection.port', 3000
 )
@@ -50,10 +51,12 @@ class TestDummyRestClient:
     def setup_method(self, method):
         self.service.open(None)
         self.client.open(None)
+        pass
 
     def teardown_method(self, method):
         self.service.close(None)
         self.client.close(None)
+        pass
         
     def test_crud_operations(self):
         self.fixture.test_crud_operations()

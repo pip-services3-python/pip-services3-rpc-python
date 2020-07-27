@@ -16,7 +16,7 @@ from .IDummyClient import IDummyClient
 class DummyCommandableHttpClient(CommandableHttpClient, IDummyClient):
     
     def __init__(self):
-        super(DummyCommandableHttpClient, self).__init__('dummies')
+        super(DummyCommandableHttpClient, self).__init__('dummy')
 
 
     def get_page_by_filter(self, correlation_id, filter, paging):

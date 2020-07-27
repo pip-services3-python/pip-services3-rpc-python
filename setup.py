@@ -15,14 +15,10 @@ Links
 
 from setuptools import setup
 from setuptools import find_packages
-import json
-
-with open('component.json') as json_file:
-    config = json.load(json_file)
 
 setup(
     name='pip_services3_rpc',
-    version=config['version'],
+    version='3.0.5',
     url='http://github.com/pip-services3-python/pip-services3-rpc-python',
     license='MIT',
     author='Conceptual Vision Consulting LLC',
@@ -34,7 +30,7 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
-        'iso8601', 'PyYAML', 'bottle', 'requests', 'pip-services3-commons', 'pip-services3-components'
+        'iso8601', 'PyYAML', 'pystache', 'pytest', 'numpy', 'pytz', 'bottle', 'requests', 'netifaces', 'pip-services3-commons', 'pip-services3-components'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

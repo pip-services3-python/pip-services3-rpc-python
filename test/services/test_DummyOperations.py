@@ -24,7 +24,7 @@ from ..services.DummyRestService import DummyRestService
 rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
     'connection.host', 'localhost',
-    'connection.port', 3007
+    'connection.port', 3006
 )
 
 DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
@@ -60,13 +60,13 @@ class TestDummyOperations:
             'user': 'User_Test1',
         }
 
-        about = self.invoke('/dummies/about', headers=headers)
+        about = self.invoke('/about', headers=headers)
         assert about['server']['name'] == 'unknown'
         assert about['server']['protocol'] == 'POST'
         assert about['server']['host'] == 'localhost'
-        assert about['server']['port'] == '3007'
+        assert about['server']['port'] == '3006'
         assert about['server']['addresses'] is not None
-        assert about['server']['url'] == 'http://localhost:3007/dummies/about'
+        assert about['server']['url'] == 'http://localhost:3006/about'
         assert about['client']['address'] == 'client_ip'
         assert about['client']['platform'] == 'unknown'
         assert about['client']['user'] == 'User_Test1'
@@ -81,7 +81,7 @@ class TestDummyOperations:
             },
         }
 
-        about = self.invoke('/dummies/about', headers=headers, entity=req_body)
+        about = self.invoke('/about', headers=headers, entity=req_body)
         assert about['client']['address'] == '8.8.0.0'
         assert about['client']['client'] == 'safari'
         assert about['client']['platform'] == 'mobile'
@@ -91,7 +91,7 @@ class TestDummyOperations:
             'connection': {'remoteAddress': '4.4.0.0'},
         }
 
-        about = self.invoke('/dummies/about', headers=headers, entity=req_body)
+        about = self.invoke('/about', headers=headers, entity=req_body)
         assert about['client']['address'] == '4.4.0.0'
         assert about['client']['client'] == 'firefox'
         assert about['client']['platform'] == 'windows 6.1'
@@ -99,29 +99,14 @@ class TestDummyOperations:
         headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.5; rv:42.0) Gecko/20100101 Chrome/42.0'}
         req_body = {'socket': {'remoteAddress': '0.0.0.0'}, }
 
-        about = self.invoke('/dummies/about', headers=headers, entity=req_body)
+        about = self.invoke('/about', headers=headers, entity=req_body)
         assert about['client']['address'] == '0.0.0.0'
         assert about['client']['client'] == 'chrome'
         assert about['client']['platform'] == 'mac 10.5'
 
-    def test_status_operations(self):
-
-        status = self.invoke('/dummies/status')
-        assert status['name'] == 'unknown'
-        assert status['start_time'] is not None
-        assert status['current_time'] is not None
-        assert status['uptime'] == datetime.datetime.fromtimestamp((
-                datetime.datetime.strptime(status['current_time'], '%Y-%m-%dT%H:%M:%S.%fZ').timestamp() -
-                datetime.datetime.strptime(status['start_time'], '%Y-%m-%dT%H:%M:%S.%fZ').timestamp()
-        ), pytz.utc).strftime("%H:%M:%S")
-
-    def test_heartbeat_operation(self):
-        heartbeat = self.invoke('/heartbeat', 'get')
-        assert type(datetime.datetime.strptime(heartbeat, '%Y-%m-%dT%H:%M:%S.%fZ')) is datetime.datetime
-
     def invoke(self, route, method='POST', entity=None, headers=None):
         params = {}
-        route = "http://localhost:3007" + route
+        route = "http://localhost:3006" + route
         timeout = 10000
         try:
             # Call the service

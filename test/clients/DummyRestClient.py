@@ -19,8 +19,8 @@ class DummyRestClient(RestClient, IDummyClient):
     def __init__(self):
         super(DummyRestClient, self).__init__()
 
-    def get_page_by_filter(self, correlation_id, filter, paging):
-        params = RestQueryParams(correlation_id, filter, paging)
+    def get_page_by_filter(self, correlation_id, filters, paging):
+        params = RestQueryParams(correlation_id, filters, paging)
 
         result = self.call(
             'GET', 
