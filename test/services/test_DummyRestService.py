@@ -58,32 +58,32 @@ class TestDummyRestService():
     def teardown_method(self, method):
         self.service.close(None)
 
-    # def test_crud_operations(self):
-    #     # Create one dummy
-    #     dummy1 = self.invoke("/dummies", DUMMY1)
+    def test_crud_operations(self):
+        # Create one dummy
+        dummy1 = self.invoke("/dummies", DUMMY1)
 
-    #     assert None != dummy1
-    #     assert DUMMY1['key'] == dummy1['key']
-    #     assert DUMMY1['content'] == dummy1['content']
+        assert None != dummy1
+        assert DUMMY1['key'] == dummy1['key']
+        assert DUMMY1['content'] == dummy1['content']
 
-    #     # Create another dummy
-    #     dummy2 = self.invoke("/dummies", DUMMY2)
+        # Create another dummy
+        dummy2 = self.invoke("/dummies", DUMMY2)
 
-    #     assert None != dummy2
-    #     assert DUMMY2['key'] == dummy2['key']
-    #     assert DUMMY2['content'] == dummy2['content']
+        assert None != dummy2
+        assert DUMMY2['key'] == dummy2['key']
+        assert DUMMY2['content'] == dummy2['content']
 
-    #     # dummy_del = self.invoke('/dummies/<id>')
+        # dummy_del = self.invoke('/dummies/<id>')
 
-    # def invoke(self, route, entity):
-    #     params = { }
-    #     route = "http://localhost:3001" + route
-    #     response = None
-    #     timeout = 10000
-    #     try:
-    #         # Call the service
-    #         data = json.dumps(entity)
-    #         response = requests.request('POST', route, params=params, json=data, timeout=timeout)
-    #         return response.json()
-    #     except Exception as ex:
-    #         return False
+    def invoke(self, route, entity):
+        params = { }
+        route = "http://localhost:3001" + route
+        response = None
+        timeout = 10000
+        try:
+            # Call the service
+            data = json.dumps(entity)
+            response = requests.request('POST', route, params=params, json=data, timeout=timeout)
+            return response.json()
+        except Exception as ex:
+            return False
