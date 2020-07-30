@@ -225,41 +225,39 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         return obj
 
     def fix_route(self, route) -> str:
-        if (route is not None and len(route) > 0):
-            if (route[0] != '/'):
+        if route is not None and len(route) > 0:
+            if route[0] != '/':
                 route = f'/{route}'
             return route
-        
+
         return ''
 
     def createRequestRoute(self, route):
         builder = ''
         # TODO: with os.path.join(path1, path2)
-        if (self._uri is not None and len(self._uri) > 0):
+        if self._uri is not None and len(self._uri) > 0:
             builder = self._uri
 
-        
             builder += self.fix_route(self._base_route)
-        
 
-        if (route[0] != '/'):
+        if route[0] != '/':
             builder += '/'
         builder += route
-        
+
         return builder
 
     def add_correlation_id(self, correlation_id=None, params=None):
         params = params or {}
         if not (correlation_id is None):
             params['correlation_id'] = correlation_id
-        
+
         return params
 
     def add_filter_params(self, params=None, filters=None):
         params = params or {}
         if not (filters is None):
-             params.update(filters)
-        
+            params.update(filters)
+
         return params
 
     def add_paging_params(self, params=None, paging=None):
@@ -271,8 +269,8 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
                 params['skip'] = paging['skip']
             if not (paging['take'] is None):
                 params['take'] = paging['take']
-            #params.update(paging)
-        
+            # params.update(paging)
+
         return params
 
     def call(self, method, route, correlation_id=None, params=None, data=None):

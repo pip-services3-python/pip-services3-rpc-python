@@ -171,6 +171,8 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         self.__validate_connection(correlation_id, connection, credential)
         self.__update_connection(connection, credential)
 
+        connection.update(credential)
+
         return connection
 
     def resolve_all(self, correlation_id):

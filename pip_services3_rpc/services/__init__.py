@@ -9,7 +9,7 @@
     :license: MIT, see LICENSE for more details.
 """
 
-__all__ = ['CommandableHttpService', 'RestService', 'RestOperations', 'RestQueryParams', 'SimpleServer',
+__all__ = ['CommandableHttpService', 'RestService', 'RestOperations', 'RestQueryParams', 'SSLCherryPyServer.py',
            'StatusRestService', 'IRegisterable', 'HttpResponseSender', 'HttpEndpoint', 'HeartbeatRestService',
            'HeartBeatOperations', 'AboutOperations', 'HttpResponseDetector', 'StatusOperations']
 
@@ -17,7 +17,7 @@ from .CommandableHttpService import CommandableHttpService
 from .RestService import RestService
 from .RestOperations import RestOperations
 from .RestQueryParams import RestQueryParams
-from .SimpleServer import SimpleServer
+from .SSLCherryPyServer import SSLCherryPyServer
 from .HttpEndpoint import HttpEndpoint
 from .HttpResponseSender import HttpResponseSender
 from .IRegisterable import IRegisterable

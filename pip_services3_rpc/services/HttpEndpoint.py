@@ -11,6 +11,7 @@
 from threading import Thread
 
 import bottle
+from beaker.middleware import SessionMiddleware
 
 from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.errors import ConnectionException, ConfigException
@@ -20,19 +21,19 @@ from pip_services3_commons.validate import Schema
 from pip_services3_components.count import CompositeCounters
 from pip_services3_components.log import CompositeLogger
 from .IRegisterable import IRegisterable
-from .SimpleServer import SimpleServer
+from .SSLCherryPyServer import SSLCherryPyServer
 from .HttpResponseSender import HttpResponseSender
 
 from ..connect.HttpConnectionResolver import HttpConnectionResolver
 
 
-    #TODO:
-    #
-    # addCompatibility
-    # noCache
-    # doMaintenance
-    # registerRouteWithAuth
-    # RegisterInterceptor
+# TODO:
+#
+# addCompatibility
+# noCache
+# doMaintenance
+# registerRouteWithAuth
+# RegisterInterceptor
 
 class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     """
@@ -78,7 +79,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     _server = None
     _debug = False
     _uri = None
-    _file_max_size = 200*1024*1024
+    _file_max_size = 200 * 1024 * 1024
     _maintenance_enabled = False
     _protocol_upgrade_enabled = False
 
@@ -87,16 +88,16 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         Creates HttpEndpoint
         """
         self._default_config = ConfigParams.from_tuples("connection.protocol", "http",
-                                                "connection.host", "0.0.0.0",
-                                                "connection.port", 3000,
-                                                "credential.ssl_key_file", None,
-                                                "credential.ssl_crt_file", None,
-                                                "credential.ssl_ca_file", None,
-                                                "options.maintenance_enabled", False,
-                                                "options.request_max_size", 1024*1024,
-                                                "options.file_max_size", 200*1024*1024,
-                                                "connection.connect_timeout", 60000,
-                                                "connection.debug", True)
+                                                        "connection.host", "0.0.0.0",
+                                                        "connection.port", 3000,
+                                                        "credential.ssl_key_file", None,
+                                                        "credential.ssl_crt_file", None,
+                                                        "credential.ssl_ca_file", None,
+                                                        "options.maintenance_enabled", False,
+                                                        "options.request_max_size", 1024 * 1024,
+                                                        "options.file_max_size", 200 * 1024 * 1024,
+                                                        "connection.connect_timeout", 60000,
+                                                        "connection.debug", True)
         self._connection_resolver = HttpConnectionResolver()
         self._logger = CompositeLogger()
         self._counters = CompositeCounters()
@@ -119,7 +120,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._connection_resolver.configure(config)
         self._file_max_size = config.get_as_boolean_with_default('options.maintenance_enabled', self._file_max_size)
         self._maintenance_enabled = config.get_as_long_with_default('options.file_max_size', self._maintenance_enabled)
-        self._protocol_upgrade_enabled = config.get_as_boolean_with_default('options.protocol_upgrade_enabled', self._protocol_upgrade_enabled)
+        self._protocol_upgrade_enabled = config.get_as_boolean_with_default('options.protocol_upgrade_enabled',
+                                                                            self._protocol_upgrade_enabled)
         self._debug = config.get_as_boolean_with_default('connection.debug', self._debug)
 
     def set_references(self, references):
@@ -158,37 +160,31 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             raise ConfigException(correlation_id, "NO_CONNECTION", "Connection for REST client is not defined")
         self._uri = connection.get_uri()
 
-        #TODO: 
         # verify https with bottle
-        # see nodeJS
-        # options = {}
 
-        # options.handleUpgrades = this._protocolUpgradeEnabled;
+        certfile = None
+        keyfile = None
+
+        if connection.get_protocol('http') == 'https':
+            certfile = connection.get_as_nullable_string('ssl_crt_file')
+            keyfile = connection.get_as_nullable_string('ssl_key_file')
 
         # Create instance of bottle application
-        self._service = bottle.Bottle(catchall=True, autojson=True)
+        self._service = SessionMiddleware(bottle.default_app()).app
+
+        self._service.config['catchall'] = True
+        self._service.config['autojson'] = True
 
         # Enable CORS requests
         self._service.add_hook('after_request', self._enable_cors)
         self._service.route('/', 'OPTIONS', self._options_handler)
         self._service.route('/<path:path>', 'OPTIONS', self._options_handler)
 
-        #TODO
-        #    let cors = corsMiddleware({
-        #             preflightMaxAge: 5, //Optional
-        #             origins: ['*'],
-        #             allowHeaders: ['Authenticate', 'x-session-id'],
-        #             exposeHeaders: ['Authenticate', 'x-session-id']
-        #           });
-        # add cors params to bottle ??
-        
         # Register routes
         # self.perform_registrations()
-    
+
         def start_server():
             self._service.run(server=self._server, debug=self._debug)
-
-
 
         # self.perform_registrations()
 
@@ -196,7 +192,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         port = connection.get_port()
         # Starting service
         try:
-            self._server = SimpleServer(host = host, port = port)
+            self._server = SSLCherryPyServer(host=host, port=port, certfile=certfile, keyfile=keyfile)
 
             # Start server in thread
             Thread(target=start_server).start()
@@ -220,9 +216,11 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         try:
             if not (self._server is None):
                 self._server.shutdown()
+                self._service.close()
                 self._logger.debug(correlation_id, "Closed REST service at %s", self._uri)
 
             self._server = None
+            self._service = None
             self._uri = None
         except Exception as ex:
             self._logger.warn(correlation_id, "Failed while closing REST service: " + str(ex))
@@ -248,11 +246,11 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             registration.register()
 
     def fix_route(self, route) -> str:
-        if (route is not None and len(route) > 0):
-            if (route[0] != '/'):
+        if route is not None and len(route) > 0:
+            if route[0] != '/':
                 route = f'/{route}'
             return route
-        
+
         return ''
 
     def register_route(self, method, route, schema, handler):
@@ -288,23 +286,21 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     def get_data(self):
         if bottle.request.json:
             return bottle.request.json
-        else: 
+        else:
             return None
 
-
     def _enable_cors(self):
+        bottle.response.headers['Access-Control-Max-Age'] = '5'
         bottle.response.headers['Access-Control-Allow-Origin'] = '*'
         bottle.response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
-        bottle.response.headers['Access-Control-Allow-Headers'] = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
+        bottle.response.headers[
+            'Access-Control-Allow-Headers'] = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
 
     def _options_handler(self, ath=None):
         return
 
-    def get_param(self, param, default = None):
+    def get_param(self, param, default=None):
         return bottle.request.params.get(param, default)
-
 
     def get_correlation_id(self):
         return bottle.request.query.get('correlation_id')
-
-

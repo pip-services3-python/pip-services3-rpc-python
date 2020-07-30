@@ -26,10 +26,10 @@ from pip_services3_commons.errors import ErrorDescription, ErrorDescriptionFacto
 from pip_services3_commons.data import FilterParams, PagingParams
 from pip_services3_commons.validate import Schema
 
-from .SimpleServer import SimpleServer
 from .IRegisterable import IRegisterable
 from .HttpEndpoint import HttpEndpoint
 from .HttpResponseSender import HttpResponseSender
+
 
 class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IRegisterable):
     """
@@ -93,7 +93,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
     def __init__(self):
         self._default_config = ConfigParams.from_tuples("base_route", None,
-                                                "dependencies.endpoint", "*:endpoint:http:*:1.0")
+                                                        "dependencies.endpoint", "*:endpoint:http:*:1.0")
         # self._registered = False
         self._dependency_resolver = DependencyResolver()
         self._logger = CompositeLogger()
@@ -109,7 +109,6 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         self._logger.trace(correlation_id, "Executing " + name + " method")
         return self._counters.begin_timing(name + ".exec_time")
-
 
     def set_references(self, references):
         """
@@ -232,7 +231,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :return: execution result.
         """
- 
+
         return HttpResponseSender.send_result(result)
 
     def send_created_result(self, result):
@@ -248,7 +247,6 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         return HttpResponseSender.send_created_result(result)
 
-
     def send_deleted_result(self):
         """
         Creates a callback function that sends newly created object as JSON. That callack function call be called directly or passed as a parameter to business logic components.
@@ -258,9 +256,8 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :return: execution result.
         """
- 
-        return HttpResponseSender.send_deleted_result()
 
+        return HttpResponseSender.send_deleted_result()
 
     def send_error(self, error):
         """
@@ -268,7 +265,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         :param error: an error object to be sent.
         """
- 
+
         return HttpResponseSender.send_error(error)
 
     def fix_route(self, route) -> str:
@@ -276,7 +273,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
             if (route[0] != '/'):
                 route = f'/{route}'
             return route
-        
+
         return ''
 
     def register_route(self, method, route, schema, handler):
@@ -313,16 +310,15 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
             return json.loads(bottle.request.json)
         elif bottle.request.json:
             return bottle.request.json
-        else: 
+        else:
             return None
-            
+
     def get_request_param(self):
 
         if (not (bottle is None)) and (not (bottle.request is None)) and (not (bottle.request.params is None)):
             return bottle.request.params
         else:
             return {}
-
 
     # TODO: Add:
     # registerRouteWithAuth

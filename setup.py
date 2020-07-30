@@ -30,7 +30,8 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
-        'iso8601', 'PyYAML', 'pystache', 'pytest', 'numpy', 'pytz', 'bottle', 'requests', 'netifaces', 'pip-services3-commons', 'pip-services3-components'
+        'iso8601', 'PyYAML', 'pystache', 'pytest', 'numpy', 'pytz', 'bottle', 'requests', 'netifaces',
+        'pip-services3-commons', 'pip-services3-components', 'cheroot', 'beaker'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -42,5 +43,5 @@ setup(
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.7',
         'Topic :: Software Development :: Libraries :: Python Modules'
-    ]    
+    ]
 )

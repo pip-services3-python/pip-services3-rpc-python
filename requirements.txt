@@ -6,6 +6,8 @@ numpy
 pytz
 bottle
 requests
+cheroot
+beaker
 netifaces==0.10.9
 
 pip-services3-commons
