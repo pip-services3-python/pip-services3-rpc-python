@@ -11,6 +11,7 @@
 from threading import Thread
 
 import bottle
+from bottle import request, response
 
 from beaker.middleware import SessionMiddleware
 
@@ -27,14 +28,6 @@ from .HttpResponseSender import HttpResponseSender
 
 from ..connect.HttpConnectionResolver import HttpConnectionResolver
 
-
-# TODO:
-#
-# addCompatibility OK
-# noCache OK
-# doMaintenance OK
-# registerRouteWithAuth
-# RegisterInterceptor
 
 class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     """
@@ -290,16 +283,16 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._service.route(route, method, wrapper)
 
     def get_data(self):
-        if bottle.request.json:
-            return bottle.request.json
+        if request.json:
+            return request.json
         else:
             return None
 
     def _enable_cors(self):
-        bottle.response.headers['Access-Control-Max-Age'] = '5'
-        bottle.response.headers['Access-Control-Allow-Origin'] = '*'
-        bottle.response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
-        bottle.response.headers[
+        response.headers['Access-Control-Max-Age'] = '5'
+        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
+        response.headers[
             'Access-Control-Allow-Headers'] = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
 
     def _do_maintance(self):
@@ -308,43 +301,72 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         # Make this more sophisticated
         if self._maintenance_enabled:
-            bottle.response.headers['Retry-After'] = 3600
-            bottle.response.status = 503
+            response.headers['Retry-After'] = 3600
+            response.status = 503
 
     def _no_cache(self):
         """
         Prevents IE from caching REST requests
         """
-        bottle.response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
-        bottle.response.headers['Pragma'] = 'no-cache'
-        bottle.response.headers['Expires'] = 0
+        response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = 0
 
     def _add_compatibility(self):
 
         def inner(name):
-            if bottle.request.query:
-                param = bottle.request.query[name]
+            if request.query:
+                param = request.query[name]
                 if param:
                     return param
-            if bottle.request.body:
-                param = bottle.request.json[name]
+            if request.body:
+                param = request.json[name]
                 if param:
                     return param
-            if bottle.request.params:
-                param = bottle.request.params[name]
+            if request.params:
+                param = request.params[name]
                 if param:
                     return param
 
             return None
 
-        bottle.request['param'] = inner
-        bottle.request['route'] = {'params': bottle.request.params}
+        request['param'] = inner
+        request['route'] = {'params': request.params}
 
     def _options_handler(self, ath=None):
         return
 
     def get_param(self, param, default=None):
-        return bottle.request.params.get(param, default)
+        return request.params.get(param, default)
 
     def get_correlation_id(self):
-        return bottle.request.query.get('correlation_id')
+        return request.query.get('correlation_id')
+
+    def register_route_with_auth(self, method, route, schema, authorize, action):
+        """
+        Registers an action with authorization in this objects REST server (service)
+        by the given method and route.
+
+        :param method: the HTTP method of the route.
+        :param route: the route to register in this object's REST server (service).
+        :param schema: the schema to use for parameter validation.
+        :param authorize: the authorization interceptor
+        :param action: the action to perform at the given route.
+        """
+        if authorize:
+            next_action = action
+            action = lambda req, res: authorize(request, response, next_action(response, response))
+
+        self.register_route(method, route, schema, action)
+
+    def register_interceptor(self, route, action):
+        """
+        Registers a middleware action for the given route.
+
+        :param route: the route to register in this object's REST server (service).
+        :param action: the middleware action to perform at the given route.
+        """
+        route = self.fix_route(route)
+
+        self._service.add_hook('before_request', lambda: action(request, response) if not (
+                route is not None and route != '' and request.url.startswith(route)) else None)

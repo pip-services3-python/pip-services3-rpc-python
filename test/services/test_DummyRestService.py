@@ -21,16 +21,15 @@ from ..Dummy import Dummy
 from ..DummyController import DummyController
 from ..services.DummyRestService import DummyRestService
 
-
 rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
     'connection.host', 'localhost',
     'connection.port', 3001
 )
 
-
 DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
 DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
+
 
 class TestDummyRestService():
     controller = None
@@ -50,10 +49,8 @@ class TestDummyRestService():
 
         cls.service.set_references(cls.references)
 
-
     def setup_method(self, method):
         self.service.open(None)
-
 
     def teardown_method(self, method):
         self.service.close(None)
@@ -75,8 +72,10 @@ class TestDummyRestService():
 
         # dummy_del = self.invoke('/dummies/<id>')
 
+        assert 2 == self.service.get_number_of_calls()
+
     def invoke(self, route, entity):
-        params = { }
+        params = {}
         route = "http://localhost:3001" + route
         response = None
         timeout = 10000

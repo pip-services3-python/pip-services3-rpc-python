@@ -14,11 +14,11 @@ import threading
 from pip_services3_commons.data import FilterParams, PagingParams, IdGenerator
 from pip_services3_commons.refer import Descriptor
 from pip_services3_rpc.services import RestService
-from .DummyRestOperations import DummyRestOperations 
+from .DummyRestOperations import DummyRestOperations
 from pip_services3_rpc.services import AboutOperations
 
-class DummyRestService(RestService):
 
+class DummyRestService(RestService):
     _operations = None
     _number_of_calls = 0
 
@@ -30,15 +30,14 @@ class DummyRestService(RestService):
         super(DummyRestService, self).set_references(references)
         self._operations.set_references(references)
 
-    def get_number_of_calls() -> int:
+    def get_number_of_calls(self) -> int:
         return self._number_of_calls
 
-    def _increment_number_of_calls(): 
+    def _increment_number_of_calls(self, req=None, res=None):
         self._number_of_calls += 1
 
     def register(self):
-        # TODO: realize interseptor
-        # self.register_interceptor('/dummies', self._increment_number_of_calls)
+        self.register_interceptor('/dummies', self._increment_number_of_calls)
         self.register_route('get', '/dummies', None, self._operations.get_page_by_filter)
         self.register_route('get', '/dummies/<id>', None, self._operations.get_one_by_id)
         self.register_route('post', '/dummies', None, self._operations.create)

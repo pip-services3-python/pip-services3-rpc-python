@@ -320,6 +320,44 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         else:
             return {}
 
-    # TODO: Add:
-    # registerRouteWithAuth
-    # registerInterceptor
+    def _append_base_route(self, route):
+        route = route or ''
+
+        if self._base_route is not None and len(self._base_route) > 0:
+            base_route = self._base_route
+            if base_route[0] != '/':
+                base_route = '/' + base_route
+                route = base_route + route
+        return route
+
+    def register_route_with_auth(self, method, route, schema, authorize, action):
+        """
+        Registers a route with authorization in HTTP endpoint.
+
+        :param method: HTTP method: "get", "head", "post", "put", "delete"
+        :param route: a command route. Base route will be added to this route
+        :param schema: a validation schema to validate received parameters.
+        :param authorize: an authorization interceptor
+        :param action: an action function that is called when operation is invoked.
+        """
+        if self._endpoint is None:
+            return
+
+        route = self._append_base_route(self.fix_route(route))
+
+        self._endpoint.register_route_with_auth(method, route, schema, authorize, method)
+
+    def register_interceptor(self, route, action):
+        """
+        Registers a middleware for a given route in HTTP endpoint.
+
+        :param route: a command route. Base route will be added to this route
+        :param action: an action function that is called when middleware is invoked.
+        """
+        if self._endpoint is None:
+            return
+
+        route = self._append_base_route(self.fix_route(route))
+
+        self._endpoint.register_interceptor(route, action)
+
