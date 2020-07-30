@@ -11,6 +11,7 @@
 from threading import Thread
 
 import bottle
+
 from beaker.middleware import SessionMiddleware
 
 from pip_services3_commons.config import IConfigurable, ConfigParams
@@ -29,9 +30,9 @@ from ..connect.HttpConnectionResolver import HttpConnectionResolver
 
 # TODO:
 #
-# addCompatibility
-# noCache
-# doMaintenance
+# addCompatibility OK
+# noCache OK
+# doMaintenance OK
 # registerRouteWithAuth
 # RegisterInterceptor
 
@@ -118,8 +119,9 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         config = config.set_defaults(self._default_config)
         self._connection_resolver.configure(config)
-        self._file_max_size = config.get_as_boolean_with_default('options.maintenance_enabled', self._file_max_size)
-        self._maintenance_enabled = config.get_as_long_with_default('options.file_max_size', self._maintenance_enabled)
+        self._file_max_size = config.get_as_boolean_with_default('options.file_max_size', self._file_max_size)
+        self._maintenance_enabled = config.get_as_long_with_default('options.maintenance_enabled',
+                                                                    self._maintenance_enabled)
         self._protocol_upgrade_enabled = config.get_as_boolean_with_default('options.protocol_upgrade_enabled',
                                                                             self._protocol_upgrade_enabled)
         self._debug = config.get_as_boolean_with_default('connection.debug', self._debug)
@@ -170,7 +172,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             keyfile = connection.get_as_nullable_string('ssl_key_file')
 
         # Create instance of bottle application
-        self._service = SessionMiddleware(bottle.default_app()).app
+        self._service = SessionMiddleware(bottle.Bottle(catchall=True, autojson=True)).app
 
         self._service.config['catchall'] = True
         self._service.config['autojson'] = True
@@ -179,6 +181,10 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._service.add_hook('after_request', self._enable_cors)
         self._service.route('/', 'OPTIONS', self._options_handler)
         self._service.route('/<path:path>', 'OPTIONS', self._options_handler)
+
+        self._service.add_hook('after_request', self._do_maintance)
+        self._service.add_hook('after_request', self._no_cache)
+        self._service.add_hook('before_request', self._add_compatibility)
 
         # Register routes
         # self.perform_registrations()
@@ -295,6 +301,44 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         bottle.response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
         bottle.response.headers[
             'Access-Control-Allow-Headers'] = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
+
+    def _do_maintance(self):
+        """
+        :return: maintenance error code
+        """
+        # Make this more sophisticated
+        if self._maintenance_enabled:
+            bottle.response.headers['Retry-After'] = 3600
+            bottle.response.status = 503
+
+    def _no_cache(self):
+        """
+        Prevents IE from caching REST requests
+        """
+        bottle.response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
+        bottle.response.headers['Pragma'] = 'no-cache'
+        bottle.response.headers['Expires'] = 0
+
+    def _add_compatibility(self):
+
+        def inner(name):
+            if bottle.request.query:
+                param = bottle.request.query[name]
+                if param:
+                    return param
+            if bottle.request.body:
+                param = bottle.request.json[name]
+                if param:
+                    return param
+            if bottle.request.params:
+                param = bottle.request.params[name]
+                if param:
+                    return param
+
+            return None
+
+        bottle.request['param'] = inner
+        bottle.request['route'] = {'params': bottle.request.params}
 
     def _options_handler(self, ath=None):
         return

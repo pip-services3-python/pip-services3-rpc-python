@@ -28,13 +28,15 @@ def get_fullpath(filepath):
     return os.path.abspath(os.path.join(os.path.dirname(__file__), filepath))
 
 
+port = 3007
+
 rest_config = ConfigParams.from_tuples(
     'connection.protocol',
     'https',
     'connection.host',
     'localhost',
     'connection.port',
-    3010,
+    port,
     'credential.ssl_key_file', get_fullpath('../credentials/ssl_key_file'),
     'credential.ssl_crt_file', get_fullpath('../credentials/ssl_crt_file')
 )
@@ -86,7 +88,7 @@ class TestDummyCredentialsRestService():
 
     def invoke(self, route, entity):
         params = {}
-        route = "https://localhost:3010" + route
+        route = f"https://localhost:{port}{route}"
         response = None
         timeout = 10000
         try:
