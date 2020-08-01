@@ -9,6 +9,5 @@
         "--exitfirst",
         "--verbose"
     ],
-    "python.linting.pylintEnabled": false,
-    "python.pythonPath": "C:\\Program Files\\Python\\Python37\\python.exe"
+    "python.linting.pylintEnabled": false
 }
