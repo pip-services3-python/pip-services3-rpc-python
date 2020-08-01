@@ -8,6 +8,7 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+import time
 from threading import Thread
 
 import bottle
@@ -195,6 +196,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
             # Start server in thread
             Thread(target=start_server).start()
+            # Time for start server
+            time.sleep(0.01)
 
             # Give 2 sec for initialization
             self._connection_resolver.register(correlation_id)
