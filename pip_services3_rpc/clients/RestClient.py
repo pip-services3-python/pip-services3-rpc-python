@@ -175,13 +175,6 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         self._uri = connection.get_uri()
 
-        # TODO:
-        # if self._uri is None:
-        #     protocol = connection.get_protocol("http")
-        #     host = connection.get_host()
-        #     port = connection.get_port()
-        #     self._uri = protocol + "://" + host + ":" + str(port)
-
         self._client = requests
 
         self._logger.debug(correlation_id, "Connected via REST to " + self._uri)
@@ -234,7 +227,6 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
     def createRequestRoute(self, route):
         builder = ''
-        # TODO: with os.path.join(path1, path2)
         if self._uri is not None and len(self._uri) > 0:
             builder = self._uri
 

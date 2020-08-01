@@ -21,7 +21,6 @@ from ..Dummy import Dummy
 from ..DummyController import DummyController
 from .DummyCommandableHttpService import DummyCommandableHttpService
 
-
 rest_config = ConfigParams.from_tuples(
     'connection.host', 'localhost',
     'connection.port', 3005
@@ -30,7 +29,7 @@ rest_config = ConfigParams.from_tuples(
 DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
 DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
 
-#todo return dummy object from response in invoke()
+
 class TestDummyCommandableHttpService():
     controller = None
     service = None
@@ -49,21 +48,18 @@ class TestDummyCommandableHttpService():
 
         cls.service.set_references(cls.references)
 
-
     def setup_method(self, method):
         self.service.open(None)
         pass
-
 
     def teardown_method(self, method):
         self.service.close(None)
         pass
 
-    # #todo
     def test_crud_operations(self):
         # Create one dummy
         dummy1 = self.invoke("/dummy/create_dummy", Parameters.from_tuples("dummy", DUMMY1))
-        
+
         assert None != dummy1
         assert DUMMY1['key'] == dummy1['key']
         assert DUMMY1['content'] == dummy1['content']
@@ -96,7 +92,6 @@ class TestDummyCommandableHttpService():
         # Try to get deleted dummy
         get_dummy = self.invoke("/dummy/get_dummy_by_id", Parameters.from_tuples("dummy_id", dummy1['id']))
         assert False == get_dummy
-
 
     def invoke(self, route, entity):
         params = {}

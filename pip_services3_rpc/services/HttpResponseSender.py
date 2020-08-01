@@ -69,9 +69,9 @@ class HttpResponseSender():
         :return: HTTP response status
         """
 
-        # TODO:
-        # let result = _.pick(error, 'code', 'status', 'name', 'details', 'component', 'message', 'stack', 'cause');
-        # result = _.defaults(result, { code: 'Undefined', status: 500, message: 'Unknown error' });
+        error.__dict__.update({'code': 'Undefined', 'status': 500, 'message': 'Unknown error',
+                               'name': None, 'details': None,
+                               'component': None, 'stack': None, 'cause': None})
 
         bottle.response.headers['Content-Type'] = 'application/json'
         error = ErrorDescriptionFactory.create(error)
@@ -98,7 +98,7 @@ class HttpResponseSender():
                 v = self._to_json(v)
                 result[k] = v
             return result
-        
+
         if hasattr(obj, 'to_json'):
             return obj.to_json()
         if hasattr(obj, '__dict__'):
