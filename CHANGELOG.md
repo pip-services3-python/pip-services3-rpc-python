@@ -1,6 +1,6 @@
 # Communication components for Pip.Services in Python Changelog
 
-## <a name="2.0.0"></a> 2.0.0 (2017-04-13)
+## <a name="3.1.0"></a> 3.1.0 (2020-08-04)
 
 ### Bug Fixes
 * Fixed validation in RestService
