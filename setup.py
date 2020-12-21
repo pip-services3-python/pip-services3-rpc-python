@@ -18,7 +18,7 @@ from setuptools import find_packages
 
 setup(
     name='pip_services3_rpc',
-    version='3.1.0',
+    version='3.1.1',
     url='http://github.com/pip-services3-python/pip-services3-rpc-python',
     license='MIT',
     author='Conceptual Vision Consulting LLC',
