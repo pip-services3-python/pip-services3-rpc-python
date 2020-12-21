@@ -195,7 +195,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             self._server = SSLCherryPyServer(host=host, port=port, certfile=certfile, keyfile=keyfile)
 
             # Start server in thread
-            Thread(target=start_server).start()
+            Thread(target=start_server, daemon=True).start()
             # Time for start server
             time.sleep(0.01)
 
