@@ -22,23 +22,24 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
     Abstract client that calls controller directly in the same memory space. It is used when multiple microservices are deployed in a single container (monolyth) and communication between them can be done by direct calls rather then through the network.
 
     ### Configuration parameters ###
-
     - dependencies:
         - controller:            override controller descriptor
 
     ### References ###
-
-    - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
-    - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
+    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
     - *:controller:*:*:1.0     controller to call business methods
 
     Example:
+
+    .. code-block:: python
+
         class MyDirectClient(DirectClient, IMyClient):
             def __init__(self):
                 super(MyDirectClient, self).__init__()
                 self._dependencyResolver.put('controller', Descriptor("mygroup", "controller", "*", "*", "*"))
 
-            ...
+            # ...
 
             def get_data(self, correlation_id, id):
                 timing = self.instrument(correlationId, 'myclient.get_data')
@@ -49,7 +50,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
             client = MyDirectClient()
             client.set_references(References.from_tuples(Descriptor("mygroup","controller","default","default","1.0"), controller))
             data = client.get_data("123", "1")
-            ...
+            # ...
     """
     _controller = None
     _opened = True

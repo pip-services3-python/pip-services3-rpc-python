@@ -76,7 +76,7 @@ class HttpResponseDetector:
 
         :param req: an HTTP request to process.
         :return: the detected IP address (without a port). If no IP is detected -
-        <code>null</code> will be returned.
+        **None** will be returned.
         """
         ip = None
         if req.get_header('x-forwarded-for'):
@@ -121,6 +121,6 @@ class HttpResponseDetector:
         Detects the request's destination port number.
 
         :param req: an HTTP request to process.
-        :return: the detected port number or <code>80</code> (if none are detected).
+        :return: the detected port number or **80** (if none are detected).
         """
         return req.get_header('host').split(':')[1]

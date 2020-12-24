@@ -17,9 +17,7 @@ class CommandableHttpClient(RestClient, ABC):
     Commandable services are generated automatically for ICommandable objects. Each command is exposed as POST operation that receives all parameters in body object.
 
     ### Configuration parameters ###
-
-    base_route:              base route for remote URI
-
+    - base_route:              base route for remote URI
     - connection(s):
         - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
         - protocol:              connection protocol: http or https
@@ -32,26 +30,28 @@ class CommandableHttpClient(RestClient, ABC):
         - timeout:               invocation timeout in milliseconds (default: 10 sec)
 
     ### References ###
-
-    - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
-    - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
+    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
 
     Example:
+    
+    .. code-block:: python
+
         class MyCommandableHttpClient(CommandableHttpClient, IMyClient):
-            ...
+            # ...
 
             def get_data(self, correlation_id, id):
                 return self.call_command("get_data", correlation_id, MyData(id))
 
-            ...
+            # ...
 
         client = MyCommandableHttpClient()
         client.configure(ConfigParams.from_tuples("connection.protocol", "http",
                                                  "connection.host", "localhost",
                                                  "connection.port", 8080))
         data = client.getData("123", "1")
-        ...
+        # ...
     """
     _base_route = None
 

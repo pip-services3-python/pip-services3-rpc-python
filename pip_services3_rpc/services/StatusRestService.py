@@ -20,20 +20,21 @@ from .RestService import RestService
 class StatusRestService(RestService):
     """
     Service that returns microservice status information via HTTP/REST protocol. The service responds on /status route (can be changed) with a JSON object:
-
-    {
-        - "id":            unique container id (usually hostname)
-        - "name":          container name (from ContextInfo)
-        - "description":   container description (from ContextInfo)
-        - "start_time":    time when container was started
-        - "current_time":  current time in UTC
-        - "uptime":        duration since container start time in milliseconds
-        - "properties":    additional container properties (from ContextInfo)
-        - "components":    descriptors of components registered in the container
-    }
+    
+    .. code-block:: json
+    
+        {
+            - "id":            unique container id (usually hostname)
+            - "name":          container name (from ContextInfo)
+            - "description":   container description (from ContextInfo)
+            - "start_time":    time when container was started
+            - "current_time":  current time in UTC
+            - "uptime":        duration since container start time in milliseconds
+            - "properties":    additional container properties (from ContextInfo)
+            - "components":    descriptors of components registered in the container
+        }
 
     ### Configuration parameters ###
-
     - base_route:              base route for remote URI
     - dependencies:
         - endpoint:              override for HTTP Endpoint dependency
@@ -46,19 +47,21 @@ class StatusRestService(RestService):
         - uri:                   resource URI or connection string with all parameters in it
 
     ### References ###
-
-    - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
-    - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
-    - *:endpoint:http:*:1.0          (optional) HttpEndpoint reference
+    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
+    - *:endpoint:http:*:1.0          (optional) :class:`HttpEndpoint` reference
 
     Example:
+
+    .. code-block:: python
+
           service = StatusService()
           service.configure(ConfigParams.from_tuples("connection.protocol", "http",
                                                      "connection.host", "localhost",
                                                      "connection.port", 8080))
           service.open("123")
-          ...
+          # ...
     """
     _start_time = datetime.datetime.now()
     _references2 = None

@@ -35,10 +35,12 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         -  ...
 
     ### References ###
-
-    - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
+    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
 
     Example:
+    
+    .. code-block:: python
+
           config = ConfigParams.from_tuples("connection.host", "10.1.1.100","connection.port", 8080)
           connectionResolver = HttpConnectionResolver()
           connectionResolver.configure(config)

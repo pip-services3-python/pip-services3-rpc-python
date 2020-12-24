@@ -35,9 +35,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     Used for creating HTTP endpoints. An endpoint is a URL, at which a given service can be accessed by a client.
 
     ### Configuration parameters ###
-
-    Parameters to pass to the [[configure]] method for component configuration:
-
+    Parameters to pass to the :func:`configure` method for component configuration:
     - connection(s) - the connection resolver's connections;
         - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
         - "connection.protocol" - the connection's protocol;
@@ -46,24 +44,25 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         - "connection.uri" - the target URI.
 
     ### References ###
-
-    A logger, counters, and a connection resolver can be referenced by passing the following references to the object's [[setReferences]] method:
-
-    - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
-    - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
+    A logger, counters, and a connection resolver can be referenced by passing the following references to the object's :func:`set_references` method:
+    - *:logger:*:*:1.0         (optional) :class: `ILogger` components to pass log messages
+    - *:counters:*:*:1.0         (optional) :class: `ICounters` components to pass collected measurements
+    - *:discovery:*:*:1.0        (optional) :class: `IDiscovery` services to resolve connection
 
     Example:
+
+    .. code-block:: python
+
         def my_method(_config, _references):
             endpoint = HttpEndpoint()
             if (_config)
                 endpoint.configure(_config)
             if (_references)
                 endpoint.setReferences(_references)
-            ...
+            # ...
 
             endpoint.open(correlationId)
-            ...
+            # ...
     """
     _default_config = None
     _connection_resolver = None
@@ -101,7 +100,6 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     def configure(self, config):
         """
         Configures this HttpEndpoint using the given configuration parameters.
-
         - connection(s) - the connection resolver's connections;
             - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
             - "connection.protocol" - the connection's protocol;
@@ -124,9 +122,9 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         Sets references to this endpoint's logger, counters, and connection resolver.
 
-        - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
-        - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
-        - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
+        - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+        - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+        - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
 
         :param references: an IReferences object, containing references to a logger, counters, and a connection resolver.
         """
@@ -195,7 +193,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             self._server = SSLCherryPyServer(host=host, port=port, certfile=certfile, keyfile=keyfile)
 
             # Start server in thread
-            Thread(target=start_server, daemon=True).start()
+            Thread(target=start_server).start()
             # Time for start server
             time.sleep(0.01)
 

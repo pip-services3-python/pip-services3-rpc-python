@@ -30,7 +30,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
     ### Configuration parameters ###
     - base_route:              base route for remote URI
     - connection(s):
-        - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
+        - discovery_key:         (optional) a key to retrieve the connection from :class:`IDiscovery`
         - protocol:              connection protocol: http or https
         - host:                  host name or IP address
         - port:                  port number
@@ -41,12 +41,14 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         - timeout:               invocation timeout in milliseconds (default: 10 sec)
 
     ### References ###
-
-    - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
-    - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
+    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
 
     Example:
+
+    .. code-block:: python
+
         class MyRestClient(RestClient, IMyClient):
             def get_data(self, correlation_id, id):
                 timing = self.instrument(correlationId, 'myclient.get_data')
@@ -54,7 +56,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
                 timing.end_timing()
                 return result
 
-            ...
+            # ...
 
         client = MyRestClient()
         client.configure(ConfigParams.fromTuples("connection.protocol", "http",
@@ -62,7 +64,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
                                                  "connection.port", 8080))
 
         data = client.getData("123", "1")
-        ...
+        # ...
     """
     _default_config = None
 

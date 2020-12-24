@@ -36,13 +36,12 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
     Abstract service that receives remove calls via HTTP/REST protocol.
 
     ### Configuration parameters ###
-
     - base_route:              base route for remote URI
     - dependencies:
         - endpoint:              override for HTTP Endpoint dependency
         - controller:            override for Controller dependency
     - connection(s):
-        - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
+        - discovery_key:         (optional) a key to retrieve the connection from :class:`IDiscovery`
         - protocol:              connection protocol: http or https
         - host:                  host name or IP address
         - port:                  port number
@@ -50,15 +49,18 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
     ### References ###
 
-    - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
-    - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
-    - *:endpoint:http:*:1.0          (optional) HttpEndpoint reference
+    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
+    - *:endpoint:http:*:1.0          (optional) :class:`HttpEndpoint` reference
 
     Example:
+
+    .. code-block:: python
+
         class MyRestService(RestService):
             _controller = None
-            ...
+            # ...
 
             def __init__(self):
                 super(MyRestService, self).__init__()
@@ -69,7 +71,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
                 self._controller = self._dependencyResolver.get_required("controller")
 
             def register():
-                ...
+                # ...
 
         service = MyRestService()
         service.configure(ConfigParams.from_tuples("connection.protocol", "http",

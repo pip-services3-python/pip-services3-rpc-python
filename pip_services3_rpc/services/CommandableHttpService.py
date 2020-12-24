@@ -20,7 +20,6 @@ class CommandableHttpService(RestService):
     Abstract service that receives remove calls via HTTP/REST protocol to operations automatically generated for commands defined in ICommandable components. Each command is exposed as POST operation that receives all parameters in body object. Commandable services require only 3 lines of code to implement a robust external HTTP-based remote interface.
 
     ### Configuration parameters ###
-
     - base_route:              base route for remote URI
     - dependencies:
         - endpoint:              override for HTTP Endpoint dependency
@@ -34,18 +33,21 @@ class CommandableHttpService(RestService):
 
     ### References ###
 
-    - *:logger:*:*:1.0         (optional) ILogger components to pass log messages
-    - *:counters:*:*:1.0         (optional) ICounters components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) IDiscovery services to resolve connection
-    - *:endpoint:http:*:1.0          (optional) HttpEndpoint reference
+    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
+    - *:endpoint:http:*:1.0          (optional) :class:`HttpEndpoint` reference
 
     Example:
+
+    .. code-block:: python
+
           class MyCommandableHttpService(CommandableHttpService):
               def __init__(self):
                   super(MyCommandableHttpService, self).__init__()
                   self._dependencyResolver.put("controller", Descriptor("mygroup","controller","*","*","1.0"))
 
-              ...
+              # ...
 
           service = MyCommandableHttpService()
           service.configure(ConfigParams.from_tuples("connection.protocol", "http",
@@ -53,7 +55,7 @@ class CommandableHttpService(RestService):
                                                     "connection.port", 8080))
           service.set_references(References.from_tuples(Descriptor("mygroup","controller","default","default","1.0"), controller))
           service.open("123")
-          ...
+          # ...
     """
     _command_set = None
 
