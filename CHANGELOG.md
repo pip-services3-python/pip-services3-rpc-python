@@ -10,3 +10,14 @@
 
 ### Bug Fixes
 * Fixed validation in RestService
+
+## <a name="3.0.0"></a> 3.0.0 (2018-10-19)
+
+Initial public release
+
+### Features
+* **Auth** - authentication and authorisation components
+* **Build** - HTTP service factory
+* **Clients** - retrieving connection settings from the microservice’s configuration
+* **Connect** - helper module to retrieve connections
+* **Services** - basic implementation of services
