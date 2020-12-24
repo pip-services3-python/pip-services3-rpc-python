@@ -1,0 +1,7 @@
+pip\_services3\_rpc.services.AboutOperations module
+===================================================
+
+.. automodule:: pip_services3_rpc.services.AboutOperations
+   :members:
+   :undoc-members:
+   :show-inheritance:

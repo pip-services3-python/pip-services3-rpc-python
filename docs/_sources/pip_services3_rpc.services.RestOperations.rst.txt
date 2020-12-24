@@ -1,0 +1,7 @@
+pip\_services3\_rpc.services.RestOperations module
+==================================================
+
+.. automodule:: pip_services3_rpc.services.RestOperations
+   :members:
+   :undoc-members:
+   :show-inheritance:
