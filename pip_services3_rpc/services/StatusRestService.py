@@ -35,22 +35,22 @@ class StatusRestService(RestService):
         }
 
     ### Configuration parameters ###
-    - base_route:              base route for remote URI
-    - dependencies:
-        - endpoint:              override for HTTP Endpoint dependency
-        - controller:            override for Controller dependency
-    - connection(s):
-        - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
-        - protocol:              connection protocol: http or https
-        - host:                  host name or IP address
-        - port:                  port number
-        - uri:                   resource URI or connection string with all parameters in it
+        - base_route:              base route for remote URI
+        - dependencies:
+            - endpoint:              override for HTTP Endpoint dependency
+            - controller:            override for Controller dependency
+        - connection(s):
+            - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
+            - protocol:              connection protocol: http or https
+            - host:                  host name or IP address
+            - port:                  port number
+            - uri:                   resource URI or connection string with all parameters in it
 
     ### References ###
-    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
-    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
-    - *:endpoint:http:*:1.0          (optional) :class:`HttpEndpoint` reference
+        - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+        - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+        - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
+        - *:endpoint:http:*:1.0          (optional) :class:`HttpEndpoint` reference
 
     Example:
 

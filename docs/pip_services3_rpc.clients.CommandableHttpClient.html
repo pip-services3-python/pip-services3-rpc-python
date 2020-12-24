@@ -186,19 +186,20 @@
 <dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.clients.RestClient.html#pip_services3_rpc.clients.RestClient.RestClient" title="pip_services3_rpc.clients.RestClient.RestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.clients.RestClient.RestClient</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract client that calls commandable HTTP service.
 Commandable services are generated automatically for ICommandable objects. Each command is exposed as POST operation that receives all parameters in body object.</p>
-<p>### Configuration parameters ###
-- base_route:              base route for remote URI
-- connection(s):</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="simple">
+<dt>### Configuration parameters ###</dt><dd><ul class="simple">
+<li><p>base_route:              base route for remote URI</p></li>
+<li><dl class="simple">
+<dt>connection(s):</dt><dd><ul>
 <li><p>discovery_key:         (optional) a key to retrieve the connection from IDiscovery</p></li>
 <li><p>protocol:              connection protocol: http or https</p></li>
 <li><p>host:                  host name or IP address</p></li>
 <li><p>port:                  port number</p></li>
 <li><p>uri:                   resource URI or connection string with all parameters in it</p></li>
 </ul>
-</div></blockquote>
-<ul class="simple">
+</dd>
+</dl>
+</li>
 <li><dl class="simple">
 <dt>options:</dt><dd><ul>
 <li><p>retries:               number of retries (default: 3)</p></li>
@@ -209,10 +210,14 @@ Commandable services are generated automatically for ICommandable objects. Each 
 </dl>
 </li>
 </ul>
-<p>### References ###
-- <em>:logger:</em>:<em>:1.0         (optional) :class:`ILogger` components to pass log messages
-- *:counters:</em>:<em>:1.0         (optional) :class:`ICounters` components to pass collected measurements
-- *:discovery:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0        (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code> services to resolve connection</p>
+</dd>
+<dt>### References ###</dt><dd><ul class="simple">
+<li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code> components to pass log messages</p></li>
+<li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code> components to pass collected measurements</p></li>
+<li><p><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code> services to resolve connection</p></li>
+</ul>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCommandableHttpClient</span><span class="p">(</span><span class="n">CommandableHttpClient</span><span class="p">,</span> <span class="n">IMyClient</span><span class="p">):</span>
     <span class="c1"># ...</span>

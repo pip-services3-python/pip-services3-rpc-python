@@ -17,22 +17,22 @@ class CommandableHttpClient(RestClient, ABC):
     Commandable services are generated automatically for ICommandable objects. Each command is exposed as POST operation that receives all parameters in body object.
 
     ### Configuration parameters ###
-    - base_route:              base route for remote URI
-    - connection(s):
-        - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
-        - protocol:              connection protocol: http or https
-        - host:                  host name or IP address
-        - port:                  port number
-        - uri:                   resource URI or connection string with all parameters in it
-    - options:
-        - retries:               number of retries (default: 3)
-        - connect_timeout:       connection timeout in milliseconds (default: 10 sec)
-        - timeout:               invocation timeout in milliseconds (default: 10 sec)
+        - base_route:              base route for remote URI
+        - connection(s):
+            - discovery_key:         (optional) a key to retrieve the connection from IDiscovery
+            - protocol:              connection protocol: http or https
+            - host:                  host name or IP address
+            - port:                  port number
+            - uri:                   resource URI or connection string with all parameters in it
+        - options:
+            - retries:               number of retries (default: 3)
+            - connect_timeout:       connection timeout in milliseconds (default: 10 sec)
+            - timeout:               invocation timeout in milliseconds (default: 10 sec)
 
     ### References ###
-    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
-    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
+        - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+        - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+        - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
 
     Example:
     

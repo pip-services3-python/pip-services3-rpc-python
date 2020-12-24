@@ -185,17 +185,24 @@
 <em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.clients.DirectClient.</code><code class="sig-name descname">DirectClient</code><a class="headerlink" href="#pip_services3_rpc.clients.DirectClient.DirectClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.IOpenable.IOpenable</span></code></p>
 <p>Abstract client that calls controller directly in the same memory space. It is used when multiple microservices are deployed in a single container (monolyth) and communication between them can be done by direct calls rather then through the network.</p>
-<p>### Configuration parameters ###
-- dependencies:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="simple">
+<dt>### Configuration parameters ###</dt><dd><ul class="simple">
+<li><dl class="simple">
+<dt>dependencies:</dt><dd><ul>
 <li><p>controller:            override controller descriptor</p></li>
 </ul>
-</div></blockquote>
-<p>### References ###
-- <em>:logger:</em>:<em>:1.0         (optional) :class:`ILogger` components to pass log messages
-- *:counters:</em>:<em>:1.0         (optional) :class:`ICounters` components to pass collected measurements
-- *:controller:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0     controller to call business methods</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+<dt>### References ###</dt><dd><ul class="simple">
+<li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code> components to pass log messages</p></li>
+<li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code> components to pass collected measurements</p></li>
+<li><p><em>:controller:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0     controller to call business methods</p></li>
+</ul>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyDirectClient</span><span class="p">(</span><span class="n">DirectClient</span><span class="p">,</span> <span class="n">IMyClient</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

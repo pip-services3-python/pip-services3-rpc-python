@@ -185,16 +185,17 @@
 <em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.services.CommandableHttpService.</code><code class="sig-name descname">CommandableHttpService</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base_route</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.CommandableHttpService" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.services.RestService.html#pip_services3_rpc.services.RestService.RestService" title="pip_services3_rpc.services.RestService.RestService"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.RestService.RestService</span></code></a></p>
 <p>Abstract service that receives remove calls via HTTP/REST protocol to operations automatically generated for commands defined in ICommandable components. Each command is exposed as POST operation that receives all parameters in body object. Commandable services require only 3 lines of code to implement a robust external HTTP-based remote interface.</p>
-<p>### Configuration parameters ###
-- base_route:              base route for remote URI
-- dependencies:</p>
-<blockquote>
-<div><ul class="simple">
+<dl class="simple">
+<dt>### Configuration parameters ###</dt><dd><ul class="simple">
+<li><p>base_route:              base route for remote URI</p></li>
+<li><dl class="simple">
+<dt>dependencies:</dt><dd><ul>
 <li><p>endpoint:              override for HTTP Endpoint dependency</p></li>
 <li><p>controller:            override for Controller dependency</p></li>
 </ul>
-</div></blockquote>
-<ul class="simple">
+</dd>
+</dl>
+</li>
 <li><dl class="simple">
 <dt>connection(s):</dt><dd><ul>
 <li><p>discovery_key:         (optional) a key to retrieve the connection from IDiscovery</p></li>
@@ -207,13 +208,15 @@
 </dl>
 </li>
 </ul>
-<p>### References ###</p>
-<ul class="simple">
+</dd>
+<dt>### References ###</dt><dd><ul class="simple">
 <li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code> components to pass log messages</p></li>
 <li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code> components to pass collected measurements</p></li>
 <li><p><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code> services to resolve connection</p></li>
 <li><p><em>:endpoint:http:</em>:1.0          (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">HttpEndpoint</span></code> reference</p></li>
 </ul>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">class</span> <span class="nc">MyCommandableHttpService</span><span class="p">(</span><span class="n">CommandableHttpService</span><span class="p">):</span>
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>

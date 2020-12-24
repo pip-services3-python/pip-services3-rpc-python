@@ -22,13 +22,13 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
     Abstract client that calls controller directly in the same memory space. It is used when multiple microservices are deployed in a single container (monolyth) and communication between them can be done by direct calls rather then through the network.
 
     ### Configuration parameters ###
-    - dependencies:
-        - controller:            override controller descriptor
+        - dependencies:
+            - controller:            override controller descriptor
 
     ### References ###
-    - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
-    - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
-    - *:controller:*:*:1.0     controller to call business methods
+        - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
+        - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
+        - *:controller:*:*:1.0     controller to call business methods
 
     Example:
 

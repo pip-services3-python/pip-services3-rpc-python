@@ -35,19 +35,23 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
     Used for creating HTTP endpoints. An endpoint is a URL, at which a given service can be accessed by a client.
 
     ### Configuration parameters ###
+
     Parameters to pass to the :func:`configure` method for component configuration:
-    - connection(s) - the connection resolver's connections;
-        - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
-        - "connection.protocol" - the connection's protocol;
-        - "connection.host" - the target host;
-        - "connection.port" - the target port;
-        - "connection.uri" - the target URI.
+
+        - connection(s) - the connection resolver's connections;
+            - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
+            - "connection.protocol" - the connection's protocol;
+            - "connection.host" - the target host;
+            - "connection.port" - the target port;
+            - "connection.uri" - the target URI.
 
     ### References ###
-    A logger, counters, and a connection resolver can be referenced by passing the following references to the object's :func:`set_references` method:
-    - *:logger:*:*:1.0         (optional) :class: `ILogger` components to pass log messages
-    - *:counters:*:*:1.0         (optional) :class: `ICounters` components to pass collected measurements
-    - *:discovery:*:*:1.0        (optional) :class: `IDiscovery` services to resolve connection
+        
+        A logger, counters, and a connection resolver can be referenced by passing the following references to the object's :func:`set_references` method:
+        
+        - *:logger:*:*:1.0         (optional) :class: `ILogger` components to pass log messages
+        - *:counters:*:*:1.0         (optional) :class: `ICounters` components to pass collected measurements
+        - *:discovery:*:*:1.0        (optional) :class: `IDiscovery` services to resolve connection
 
     Example:
 

@@ -24,18 +24,17 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
     ConnectionResolver is able to parse http:// URIs and validate connection parameters before returning them.
 
     ### Configuration parameters ###
-
-    - connection:
-        - discovery_key:               (optional) a key to retrieve the connection from IDiscovery
-        - ...                          other connection parameters
-    - connections:                   alternative to connection
-        - [connection params 1]:       first connection parameters
-        -  ...
-        - [connection params N]:       Nth connection parameters
-        -  ...
+        - connection:
+            - discovery_key:               (optional) a key to retrieve the connection from IDiscovery
+            - ...                          other connection parameters
+        - connections:                   alternative to connection
+            - [connection params 1]:       first connection parameters
+            -  ...
+            - [connection params N]:       Nth connection parameters
+            -  ...
 
     ### References ###
-    - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
+        - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
 
     Example:
     
