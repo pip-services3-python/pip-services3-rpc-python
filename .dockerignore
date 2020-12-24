@@ -2,10 +2,10 @@
 /.git
 /.gitignore
 /.dockerignore
-/doc
+/docs
 /pip_services3_rpc.egg-info
 /dist
-/Dockerfile*
-/docker-compose*.yml
+/docker/Dockerfile*
+/docker/docker-compose*.yml
 /*.sh
 /*.ps1
