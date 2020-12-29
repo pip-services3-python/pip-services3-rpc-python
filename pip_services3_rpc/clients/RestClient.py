@@ -30,7 +30,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
     ### Configuration parameters ###
         - base_route:              base route for remote URI
         - connection(s):
-            - discovery_key:         (optional) a key to retrieve the connection from :class:`IDiscovery`
+            - discovery_key:         (optional) a key to retrieve the connection from :class:`IDiscovery <pip_services3_components.connect.IDiscovery.IDiscovery>`
             - protocol:              connection protocol: http or https
             - host:                  host name or IP address
             - port:                  port number
@@ -41,9 +41,9 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
             - timeout:               invocation timeout in milliseconds (default: 10 sec)
 
     ### References ###
-        - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
-        - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
-        - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
+        - *:logger:*:*:1.0           (optional) :class:`ILogger <pip_services3_components.log.ILogger.ILogger>` components to pass log messages
+        - *:counters:*:*:1.0         (optional) :class:`ICounters <pip_services3_components.count.ICounters.ICounters>` components to pass collected measurements
+        - *:discovery:*:*:1.0        (optional) :class:`IDiscovery <pip_services3_components.connect.IDiscovery.IDiscovery>` services to resolve connection
 
     Example:
 

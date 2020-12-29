@@ -29,6 +29,7 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -183,7 +184,7 @@
 <dl class="py class">
 <dt id="pip_services3_rpc.services.RestService.RestService">
 <em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.services.RestService.</code><code class="sig-name descname">RestService</code><a class="headerlink" href="#pip_services3_rpc.services.RestService.RestService" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.IOpenable.IOpenable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IUnreferenceable.IUnreferenceable</span></code>, <a class="reference internal" href="pip_services3_rpc.services.IRegisterable.html#pip_services3_rpc.services.IRegisterable.IRegisterable" title="pip_services3_rpc.services.IRegisterable.IRegisterable"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.IRegisterable.IRegisterable</span></code></a></p>
+<dd><p>Bases: <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.run.IOpenable.html#pip_services3_commons.run.IOpenable.IOpenable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.IOpenable.IOpenable</span></code></a>, <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.config.IConfigurable.html#pip_services3_commons.config.IConfigurable.IConfigurable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code></a>, <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.refer.IReferenceable.html#pip_services3_commons.refer.IReferenceable.IReferenceable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code></a>, <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-commons-python/pip_services3_commons.refer.IUnreferenceable.html#pip_services3_commons.refer.IUnreferenceable.IUnreferenceable" title="(in pip-services3-commons)"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IUnreferenceable.IUnreferenceable</span></code></a>, <a class="reference internal" href="pip_services3_rpc.services.IRegisterable.html#pip_services3_rpc.services.IRegisterable.IRegisterable" title="pip_services3_rpc.services.IRegisterable.IRegisterable"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.IRegisterable.IRegisterable</span></code></a></p>
 <p>Abstract service that receives remove calls via HTTP/REST protocol.</p>
 <dl class="simple">
 <dt>### Configuration parameters ###</dt><dd><ul class="simple">
@@ -198,7 +199,7 @@
 </li>
 <li><dl class="simple">
 <dt>connection(s):</dt><dd><ul>
-<li><p>discovery_key:         (optional) a key to retrieve the connection from <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code></p></li>
+<li><p>discovery_key:         (optional) a key to retrieve the connection from <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html#pip_services3_components.connect.IDiscovery.IDiscovery" title="(in pip-services3-components)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code></a></p></li>
 <li><p>protocol:              connection protocol: http or https</p></li>
 <li><p>host:                  host name or IP address</p></li>
 <li><p>port:                  port number</p></li>
@@ -210,10 +211,10 @@
 </ul>
 </dd>
 <dt>### References ###</dt><dd><ul class="simple">
-<li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code> components to pass log messages</p></li>
-<li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code> components to pass collected measurements</p></li>
-<li><p><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code> services to resolve connection</p></li>
-<li><p><em>:endpoint:http:</em>:1.0          (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">HttpEndpoint</span></code> reference</p></li>
+<li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.log.ILogger.html#pip_services3_components.log.ILogger.ILogger" title="(in pip-services3-components)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code></a> components to pass log messages</p></li>
+<li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0       (optional) <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.count.ICounters.html#pip_services3_components.count.ICounters.ICounters" title="(in pip-services3-components)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code></a> components to pass collected measurements</p></li>
+<li><p><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0      (optional) <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html#pip_services3_components.connect.IDiscovery.IDiscovery" title="(in pip-services3-components)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code></a> services to resolve connection</p></li>
+<li><p><em>:endpoint:http:</em>:1.0    (optional) <a class="reference internal" href="pip_services3_rpc.services.HttpEndpoint.html#module-pip_services3_rpc.services.HttpEndpoint" title="pip_services3_rpc.services.HttpEndpoint"><code class="xref py py-class docutils literal notranslate"><span class="pre">HttpEndpoint</span></code></a> reference</p></li>
 </ul>
 </dd>
 </dl>
@@ -270,7 +271,7 @@
 
 <dl class="py method">
 <dt id="pip_services3_rpc.services.RestService.RestService.fix_route">
-<code class="sig-name descname">fix_route</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">route</span></em><span class="sig-paren">)</span> &#x2192; str<a class="headerlink" href="#pip_services3_rpc.services.RestService.RestService.fix_route" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">fix_route</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">route</span></em><span class="sig-paren">)</span> &#x2192; <a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a><a class="headerlink" href="#pip_services3_rpc.services.RestService.RestService.fix_route" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">

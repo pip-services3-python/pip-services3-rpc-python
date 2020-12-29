@@ -29,6 +29,7 @@
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
         <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
     
     <script type="text/javascript" src="_static/js/theme.js"></script>
 
@@ -182,7 +183,7 @@
 </dl>
 <dl class="py class">
 <dt id="pip_services3_rpc.services.CommandableHttpService.CommandableHttpService">
-<em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.services.CommandableHttpService.</code><code class="sig-name descname">CommandableHttpService</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base_route</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.CommandableHttpService" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.services.CommandableHttpService.</code><code class="sig-name descname">CommandableHttpService</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base_route</span><span class="p">:</span> <span class="n"><a class="reference external" href="http://docs.python.org/3/library/stdtypes.html#str" title="(in Python v3.9)">str</a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.CommandableHttpService" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.services.RestService.html#pip_services3_rpc.services.RestService.RestService" title="pip_services3_rpc.services.RestService.RestService"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.RestService.RestService</span></code></a></p>
 <p>Abstract service that receives remove calls via HTTP/REST protocol to operations automatically generated for commands defined in ICommandable components. Each command is exposed as POST operation that receives all parameters in body object. Commandable services require only 3 lines of code to implement a robust external HTTP-based remote interface.</p>
 <dl class="simple">
@@ -210,10 +211,10 @@
 </ul>
 </dd>
 <dt>### References ###</dt><dd><ul class="simple">
-<li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code> components to pass log messages</p></li>
-<li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code> components to pass collected measurements</p></li>
-<li><p><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code> services to resolve connection</p></li>
-<li><p><em>:endpoint:http:</em>:1.0          (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">HttpEndpoint</span></code> reference</p></li>
+<li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0           (optional) <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.log.ILogger.html#pip_services3_components.log.ILogger.ILogger" title="(in pip-services3-components)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code></a> components to pass log messages</p></li>
+<li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.count.ICounters.html#pip_services3_components.count.ICounters.ICounters" title="(in pip-services3-components)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code></a> components to pass collected measurements</p></li>
+<li><p><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <a class="reference external" href="https://pip-services3-python.github.io/pip-services3-components-python/pip_services3_components.connect.IDiscovery.html#pip_services3_components.connect.IDiscovery.IDiscovery" title="(in pip-services3-components)"><code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code></a> services to resolve connection</p></li>
+<li><p><em>:endpoint:http:</em>:1.0      (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">HttpEndpoint</span> <span class="pre">&lt;pip_services3_rpc.services.HttpEndpoint</span></code> reference</p></li>
 </ul>
 </dd>
 </dl>
