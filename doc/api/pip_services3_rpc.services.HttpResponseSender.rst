@@ -1,7 +1,0 @@
-pip\_services3\_rpc.services.HttpResponseSender module
-======================================================
-
-.. automodule:: pip_services3_rpc.services.HttpResponseSender
-    :members:
-    :undoc-members:
-    :show-inheritance:

@@ -1,7 +1,0 @@
-pip\_services3\_rpc.clients.DirectClient module
-===============================================
-
-.. automodule:: pip_services3_rpc.clients.DirectClient
-    :members:
-    :undoc-members:
-    :show-inheritance:

@@ -1,7 +1,0 @@
-pip\_services3\_rpc.services.RestService module
-===============================================
-
-.. automodule:: pip_services3_rpc.services.RestService
-    :members:
-    :undoc-members:
-    :show-inheritance:
