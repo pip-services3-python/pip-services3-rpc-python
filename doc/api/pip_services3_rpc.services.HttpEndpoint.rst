@@ -1,7 +1,0 @@
-pip\_services3\_rpc.services.HttpEndpoint module
-================================================
-
-.. automodule:: pip_services3_rpc.services.HttpEndpoint
-    :members:
-    :undoc-members:
-    :show-inheritance:

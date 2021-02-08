@@ -3,9 +3,9 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
   <title>pip_services3_rpc.services.HttpEndpoint module &mdash; pip-services3-rpc  documentation</title>
   
@@ -16,7 +16,10 @@
 
   
   
+
   
+  
+
   
 
   
@@ -50,7 +53,7 @@
           
 
           
-            <a href="index.html" class="icon icon-home" alt="Documentation Home"> pip-services3-rpc
+            <a href="index.html" class="icon icon-home"> pip-services3-rpc
           
 
           
@@ -136,6 +139,8 @@
 
 
 
+
+
 <div role="navigation" aria-label="breadcrumbs navigation">
 
   <ul class="wy-breadcrumbs">
@@ -153,7 +158,7 @@
     
       <li class="wy-breadcrumbs-aside">
         
-            
+          
             <a href="_sources/pip_services3_rpc.services.HttpEndpoint.rst.txt" rel="nofollow"> View page source</a>
           
         
@@ -185,12 +190,10 @@
 <em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.services.HttpEndpoint.</code><code class="sig-name descname">HttpEndpoint</code><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.HttpEndpoint" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.run.IOpenable.IOpenable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code></p>
 <p>Used for creating HTTP endpoints. An endpoint is a URL, at which a given service can be accessed by a client.</p>
-<p>### Configuration parameters ###</p>
-<p>Parameters to pass to the <a class="reference internal" href="pip_services3_rpc.services.html#pip_services3_rpc.services.HttpEndpoint.configure" title="pip_services3_rpc.services.HttpEndpoint.configure"><code class="xref py py-func docutils literal notranslate"><span class="pre">configure()</span></code></a> method for component configuration:</p>
-<blockquote>
-<div><ul class="simple">
-<li><dl class="simple">
-<dt>connection(s) - the connection resolver’s connections;</dt><dd><ul>
+<dl class="simple">
+<dt>### Configuration parameters ###</dt><dd><dl class="simple">
+<dt>Parameters to pass to the <a class="reference internal" href="pip_services3_rpc.services.html#pip_services3_rpc.services.HttpEndpoint.configure" title="pip_services3_rpc.services.HttpEndpoint.configure"><code class="xref py py-func docutils literal notranslate"><span class="pre">configure()</span></code></a> method for component configuration:</dt><dd><ul class="simple">
+<li><p>connection(s) - the connection resolver’s connections;</p></li>
 <li><p>“connection.discovery_key” - the key to use for connection resolving in a discovery service;</p></li>
 <li><p>“connection.protocol” - the connection’s protocol;</p></li>
 <li><p>“connection.host” - the target host;</p></li>
@@ -199,18 +202,17 @@
 </ul>
 </dd>
 </dl>
-</li>
+</dd>
+<dt>### References ###</dt><dd><dl class="simple">
+<dt>A logger, counters, and a connection resolver can be referenced by passing the following references to the object’s <a class="reference internal" href="pip_services3_rpc.services.html#pip_services3_rpc.services.HttpEndpoint.set_references" title="pip_services3_rpc.services.HttpEndpoint.set_references"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_references()</span></code></a> method:</dt><dd><ul class="simple">
+<li><p><cite>*:logger:*:*:1.0</cite>           (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code> components to pass log messages</p></li>
+<li><p><cite>*:counters:*:*:1.0</cite>         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code> components to pass collected measurements</p></li>
+<li><p><cite>*:discovery:*:*:1.0</cite>        (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code> services to resolve connection</p></li>
 </ul>
-</div></blockquote>
-<p>### References ###</p>
-<blockquote>
-<div><p>A logger, counters, and a connection resolver can be referenced by passing the following references to the object’s <a class="reference internal" href="pip_services3_rpc.services.html#pip_services3_rpc.services.HttpEndpoint.set_references" title="pip_services3_rpc.services.HttpEndpoint.set_references"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_references()</span></code></a> method:</p>
-<ul class="simple">
-<li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0         (optional) :class: <cite>ILogger</cite> components to pass log messages</p></li>
-<li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) :class: <cite>ICounters</cite> components to pass collected measurements</p></li>
-<li><p><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) :class: <cite>IDiscovery</cite> services to resolve connection</p></li>
-</ul>
-</div></blockquote>
+</dd>
+</dl>
+</dd>
+</dl>
 <p>Example:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">my_method</span><span class="p">(</span><span class="n">_config</span><span class="p">,</span> <span class="n">_references</span><span class="p">):</span>
     <span class="n">endpoint</span> <span class="o">=</span> <span class="n">HttpEndpoint</span><span class="p">()</span>
@@ -367,9 +369,9 @@ by the given method and route.</p>
 <code class="sig-name descname">set_references</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">references</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.HttpEndpoint.HttpEndpoint.set_references" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets references to this endpoint’s logger, counters, and connection resolver.</p>
 <ul class="simple">
-<li><p><em>:logger:</em>:<a href="#id7"><span class="problematic" id="id8">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code> components to pass log messages</p></li>
-<li><p><em>:counters:</em>:<a href="#id9"><span class="problematic" id="id10">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code> components to pass collected measurements</p></li>
-<li><p><em>:discovery:</em>:<a href="#id11"><span class="problematic" id="id12">*</span></a>:1.0        (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code> services to resolve connection</p></li>
+<li><p><em>:logger:</em>:<a href="#id1"><span class="problematic" id="id2">*</span></a>:1.0           (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ILogger</span></code> components to pass log messages</p></li>
+<li><p><em>:counters:</em>:<a href="#id3"><span class="problematic" id="id4">*</span></a>:1.0         (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">ICounters</span></code> components to pass collected measurements</p></li>
+<li><p><em>:discovery:</em>:<a href="#id5"><span class="problematic" id="id6">*</span></a>:1.0        (optional) <code class="xref py py-class docutils literal notranslate"><span class="pre">IDiscovery</span></code> services to resolve connection</p></li>
 </ul>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -399,37 +401,29 @@ by the given method and route.</p>
            
           </div>
           <footer>
-  
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="pip_services3_rpc.services.HttpResponseDetector.html" class="btn btn-neutral float-right" title="pip_services3_rpc.services.HttpResponseDetector module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
-      
-      
-        <a href="pip_services3_rpc.services.HeartbeatRestService.html" class="btn btn-neutral float-left" title="pip_services3_rpc.services.HeartbeatRestService module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
-      
+        <a href="pip_services3_rpc.services.HttpResponseDetector.html" class="btn btn-neutral float-right" title="pip_services3_rpc.services.HttpResponseDetector module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pip_services3_rpc.services.HeartbeatRestService.html" class="btn btn-neutral float-left" title="pip_services3_rpc.services.HeartbeatRestService module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
-  
 
   <hr/>
 
   <div role="contentinfo">
     <p>
-        
-        &copy; Copyright 2020, Sergey Seroukhov
+        &#169; Copyright 2020, Sergey Seroukhov.
 
     </p>
   </div>
     
     
     
-    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
     
-    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
     
     provided by <a href="https://readthedocs.org">Read the Docs</a>. 
 
 </footer>
-
         </div>
       </div>
 
