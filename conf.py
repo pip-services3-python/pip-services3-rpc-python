@@ -62,8 +62,9 @@ html_theme = "sphinx_rtd_theme"
 # so a file named "default.css" will overwrite the builtin "default.css".
 html_static_path = ['_static']
 
-# Looks for objects in external projects
-# intersphinx_mapping = {'python': ('http://docs.python.org/2', None),
-#                        'numpy': ('http://docs.scipy.org/doc/numpy/', None),
-#                        'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None),
-#                        'pip_services3_commons': ('https://pip-services3-python.github.io/pip-services3-commons-python/index.html', None)}
+Looks for objects in external projects
+intersphinx_mapping = {'python': ('http://docs.python.org/2', None),
+                       'numpy': ('http://docs.scipy.org/doc/numpy/', None),
+                       'scipy': ('http://docs.scipy.org/doc/scipy/reference/', None),
+                       'pip_services3_commons': ('https://pip-services3-python.github.io/pip-services3-commons-python/index.html', None),
+                       'pip_services3_components': ('https://pip-services3-python.github.io/pip-services3-components-python/index.html', None)}

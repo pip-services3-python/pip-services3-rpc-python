@@ -34,7 +34,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
             -  ...
 
     ### References ###
-        - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
+        - `*:discovery:*:*:1.0`        (optional) :class:`IDiscovery <pip_services3_components.connect.IDiscovery.IDiscovery>` services to resolve connection
 
     Example:
     

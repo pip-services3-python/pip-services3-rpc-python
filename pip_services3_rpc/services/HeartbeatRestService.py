@@ -32,10 +32,10 @@ class HeartbeatRestService(RestService):
         - uri:                   resource URI or connection string with all parameters in it
 
     ### References ###
-        - *:logger:*:*:1.0         (optional) :class:`ILogger` components to pass log messages
-        - *:counters:*:*:1.0         (optional) :class:`ICounters` components to pass collected measurements
-        - *:discovery:*:*:1.0        (optional) :class:`IDiscovery` services to resolve connection
-        - *:endpoint:http:*:1.0          (optional) :class:`HttpEndpoint` reference
+        - `*:logger:*:*:1.0`         (optional) :class:`ILogger <pip_services3_components.log.ILogger.ILogger>` components to pass log messages
+        - `*:counters:*:*:1.0`       (optional) :class:`ICounters <pip_services3_components.count.ICounters.ICounters>` components to pass collected measurements
+        - `*:discovery:*:*:1.0`      (optional) :class:`IDiscovery <pip_services3_components.connect.IDiscovery.IDiscovery>` services to resolve connection
+        - `*:endpoint:http:*:1.0`    (optional) :class:`HttpEndpoint <pip_services3_rpc.services.HttpEndpoint>` reference
 
     Example:
     

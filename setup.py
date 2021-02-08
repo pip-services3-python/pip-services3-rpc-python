@@ -16,15 +16,21 @@ Links
 from setuptools import setup
 from setuptools import find_packages
 
+try:
+    readme = open('readme.md').read()
+except:
+    readme = __doc__
+
 setup(
     name='pip_services3_rpc',
-    version='3.1.1',
+    version='3.1.2',
     url='http://github.com/pip-services3-python/pip-services3-rpc-python',
     license='MIT',
     author='Conceptual Vision Consulting LLC',
     author_email='seroukhov@gmail.com',
     description='Communication components for Pip.Services in Python',
-    long_description=__doc__,
+    long_description=readme,
+    long_description_content_type="text/markdown",
     packages=find_packages(exclude=['config', 'data', 'test']),
     include_package_data=True,
     zip_safe=True,
