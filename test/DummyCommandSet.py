@@ -9,10 +9,13 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services3_commons.data import FilterParams, PagingParams
 from pip_services3_commons.commands import Command, CommandSet
+from pip_services3_commons.convert import TypeCode
+from pip_services3_commons.data import FilterParams, PagingParams
+from pip_services3_commons.validate import ObjectSchema, FilterParamsSchema, PagingParamsSchema
 
-from .IDummyController import IDummyController
+from test.DummySchema import DummySchema
+
 
 class DummyCommandSet(CommandSet):
     _controller = None
@@ -36,7 +39,8 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "get_dummies",
-            None,
+            ObjectSchema().with_optional_property("filter", FilterParamsSchema()).with_optional_property(
+                "paging", PagingParamsSchema()),
             handler
         )
 
@@ -47,9 +51,7 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "get_dummy_by_id",
-            None,
-            handler
-        )
+            ObjectSchema().with_required_property("dummy_id", TypeCode.String), handler)
 
     def _make_create_command(self):
         def handler(correlation_id, args):
@@ -58,7 +60,7 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "create_dummy",
-            None,
+            ObjectSchema().with_required_property("dummy", DummySchema()),
             handler
         )
 
@@ -69,7 +71,7 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "update_dummy",
-            None,
+            ObjectSchema().with_required_property("dummy", DummySchema()),
             handler
         )
 
@@ -79,7 +81,7 @@ class DummyCommandSet(CommandSet):
             return self._controller.delete_by_id(correlation_id, id)
 
         return Command(
-            "delete_dummy_by_id",
-            None,
+            "delete_dummy",
+            ObjectSchema().with_required_property("dummy_id", TypeCode.String),
             handler
         )

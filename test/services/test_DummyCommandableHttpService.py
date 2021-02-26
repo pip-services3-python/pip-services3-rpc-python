@@ -9,21 +9,21 @@
     :license: MIT, see LICENSE for more details.
 """
 import json
-import time
 
 import requests
 from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.refer import References, Descriptor
 from pip_services3_commons.run import Parameters
-from pip_services3_commons.data import IdGenerator
 
+from .DummyCommandableHttpService import DummyCommandableHttpService
 from ..Dummy import Dummy
 from ..DummyController import DummyController
-from .DummyCommandableHttpService import DummyCommandableHttpService
 
 rest_config = ConfigParams.from_tuples(
-    'connection.host', 'localhost',
-    'connection.port', 3005
+    "connection.protocol", "http",
+    "connection.host", "localhost",
+    "connection.port", 3005,
+    "swagger.enable", "true"
 )
 
 DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
@@ -50,11 +50,9 @@ class TestDummyCommandableHttpService():
 
     def setup_method(self, method):
         self.service.open(None)
-        pass
 
     def teardown_method(self, method):
         self.service.close(None)
-        pass
 
     def test_crud_operations(self):
         # Create one dummy
@@ -87,7 +85,7 @@ class TestDummyCommandableHttpService():
         assert "Updated Content 1" == dummy['content']
 
         # Delete the dummy
-        self.invoke("/dummy/delete_dummy_by_id", Parameters.from_tuples("dummy_id", dummy1['id']))
+        self.invoke("/dummy/delete_dummy", Parameters.from_tuples("dummy_id", dummy1['id']))
 
         # Try to get deleted dummy
         get_dummy = self.invoke("/dummy/get_dummy_by_id", Parameters.from_tuples("dummy_id", dummy1['id']))
@@ -105,3 +103,31 @@ class TestDummyCommandableHttpService():
             return response.json()
         except Exception as ex:
             return False
+
+    def test_get_open_api_spec(self):
+        response = requests.request('GET', 'http://localhost:3005/dummy/swagger')
+        assert response.text.startswith('openapi:')
+
+    def test_get_open_api_override(self):
+        open_api_content = "swagger yaml content"
+
+        # recreate service with new configuration
+        self.service.close(None)
+
+        config = rest_config.set_defaults(ConfigParams.from_tuples("swagger.auto", False))
+
+        ctrl = DummyController()
+
+        self.service = DummyCommandableHttpService()
+        self.service.configure(config)
+
+        references = References.from_tuples(
+            Descriptor('pip-services-dummies', 'controller', 'default', 'default', '1.0'), ctrl,
+            Descriptor('pip-services-dummies', 'service', 'http', 'default', '1.0'), self.service
+        )
+        self.service.set_references(references)
+
+        self.service.open(None)
+
+        response = requests.request('GET', 'http://localhost:3005/dummy/swagger')
+        assert response.text == open_api_content

@@ -71,14 +71,14 @@ class TestDummyCredentialsRestService():
 
     def test_crud_operations(self):
         # Create one dummy
-        dummy1 = self.invoke("/dummies", DUMMY1)
+        dummy1 = self.invoke("/dummies", {'body': DUMMY1})
 
         assert None != dummy1
         assert DUMMY1['key'] == dummy1['key']
         assert DUMMY1['content'] == dummy1['content']
 
         # Create another dummy
-        dummy2 = self.invoke("/dummies", DUMMY2)
+        dummy2 = self.invoke("/dummies", {'body': DUMMY2})
 
         assert None != dummy2
         assert DUMMY2['key'] == dummy2['key']

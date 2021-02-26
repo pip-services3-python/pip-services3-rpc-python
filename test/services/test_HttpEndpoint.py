@@ -9,13 +9,11 @@
     :license: MIT, see LICENSE for more details.
 """
 import json
-import time
 
 import requests
 from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.refer import References, Descriptor
-from pip_services3_commons.run import Parameters
-from pip_services3_components.info import ContextInfo
+
 from pip_services3_rpc.services import HttpEndpoint
 from ..Dummy import Dummy
 from ..DummyController import DummyController
@@ -29,7 +27,8 @@ rest_config = ConfigParams.from_tuples(
     'connection.host', 'localhost',
     'connection.port', 3004
 )
- 
+
+
 class TestHttpEndpointService():
     service = None
     endpoint = None
@@ -48,32 +47,26 @@ class TestHttpEndpointService():
         cls.references = References.from_tuples(
             Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
             Descriptor('pip-services-dummies', 'service', 'rest', 'default', '1.0'), cls.service,
-            Descriptor('pip-services', 'endpoint', 'http', 'default', '1.0'), cls.endpoint 
+            Descriptor('pip-services', 'endpoint', 'http', 'default', '1.0'), cls.endpoint
         )
 
         cls.service.set_references(cls.references)
         cls.endpoint.open(None)
         cls.service.open(None)
 
-
-    def setup_method(self, method):
-        pass
-
-
     def teardown_method(self, method):
         self.service.close(None)
         self.endpoint.close(None)
 
-
     def test_crud_operations(self):
-        dummy1 = self.invoke("/api/v1/dummies", DUMMY1)
+        dummy1 = self.invoke("/api/v1/dummies", {'body': DUMMY1})
 
         assert None != dummy1
         assert DUMMY1['key'] == dummy1['key']
         assert DUMMY1['content'] == dummy1['content']
 
     def invoke(self, route, entity):
-        params = { }
+        params = {}
         route = "http://localhost:3004" + route
         response = None
         timeout = 10000

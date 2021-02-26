@@ -9,13 +9,12 @@
     :license: MIT, see LICENSE for more details.
 """
 import json
-import time
+import os
 
 import requests
 from pip_services3_commons.config import ConfigParams
-from pip_services3_commons.refer import References, Descriptor
-from pip_services3_commons.run import Parameters
 from pip_services3_commons.data import IdGenerator
+from pip_services3_commons.refer import References, Descriptor
 
 from ..Dummy import Dummy
 from ..DummyController import DummyController
@@ -23,8 +22,10 @@ from ..services.DummyRestService import DummyRestService
 
 rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
-    'connection.host', 'localhost',
-    'connection.port', 3001
+    "connection.host", "localhost",
+    "connection.port", 3001,
+    "openapi_content", "swagger yaml or json content",  # for test only
+    "swagger.enable", "true"
 )
 
 DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
@@ -57,14 +58,14 @@ class TestDummyRestService():
 
     def test_crud_operations(self):
         # Create one dummy
-        dummy1 = self.invoke("/dummies", DUMMY1)
+        dummy1 = self.invoke("/dummies", {"body": DUMMY1})
 
         assert None != dummy1
         assert DUMMY1['key'] == dummy1['key']
         assert DUMMY1['content'] == dummy1['content']
 
         # Create another dummy
-        dummy2 = self.invoke("/dummies", DUMMY2)
+        dummy2 = self.invoke("/dummies", {"body": DUMMY2})
 
         assert None != dummy2
         assert DUMMY2['key'] == dummy2['key']
@@ -86,3 +87,46 @@ class TestDummyRestService():
             return response.json()
         except Exception as ex:
             return False
+
+    def test_get_open_api_spec_from_string(self):
+        response = requests.request('GET', 'http://localhost:3001/swagger')
+
+        open_api_content = rest_config.get_as_string('openapi_content')
+        assert open_api_content == response.text
+
+    def test_get_open_api_spec_from_file(self):
+        self.service.close(None)
+
+        open_api_content = 'swagger yaml content from file'
+        filename = 'dummy_' + IdGenerator.next_long() + '.tmp'
+
+        # create temp file
+        with open(filename, 'w') as f:
+            f.write(open_api_content)
+
+        # recreate service with new configuration
+        service_config = ConfigParams.from_tuples(
+            "connection.protocol", "http",
+            "connection.host", "localhost",
+            "connection.port", 3001,
+            "openapi_file", filename,  # for test only
+            "swagger.enable", "true"
+        )
+        ctrl = DummyController()
+
+        self.service = DummyRestService()
+        self.service.configure(service_config)
+
+        references = References.from_tuples(
+            Descriptor('pip-services-dummies', 'controller', 'default', 'default', '1.0'), ctrl,
+            Descriptor('pip-services-dummies', 'service', 'rest', 'default', '1.0'), self.service
+        )
+        self.service.set_references(references)
+
+        self.service.open(None)
+
+        response = requests.request('GET', 'http://localhost:3001/swagger')
+        assert response.text == open_api_content
+
+        # delete temp file
+        os.remove(filename)

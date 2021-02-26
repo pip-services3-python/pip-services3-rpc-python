@@ -62,7 +62,7 @@ class CommandableSwaggerDocument:
 
             path = self.base_route + '/' + command.get_name()
             if not path.startswith('/'):
-                path += '/' + path
+                path = '/' + path
             data[path] = {
                 'post': {
                     'tags': [self.base_route],
@@ -101,7 +101,7 @@ class CommandableSwaggerDocument:
 
         for property in schema.properties:
             properties[property.name] = {
-                'type': self._type_to_string(property.name)
+                'type': self._type_to_string(property.value_type)
             }
             if property.required:
                 required.append(property.name)

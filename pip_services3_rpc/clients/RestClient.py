@@ -8,6 +8,7 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+import json
 
 import requests
 
@@ -292,7 +293,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         try:
             # Call the service
-            data = self._to_json(data)
+            data = data if isinstance(data, str) else json.dumps(self._to_json(data))
             response = requests.request(method, route, params=params, json=data, timeout=self._timeout)
 
         except Exception as ex:
@@ -304,7 +305,10 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         try:
             # Retrieve JSON data
-            result = response.json()
+            if response.content:
+                result = response.json()
+            else:
+                result = None
         except:
             # Data is not in JSON
             if response.status_code < 400:

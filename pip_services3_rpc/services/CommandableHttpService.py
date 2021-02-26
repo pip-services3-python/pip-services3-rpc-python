@@ -79,7 +79,7 @@ class CommandableHttpService(RestService):
         """
         super().configure(config)
 
-        self._swagger_auto = config.get_as_boolean_with_default("swagger.auto", self._swagger_auto)
+        self._swagger_auto = config.get_as_boolean_with_default('swagger.auto', self._swagger_auto)
 
     def _get_handler(self, command):
         def handler():

@@ -59,7 +59,7 @@ class DummyCommandableHttpClient(CommandableHttpClient, IDummyClient):
 
     def delete_by_id(self, correlation_id, id):
         return self.call_command(
-            'delete_dummy_by_id',
+            'delete_dummy',
             correlation_id,
             {
                 'dummy_id': id

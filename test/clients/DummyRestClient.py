@@ -9,10 +9,12 @@
     :license: MIT, see LICENSE for more details.
 """
 
+from pip_services3_commons.data import DataPage
+
 from pip_services3_rpc.clients import RestClient
 from pip_services3_rpc.services import RestQueryParams
-from pip_services3_commons.data import DataPage
 from .IDummyClient import IDummyClient
+
 
 class DummyRestClient(RestClient, IDummyClient):
 
@@ -23,42 +25,50 @@ class DummyRestClient(RestClient, IDummyClient):
         params = RestQueryParams(correlation_id, filters, paging)
 
         result = self.call(
-            'GET', 
-            '/dummies', 
-            correlation_id, 
+            'GET',
+            '/dummies',
+            correlation_id,
             params
         )
 
         return DataPage(result['data'], result['total'])
-        
+
     def get_one_by_id(self, correlation_id, id):
         return self.call(
-            'GET', 
-            '/dummies/' + str(id), 
-            correlation_id
+            'GET',
+            f'/dummies/{id}',
+            correlation_id,
+            {'id': id}
         )
-        
+
     def create(self, correlation_id, entity):
         return self.call(
-            'POST', 
-            '/dummies', 
-            correlation_id, 
+            'POST',
+            '/dummies',
+            correlation_id,
             None,
-            entity
+            {
+                'body': entity
+            }
         )
 
     def update(self, correlation_id, entity):
         return self.call(
-            'PUT', 
-            '/dummies/' + str(entity['id']), 
-            correlation_id, 
+            'PUT',
+            '/dummies',
+            correlation_id,
             None,
-            entity
+            {
+                'body': entity
+            }
         )
 
     def delete_by_id(self, correlation_id, id):
         return self.call(
-            'DELETE', 
-            '/dummies/' + str(id), 
-            correlation_id
+            'DELETE',
+            f'/dummies/{id}',
+            correlation_id,
+            {
+                'dummy_id': id
+            }
         )
