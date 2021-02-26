@@ -9,11 +9,12 @@
     :license: MIT, see LICENSE for more details.
 """
 
-from pip_services3_commons.refer import IReferences
-from pip_services3_commons.commands import ICommandable, CommandSet
+from pip_services3_commons.commands import ICommandable
 from pip_services3_commons.run import Parameters
 
+from .CommandableSwaggerDocument import CommandableSwaggerDocument
 from .RestService import RestService
+
 
 class CommandableHttpService(RestService):
     """
@@ -56,7 +57,6 @@ class CommandableHttpService(RestService):
           service.open("123")
           # ...
     """
-    _command_set = None
 
     def __init__(self, base_route: str):
         """
@@ -65,8 +65,21 @@ class CommandableHttpService(RestService):
         :param base_route: a service base route.
         """
         super(CommandableHttpService, self).__init__()
+        self._command_set = None
+        self._swagger_auto = True
+
         self._base_route = base_route
         self._dependency_resolver.put('controller', 'none')
+
+    def configure(self, config):
+        """
+        Configures component by passing configuration parameters.
+
+        :param config: configuration parameters to be set.
+        """
+        super().configure(config)
+
+        self._swagger_auto = config.get_as_boolean_with_default("swagger.auto", self._swagger_auto)
 
     def _get_handler(self, command):
         def handler():
@@ -83,14 +96,23 @@ class CommandableHttpService(RestService):
         return handler
 
     def register(self):
+        """
+        Registers all service routes in HTTP endpoint.
+        """
         controller = self._dependency_resolver.get_one_required('controller')
         if not isinstance(controller, ICommandable):
             raise Exception("Controller has to implement ICommandable interface")
         self._command_set = controller.get_command_set()
-
-        for command in self._command_set.get_commands():
+        commands = self._command_set.get_commands()
+        for command in commands:
             route = self.fix_route(command.get_name())
             # if route[0] != '/':
             #     route = '/' + route #self._base_route + '/' + command.get_name()
 
             self.register_route('POST', route, None, self._get_handler(command))
+
+        if self._swagger_auto:
+            swagger_config = self._config.get_section('swagger')
+
+            doc = CommandableSwaggerDocument(self._base_route, swagger_config, commands)
+            self._register_open_api_spec(doc.to_string())

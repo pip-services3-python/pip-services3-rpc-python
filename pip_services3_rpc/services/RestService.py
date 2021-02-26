@@ -9,26 +9,20 @@
     :license: MIT, see LICENSE for more details.
 """
 
-import bottle
 import json
-import time
 
-from threading import Thread
-
+import bottle
 from pip_services3_commons.config import IConfigurable, ConfigParams
+from pip_services3_commons.errors import InvalidStateException
 from pip_services3_commons.refer import IReferenceable, DependencyResolver, IUnreferenceable
-from pip_services3_commons.run import IOpenable, IClosable
-from pip_services3_components.connect import ConnectionParams, ConnectionResolver
-from pip_services3_components.log import CompositeLogger
+from pip_services3_commons.run import IOpenable
 from pip_services3_components.count import CompositeCounters
-from pip_services3_commons.errors import ConfigException, ConnectionException, InvalidStateException
-from pip_services3_commons.errors import ErrorDescription, ErrorDescriptionFactory
-from pip_services3_commons.data import FilterParams, PagingParams
-from pip_services3_commons.validate import Schema
+from pip_services3_components.log import CompositeLogger
 
-from .IRegisterable import IRegisterable
 from .HttpEndpoint import HttpEndpoint
 from .HttpResponseSender import HttpResponseSender
+from .IRegisterable import IRegisterable
+from .ISwaggerService import ISwaggerService
 
 
 class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IRegisterable):
@@ -94,11 +88,16 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
     def __init__(self):
         self._default_config = ConfigParams.from_tuples("base_route", None,
-                                                        "dependencies.endpoint", "*:endpoint:http:*:1.0")
+                                                        "dependencies.endpoint", "*:endpoint:http:*:1.0",
+                                                        "dependencies.swagger", "*:swagger-service:*:*:1.0")
         # self._registered = False
         self._dependency_resolver = DependencyResolver()
         self._logger = CompositeLogger()
         self._counters = CompositeCounters()
+
+        self._swagger_service: ISwaggerService = None
+        self._swagger_enabled = False
+        self._swagger_route = 'swagger'
 
     def _instrument(self, correlation_id, name):
         """
@@ -131,6 +130,18 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         self._endpoint.register(self)
 
+        self._swagger_service = self._dependency_resolver.get_one_optional('swagger')
+
+    def unset_references(self):
+        """
+        Unsets (clears) previously set references to dependent components.
+        """
+        if not (self._endpoint is None):
+            self._endpoint.unregister(self)
+            self._endpoint = None
+
+        self._swagger_service = None
+
     def configure(self, config):
         """
         Configures component by passing configuration parameters.
@@ -142,13 +153,8 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         self._dependency_resolver.configure(config)
         self._base_route = config.get_as_string_with_default("base_route", self._base_route)
 
-    def unset_references(self):
-        """
-        Unsets (clears) previously set references to dependent components.
-        """
-        if not (self._endpoint is None):
-            self._endpoint.unregister(self)
-            self._endpoint = None
+        self._swagger_enabled = self._config.get_as_boolean_with_default("swagger.enable", self._swagger_enabled)
+        self._swagger_route = self._config.get_as_string_with_default("swagger.route", self._swagger_route)
 
     def create_endpoint(self):
         endpoint = HttpEndpoint()
@@ -303,7 +309,12 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         self._endpoint.register_route(method, route, schema, handler)
 
     def register(self):
-        pass
+        """
+        Registers all service routes in HTTP endpoint.
+
+        This method is called by the service and must be overriden
+        in child classes.
+        """
 
     def get_data(self):
         data = bottle.request.json
@@ -362,3 +373,21 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         self._endpoint.register_interceptor(route, action)
 
+    def _register_open_api_spec_from_file(self, path):
+        content = open(path, 'r').read()
+        self._register_open_api_spec(content)
+
+    def _register_open_api_spec(self, content):
+        def swagger_route():
+            bottle.response.headers.update({
+                'Content-Length': len(content.encode('utf-8')),
+                'Content-Type': 'application/x-yaml'
+            })
+            bottle.response.body = content
+            return
+
+        if self._swagger_enabled:
+            self.register_route('GET', self._swagger_route, None, swagger_route)
+
+            if self._swagger_service is not None:
+                self._swagger_service.register_open_api_spec(self._base_route, self._swagger_route)
