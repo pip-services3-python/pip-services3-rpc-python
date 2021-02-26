@@ -8,25 +8,23 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+import json
 import time
 from threading import Thread
 
 import bottle
-from bottle import request, response
-
 from beaker.middleware import SessionMiddleware
-
+from bottle import request, response
 from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.errors import ConnectionException, ConfigException
-from pip_services3_commons.refer import IReferenceable, DependencyResolver
+from pip_services3_commons.refer import IReferenceable
 from pip_services3_commons.run import IOpenable
 from pip_services3_commons.validate import Schema
 from pip_services3_components.count import CompositeCounters
 from pip_services3_components.log import CompositeLogger
-from .IRegisterable import IRegisterable
-from .SSLCherryPyServer import SSLCherryPyServer
-from .HttpResponseSender import HttpResponseSender
 
+from .HttpResponseSender import HttpResponseSender
+from .SSLCherryPyServer import SSLCherryPyServer
 from ..connect.HttpConnectionResolver import HttpConnectionResolver
 
 
@@ -64,34 +62,31 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             endpoint.open(correlationId)
             # ...
     """
-    _default_config = None
-    _connection_resolver = None
-    _logger = None
-    _counters = None
-    _registrations = None
-    _service = None
-    _server = None
+    _default_config = ConfigParams.from_tuples("connection.protocol", "http",
+                                               "connection.host", "0.0.0.0",
+                                               "connection.port", 3000,
+                                               "credential.ssl_key_file", None,
+                                               "credential.ssl_crt_file", None,
+                                               "credential.ssl_ca_file", None,
+                                               "options.maintenance_enabled", False,
+                                               "options.request_max_size", 1024 * 1024,
+                                               "options.file_max_size", 200 * 1024 * 1024,
+                                               "connection.connect_timeout", 60000,
+                                               "connection.debug", True)
+
     _debug = False
-    _uri = None
-    _file_max_size = 200 * 1024 * 1024
-    _maintenance_enabled = False
-    _protocol_upgrade_enabled = False
 
     def __init__(self):
         """
         Creates HttpEndpoint
         """
-        self._default_config = ConfigParams.from_tuples("connection.protocol", "http",
-                                                        "connection.host", "0.0.0.0",
-                                                        "connection.port", 3000,
-                                                        "credential.ssl_key_file", None,
-                                                        "credential.ssl_crt_file", None,
-                                                        "credential.ssl_ca_file", None,
-                                                        "options.maintenance_enabled", False,
-                                                        "options.request_max_size", 1024 * 1024,
-                                                        "options.file_max_size", 200 * 1024 * 1024,
-                                                        "connection.connect_timeout", 60000,
-                                                        "connection.debug", True)
+        self._service = None
+        self._server = None
+        self._maintenance_enabled = False
+        self._file_max_size = 200 * 1024 * 1024
+        self._protocol_upgrade_enabled = False
+        self._uri = None
+
         self._connection_resolver = HttpConnectionResolver()
         self._logger = CompositeLogger()
         self._counters = CompositeCounters()
@@ -276,8 +271,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             try:
                 if isinstance(schema, Schema):
                     params = self.get_data()
-                    correlation_id = params['correlation_id'] if 'correlation_id' in params else None
-                    error = schema.validate_and_throw_exception(correlation_id, params, False)
+                    correlation_id = None if not params else params.get('correlation_id')
+                    schema.validate_and_throw_exception(correlation_id, params, False)
                 return handler(*args, **kwargs)
             except Exception as ex:
                 return HttpResponseSender.send_error(ex)
@@ -285,8 +280,14 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._service.route(route, method, wrapper)
 
     def get_data(self):
-        if request.json:
-            return request.json
+        result = {}
+        if request.json or request.query:
+            for k, v in request.query.dict.items():
+                result[k] = ''.join(v)
+            if request.json != 'null':
+                result.update(request.json if not isinstance(request.json, str) else json.loads(
+                    request.json))
+            return result
         else:
             return None
 

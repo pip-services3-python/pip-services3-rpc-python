@@ -73,27 +73,28 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         service.set_references(References.from_tuples(Descriptor("mygroup","controller","default","default","1.0"), controller))
         service.open("123")
     """
-    _default_config = None
-    _debug = False
-    _dependency_resolver = None
-    _logger = None
-    _counters = None
-    # _registered = None
-    _local_endpoint = None
-    _config = None
-    _references = None
-    _base_route = None
-    _endpoint = None
-    _opened = None
+    _default_config = ConfigParams.from_tuples("base_route", None,
+                                               "dependencies.endpoint", "*:endpoint:http:*:1.0",
+                                               "dependencies.swagger", "*:swagger-service:*:*:1.0")
 
     def __init__(self):
-        self._default_config = ConfigParams.from_tuples("base_route", None,
-                                                        "dependencies.endpoint", "*:endpoint:http:*:1.0",
-                                                        "dependencies.swagger", "*:swagger-service:*:*:1.0")
-        # self._registered = False
+
+        # The dependency resolver.
         self._dependency_resolver = DependencyResolver()
+        # The logger.
         self._logger = CompositeLogger()
+        # The performance counters.
         self._counters = CompositeCounters()
+        self._debug = False
+        # The base route.
+        self._base_route = None
+        # The HTTP endpoint that exposes this service.
+        self._endpoint = None
+
+        self._local_endpoint = None
+        self._config = None
+        self._references = None
+        self._opened = None
 
         self._swagger_service: ISwaggerService = None
         self._swagger_enabled = False
@@ -378,16 +379,17 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         self._register_open_api_spec(content)
 
     def _register_open_api_spec(self, content):
-        def swagger_route():
+
+        def handler():
             bottle.response.headers.update({
                 'Content-Length': len(content.encode('utf-8')),
                 'Content-Type': 'application/x-yaml'
             })
-            bottle.response.body = content
-            return
+
+            return content
 
         if self._swagger_enabled:
-            self.register_route('GET', self._swagger_route, None, swagger_route)
+            self.register_route('GET', self._swagger_route, None, handler)
 
             if self._swagger_service is not None:
                 self._swagger_service.register_open_api_spec(self._base_route, self._swagger_route)
