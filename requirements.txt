@@ -10,5 +10,5 @@ cheroot
 beaker
 netifaces==0.10.9
 
-pip-services3-commons
+pip-services3-commons >= 3.2
 pip-services3-components
