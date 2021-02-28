@@ -91,20 +91,18 @@ class CommandableSwaggerDocument:
     def __create_schema_data(self, command):
         schema = command._schema
 
-        if schema is None or schema.properties is None:
+        if schema is None or schema.get_properties() is None:
             return None
-        # elif schema.properties is None:
-        #     return None
 
         properties = {}
         required = []
 
-        for property in schema.properties:
-            properties[property.name] = {
-                'type': self._type_to_string(property.value_type)
+        for property in schema.get_properties():
+            properties[property.get_name()] = {
+                'type': self._type_to_string(property.get_type())
             }
             if property.required:
-                required.append(property.name)
+                required.append(property.get_name())
 
         data = {
             'properties': properties

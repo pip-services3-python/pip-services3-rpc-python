@@ -53,8 +53,10 @@ class DummyRestService(RestService):
     def __get_page_by_filter(self):
         return self._controller.get_page_by_filter(
             bottle.request.query.get('correlation_id'),
-            FilterParams(bottle.request.query),
-            PagingParams(bottle.request.query),
+            FilterParams(bottle.request.query.dict),
+            PagingParams(bottle.request.query.get('skip'),
+                         bottle.request.query.get('take'),
+                         bottle.request.query.get('total')),
         ).to_json()
 
     def __get_one_by_id(self, id):
@@ -84,25 +86,25 @@ class DummyRestService(RestService):
     def register(self):
         self.register_interceptor('/dummies', self._increment_number_of_calls)
 
-        self.register_route('get', '/dummies', ObjectSchema()
+        self.register_route('get', '/dummies', ObjectSchema(True)
                             .with_optional_property("skip", TypeCode.String)
                             .with_optional_property("take", TypeCode.String)
                             .with_optional_property("total", TypeCode.String)
                             .with_optional_property("body", FilterParamsSchema()), self.__get_page_by_filter)
 
-        self.register_route('get', '/dummies/<id>', ObjectSchema()
+        self.register_route('get', '/dummies/<id>', ObjectSchema(True)
                             .with_required_property("id", TypeCode.String),
                             self.__get_one_by_id)
 
-        self.register_route('post', '/dummies', ObjectSchema()
+        self.register_route('post', '/dummies', ObjectSchema(True)
                             .with_required_property("body", DummySchema()),
                             self.__create)
 
-        self.register_route('put', '/dummies', ObjectSchema()
+        self.register_route('put', '/dummies', ObjectSchema(True)
                             .with_required_property("body", DummySchema()),
                             self.__update)
 
-        self.register_route('delete', '/dummies/<id>', ObjectSchema()
+        self.register_route('delete', '/dummies/<id>', ObjectSchema(True)
                             .with_required_property("dummy_id", TypeCode.String),
                             self.__delete_by_id)
 

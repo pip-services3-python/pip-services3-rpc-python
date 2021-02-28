@@ -2,9 +2,9 @@
 """
     test.DummyCommandSet
     ~~~~~~~~~~~~~~~~~~~~
-    
+
     Dummy command set
-    
+
     :copyright: Conceptual Vision Consulting LLC 2015-2016, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
@@ -39,7 +39,7 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "get_dummies",
-            ObjectSchema().with_optional_property("filter", FilterParamsSchema()).with_optional_property(
+            ObjectSchema(True).with_optional_property("filter", FilterParamsSchema()).with_optional_property(
                 "paging", PagingParamsSchema()),
             handler
         )
@@ -51,7 +51,7 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "get_dummy_by_id",
-            ObjectSchema().with_required_property("dummy_id", TypeCode.String), handler)
+            ObjectSchema(True).with_required_property("dummy_id", TypeCode.String), handler)
 
     def _make_create_command(self):
         def handler(correlation_id, args):
@@ -60,7 +60,7 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "create_dummy",
-            ObjectSchema().with_required_property("dummy", DummySchema()),
+            ObjectSchema(True).with_required_property("dummy", DummySchema()),
             handler
         )
 
@@ -71,7 +71,7 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "update_dummy",
-            ObjectSchema().with_required_property("dummy", DummySchema()),
+            ObjectSchema(True).with_required_property("dummy", DummySchema()),
             handler
         )
 
@@ -82,6 +82,6 @@ class DummyCommandSet(CommandSet):
 
         return Command(
             "delete_dummy",
-            ObjectSchema().with_required_property("dummy_id", TypeCode.String),
+            ObjectSchema(True).with_required_property("dummy_id", TypeCode.String),
             handler
         )
