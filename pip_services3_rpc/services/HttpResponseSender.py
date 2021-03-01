@@ -57,7 +57,7 @@ class HttpResponseSender():
             return
 
         bottle.response.status = 200
-        return
+        return json.dumps(result, default=HttpResponseSender._to_json) if result else None
 
     @staticmethod
     def send_error(error):
