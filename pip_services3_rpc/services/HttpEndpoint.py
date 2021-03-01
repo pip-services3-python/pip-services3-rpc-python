@@ -275,6 +275,9 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                     schema.validate_and_throw_exception(correlation_id, params, False)
                 return handler(*args, **kwargs)
             except Exception as ex:
+                # hack the redirect response in bottle
+                if isinstance(ex, bottle.HTTPResponse):
+                    handler(*args, **kwargs)
                 return HttpResponseSender.send_error(ex)
 
         self._service.route(route, method, wrapper)
