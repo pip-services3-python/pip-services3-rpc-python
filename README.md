@@ -61,4 +61,6 @@ Before committing changes run dockerized build and test as:
 
 ## Contacts
 
-The Python version of Pip.Services is created and maintained by **Sergey Seroukhov**
+The Python version of Pip.Services is created and maintained by
+- **Sergey Seroukhov**
+- **Danil Prisiazhnyi**
