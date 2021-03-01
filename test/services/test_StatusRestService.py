@@ -55,7 +55,7 @@ class TestStatusRestService():
     def test_status(self):
         result = self.invoke("/status")
 
-        assert None != result
+        assert None != result.text
 
     def invoke(self, route):
         params = { }
