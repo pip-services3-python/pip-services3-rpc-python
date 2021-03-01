@@ -80,7 +80,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
     def __init__(self):
 
         # The dependency resolver.
-        self._dependency_resolver = DependencyResolver()
+        self._dependency_resolver = DependencyResolver(self._default_config)
         # The logger.
         self._logger = CompositeLogger()
         # The performance counters.
@@ -255,17 +255,18 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         return HttpResponseSender.send_created_result(result)
 
-    def send_deleted_result(self):
+    def send_deleted_result(self, result=None):
         """
         Creates a callback function that sends newly created object as JSON. That callack function call be called directly or passed as a parameter to business logic components.
 
         If object is not null it returns 200 status code. For null results it returns
         204 status code. If error occur it sends ErrorDescription with approproate status code.
 
+        :param result: a body object to result.
         :return: execution result.
         """
 
-        return HttpResponseSender.send_deleted_result()
+        return HttpResponseSender.send_deleted_result(result)
 
     def send_error(self, error):
         """
@@ -375,7 +376,8 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         self._endpoint.register_interceptor(route, action)
 
     def _register_open_api_spec_from_file(self, path):
-        content = open(path, 'r').read()
+        with open(path, 'r') as f:
+            content = f.read()
         self._register_open_api_spec(content)
 
     def _register_open_api_spec(self, content):
