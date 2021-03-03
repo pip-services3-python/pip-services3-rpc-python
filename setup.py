@@ -36,7 +36,7 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
-        'iso8601', 'PyYAML', 'pystache', 'pytest', 'numpy', 'pytz', 'bottle', 'requests', 'netifaces',
+        'iso8601', 'PyYAML', 'pystache', 'pytest', 'pytz', 'bottle', 'requests', 'netifaces',
         'pip-services3-commons', 'pip-services3-components', 'cheroot', 'beaker'
     ],
     classifiers=[
