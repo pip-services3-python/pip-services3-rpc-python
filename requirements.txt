@@ -10,4 +10,4 @@ beaker
 netifaces==0.10.9
 
 pip-services3-commons >= 3.2
-pip-services3-components
+pip-services3-components >= 3.3.0

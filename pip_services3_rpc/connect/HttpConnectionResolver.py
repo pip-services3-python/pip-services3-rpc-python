@@ -86,7 +86,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         if uri is not None:
             return None
 
-        protocol = connection.get_protocol("http")
+        protocol = connection.get_protocol_with_default("http")
         if protocol != "http" and 'https' != protocol:
             raise ConfigException(correlation_id,
                                   "WRONG_PROTOCOL",
@@ -132,7 +132,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
 
         if uri is None or uri == "":
 
-            protocol = connection.get_protocol("http")
+            protocol = connection.get_protocol_with_default("http")
             host = connection.get_host()
             port = connection.get_port()
 

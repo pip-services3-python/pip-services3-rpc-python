@@ -154,7 +154,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         certfile = None
         keyfile = None
 
-        if connection.get_protocol('http') == 'https':
+        if connection.get_protocol_with_default('http') == 'https':
             certfile = connection.get_as_nullable_string('ssl_crt_file')
             keyfile = connection.get_as_nullable_string('ssl_key_file')
 
