@@ -198,7 +198,7 @@
 </dl>
 <dl class="py class">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver">
-<em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.connect.</code><code class="sig-name descname">HttpConnectionResolver</code><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pip_services3_rpc.connect.</span></code><code class="sig-name descname"><span class="pre">HttpConnectionResolver</span></code><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.refer.IReferenceable.IReferenceable</span></code>, <code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_commons.config.IConfigurable.IConfigurable</span></code></p>
 <p>Helper class to retrieve connections for HTTP-based services abd clients. In addition to regular functions of
 ConnectionResolver is able to parse <a class="reference external" href="http://">http://</a> URIs and validate connection parameters before returning them.</p>
@@ -239,14 +239,14 @@ ConnectionResolver is able to parse <a class="reference external" href="http://"
 </div>
 <dl class="py method">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver.configure">
-<code class="sig-name descname">configure</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">config</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.configure" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.configure" title="Permalink to this definition">¶</a></dt>
 <dd><p>Configures component by passing configuration parameters.
 :param config: configuration parameters to be set.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver.register">
-<code class="sig-name descname">register</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.register" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">register</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.register" title="Permalink to this definition">¶</a></dt>
 <dd><p>Registers the given connection in all referenced discovery services. This method can be used for dynamic service discovery.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -257,7 +257,7 @@ ConnectionResolver is able to parse <a class="reference external" href="http://"
 
 <dl class="py method">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver.resolve">
-<code class="sig-name descname">resolve</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.resolve" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">resolve</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.resolve" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resolves a single component connection. If connections are configured to be retrieved from Discovery service
 it finds a IDiscovery and resolves the connection there.</p>
 <dl class="field-list simple">
@@ -272,7 +272,7 @@ it finds a IDiscovery and resolves the connection there.</p>
 
 <dl class="py method">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver.resolve_all">
-<code class="sig-name descname">resolve_all</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">correlation_id</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.resolve_all" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">resolve_all</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.resolve_all" title="Permalink to this definition">¶</a></dt>
 <dd><p>Resolves all component connection. If connections are configured to be retrieved from Discovery service it finds a IDiscovery and resolves the connection there.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -286,7 +286,7 @@ it finds a IDiscovery and resolves the connection there.</p>
 
 <dl class="py method">
 <dt id="pip_services3_rpc.connect.HttpConnectionResolver.set_references">
-<code class="sig-name descname">set_references</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">references</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.set_references" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">set_references</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">references</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.connect.HttpConnectionResolver.set_references" title="Permalink to this definition">¶</a></dt>
 <dd><p>Sets references to dependent components.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

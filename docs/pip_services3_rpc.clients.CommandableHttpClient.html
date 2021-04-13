@@ -187,7 +187,7 @@
 </dl>
 <dl class="py class">
 <dt id="pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient">
-<em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.clients.CommandableHttpClient.</code><code class="sig-name descname">CommandableHttpClient</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pip_services3_rpc.clients.CommandableHttpClient.</span></code><code class="sig-name descname"><span class="pre">CommandableHttpClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.clients.RestClient.html#pip_services3_rpc.clients.RestClient.RestClient" title="pip_services3_rpc.clients.RestClient.RestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.clients.RestClient.RestClient</span></code></a>, <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract client that calls commandable HTTP service.
 Commandable services are generated automatically for ICommandable objects. Each command is exposed as POST operation that receives all parameters in body object.</p>
@@ -242,7 +242,7 @@ Commandable services are generated automatically for ICommandable objects. Each 
 </div>
 <dl class="py method">
 <dt id="pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient.call_command">
-<code class="sig-name descname">call_command</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">name</span></em>, <em class="sig-param"><span class="n">correlation_id</span></em>, <em class="sig-param"><span class="n">params</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient.call_command" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname"><span class="pre">call_command</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient.call_command" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calls a remote method via HTTP commadable protocol. The call is made via POST operation and all parameters are sent in body object. The complete route to remote method is defined as baseRoute + “/” + name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

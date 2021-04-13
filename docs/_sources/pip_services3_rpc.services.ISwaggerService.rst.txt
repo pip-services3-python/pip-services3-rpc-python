@@ -1,0 +1,7 @@
+pip\_services3\_rpc.services.ISwaggerService module
+===================================================
+
+.. automodule:: pip_services3_rpc.services.ISwaggerService
+   :members:
+   :undoc-members:
+   :show-inheritance:

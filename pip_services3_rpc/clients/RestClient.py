@@ -129,11 +129,11 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
     def _instrument(self, correlation_id, name):
         """
-        Adds instrumentation to log calls and measure call time. It returns a Timing object that is used to end the time measurement.
+        Adds instrumentation to log calls and measure call time. It returns a CounterTiming object that is used to end the time measurement.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         :param name: a method name.
-        :return: Timing object to end the time measurement.
+        :return: CounterTiming object to end the time measurement.
         """
         TYPE_NAME = self.__class__.__name__ or 'unknown-target'
         self._logger.trace(correlation_id, f"Calling {name} method {TYPE_NAME}")

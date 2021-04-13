@@ -1,0 +1,7 @@
+pip\_services3\_rpc.services.CommandableSwaggerDocument module
+==============================================================
+
+.. automodule:: pip_services3_rpc.services.CommandableSwaggerDocument
+   :members:
+   :undoc-members:
+   :show-inheritance:

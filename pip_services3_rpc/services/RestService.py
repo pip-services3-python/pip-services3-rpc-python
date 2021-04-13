@@ -102,7 +102,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
     def _instrument(self, correlation_id, name):
         """
-        Adds instrumentation to log calls and measure call time. It returns a Timing object that is used to end the time measurement.
+        Adds instrumentation to log calls and measure call time. It returns a CounterTiming object that is used to end the time measurement.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
 

@@ -38,7 +38,7 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pip_services3_rpc.services.HeartBeatOperations module" href="pip_services3_rpc.services.HeartBeatOperations.html" />
+    <link rel="next" title="pip_services3_rpc.services.CommandableSwaggerDocument module" href="pip_services3_rpc.services.CommandableSwaggerDocument.html" />
     <link rel="prev" title="pip_services3_rpc.services.AboutOperations module" href="pip_services3_rpc.services.AboutOperations.html" /> 
 </head>
 
@@ -187,7 +187,7 @@
 </dl>
 <dl class="py class">
 <dt id="pip_services3_rpc.services.CommandableHttpService.CommandableHttpService">
-<em class="property">class </em><code class="sig-prename descclassname">pip_services3_rpc.services.CommandableHttpService.</code><code class="sig-name descname">CommandableHttpService</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">base_route</span><span class="p">:</span> <span class="n">str</span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.CommandableHttpService" title="Permalink to this definition">¶</a></dt>
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pip_services3_rpc.services.CommandableHttpService.</span></code><code class="sig-name descname"><span class="pre">CommandableHttpService</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_route</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.CommandableHttpService" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.services.RestService.html#pip_services3_rpc.services.RestService.RestService" title="pip_services3_rpc.services.RestService.RestService"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.RestService.RestService</span></code></a></p>
 <p>Abstract service that receives remove calls via HTTP/REST protocol to operations automatically generated for commands defined in ICommandable components. Each command is exposed as POST operation that receives all parameters in body object. Commandable services require only 3 lines of code to implement a robust external HTTP-based remote interface.</p>
 <dl class="simple">
@@ -240,9 +240,20 @@
 </pre></div>
 </div>
 <dl class="py method">
+<dt id="pip_services3_rpc.services.CommandableHttpService.CommandableHttpService.configure">
+<code class="sig-name descname"><span class="pre">configure</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">config</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.CommandableHttpService.configure" title="Permalink to this definition">¶</a></dt>
+<dd><p>Configures component by passing configuration parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>config</strong> – configuration parameters to be set.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt id="pip_services3_rpc.services.CommandableHttpService.CommandableHttpService.register">
-<code class="sig-name descname">register</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.CommandableHttpService.register" title="Permalink to this definition">¶</a></dt>
-<dd><p>Perform required registration steps.</p>
+<code class="sig-name descname"><span class="pre">register</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.CommandableHttpService.CommandableHttpService.register" title="Permalink to this definition">¶</a></dt>
+<dd><p>Registers all service routes in HTTP endpoint.</p>
 </dd></dl>
 
 </dd></dl>
@@ -256,7 +267,7 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="pip_services3_rpc.services.HeartBeatOperations.html" class="btn btn-neutral float-right" title="pip_services3_rpc.services.HeartBeatOperations module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pip_services3_rpc.services.CommandableSwaggerDocument.html" class="btn btn-neutral float-right" title="pip_services3_rpc.services.CommandableSwaggerDocument module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
         <a href="pip_services3_rpc.services.AboutOperations.html" class="btn btn-neutral float-left" title="pip_services3_rpc.services.AboutOperations module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
