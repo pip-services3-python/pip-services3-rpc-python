@@ -1,0 +1,19 @@
+pip\_services3\_rpc.test package
+================================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pip_services3_rpc.test.TestCommandableHttpClient
+   pip_services3_rpc.test.TestRestClient
+
+Module contents
+---------------
+
+.. automodule:: pip_services3_rpc.test
+   :members:
+   :undoc-members:
+   :show-inheritance:

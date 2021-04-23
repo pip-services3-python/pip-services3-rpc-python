@@ -1,5 +1,13 @@
 # <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> Remote Procedure Calls for Python Changelog
 
+## <a name="3.1.5 - 3.1.6"></a> 3.1.5 - 3.1.6 (2021-22-23)
+
+### Features
+* Added **test** module for automated testing
+
+### Bug Fixes
+* Update references
+
 ## <a name="3.1.4"></a> 3.1.4 (2021-03-01)
 
 ### Bug Fixes

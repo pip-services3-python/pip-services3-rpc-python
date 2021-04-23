@@ -11,6 +11,7 @@ Subpackages
    pip_services3_rpc.clients
    pip_services3_rpc.connect
    pip_services3_rpc.services
+   pip_services3_rpc.test
 
 Module contents
 ---------------

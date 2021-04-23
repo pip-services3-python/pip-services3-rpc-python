@@ -1,0 +1,7 @@
+pip\_services3\_rpc.test.TestCommandableHttpClient module
+=========================================================
+
+.. automodule:: pip_services3_rpc.test.TestCommandableHttpClient
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   
-  <title>pip_services3_rpc.services.StatusOperations module &mdash; pip-services3-rpc  documentation</title>
+  <title>pip_services3_rpc.test.TestCommandableHttpClient module &mdash; pip-services3-rpc  documentation</title>
   
 
   
@@ -38,8 +38,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="pip_services3_rpc.services.StatusRestService module" href="pip_services3_rpc.services.StatusRestService.html" />
-    <link rel="prev" title="pip_services3_rpc.services.SSLCherryPyServer module" href="pip_services3_rpc.services.SSLCherryPyServer.html" /> 
+    <link rel="next" title="pip_services3_rpc.test.TestRestClient module" href="pip_services3_rpc.test.TestRestClient.html" />
+    <link rel="prev" title="pip_services3_rpc.test package" href="pip_services3_rpc.test.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -91,8 +91,8 @@
 <li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.build.html">pip_services3_rpc.build package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.clients.html">pip_services3_rpc.clients package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.connect.html">pip_services3_rpc.connect package</a></li>
-<li class="toctree-l4 current"><a class="reference internal" href="pip_services3_rpc.services.html">pip_services3_rpc.services package</a></li>
-<li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.test.html">pip_services3_rpc.test package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.services.html">pip_services3_rpc.services package</a></li>
+<li class="toctree-l4 current"><a class="reference internal" href="pip_services3_rpc.test.html">pip_services3_rpc.test package</a></li>
 </ul>
 </li>
 <li class="toctree-l3"><a class="reference internal" href="pip_services3_rpc.html#module-pip_services3_rpc">Module contents</a></li>
@@ -152,15 +152,15 @@
         
           <li><a href="pip_services3_rpc.html">pip_services3_rpc package</a> &raquo;</li>
         
-          <li><a href="pip_services3_rpc.services.html">pip_services3_rpc.services package</a> &raquo;</li>
+          <li><a href="pip_services3_rpc.test.html">pip_services3_rpc.test package</a> &raquo;</li>
         
-      <li>pip_services3_rpc.services.StatusOperations module</li>
+      <li>pip_services3_rpc.test.TestCommandableHttpClient module</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
           
-            <a href="_sources/pip_services3_rpc.services.StatusOperations.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/pip_services3_rpc.test.TestCommandableHttpClient.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -173,38 +173,28 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="module-pip_services3_rpc.services.StatusOperations">
-<span id="pip-services3-rpc-services-statusoperations-module"></span><h1>pip_services3_rpc.services.StatusOperations module<a class="headerlink" href="#module-pip_services3_rpc.services.StatusOperations" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="module-pip_services3_rpc.test.TestCommandableHttpClient">
+<span id="pip-services3-rpc-test-testcommandablehttpclient-module"></span><h1>pip_services3_rpc.test.TestCommandableHttpClient module<a class="headerlink" href="#module-pip_services3_rpc.test.TestCommandableHttpClient" title="Permalink to this headline">¶</a></h1>
 <dl class="py class">
-<dt id="pip_services3_rpc.services.StatusOperations.StatusOperations">
-<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pip_services3_rpc.services.StatusOperations.</span></code><code class="sig-name descname"><span class="pre">StatusOperations</span></code><a class="headerlink" href="#pip_services3_rpc.services.StatusOperations.StatusOperations" title="Permalink to this definition">¶</a></dt>
-<dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.services.RestOperations.html#pip_services3_rpc.services.RestOperations.RestOperations" title="pip_services3_rpc.services.RestOperations.RestOperations"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.services.RestOperations.RestOperations</span></code></a></p>
+<dt id="pip_services3_rpc.test.TestCommandableHttpClient.TestCommandableHttpClient">
+<em class="property"><span class="pre">class</span> </em><code class="sig-prename descclassname"><span class="pre">pip_services3_rpc.test.TestCommandableHttpClient.</span></code><code class="sig-name descname"><span class="pre">TestCommandableHttpClient</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_route</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.test.TestCommandableHttpClient.TestCommandableHttpClient" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.clients.CommandableHttpClient.html#pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient" title="pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.clients.CommandableHttpClient.CommandableHttpClient</span></code></a></p>
 <dl class="py method">
-<dt id="pip_services3_rpc.services.StatusOperations.StatusOperations.get_status_operation">
-<code class="sig-name descname"><span class="pre">get_status_operation</span></code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.StatusOperations.StatusOperations.get_status_operation" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="py method">
-<dt id="pip_services3_rpc.services.StatusOperations.StatusOperations.set_references">
-<code class="sig-name descname"><span class="pre">set_references</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">references</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.StatusOperations.StatusOperations.set_references" title="Permalink to this definition">¶</a></dt>
-<dd><p>Sets references to dependent components.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>references</strong> – references to locate the component dependencies.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt id="pip_services3_rpc.services.StatusOperations.StatusOperations.status">
-<code class="sig-name descname"><span class="pre">status</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">res</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.services.StatusOperations.StatusOperations.status" title="Permalink to this definition">¶</a></dt>
-<dd><p>Handles status requests</p>
+<dt id="pip_services3_rpc.test.TestCommandableHttpClient.TestCommandableHttpClient.call_command">
+<code class="sig-name descname"><span class="pre">call_command</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.test.TestCommandableHttpClient.TestCommandableHttpClient.call_command" title="Permalink to this definition">¶</a></dt>
+<dd><p>Calls a remote method via HTTP commadable protocol.
+The call is made via POST operation and all parameters are sent in body object.
+The complete route to remote method is defined as baseRoute + “/” + name.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>req</strong> – an HTTP request</p></li>
-<li><p><strong>res</strong> – an HTTP response</p></li>
+<li><p><strong>name</strong> – a name of the command to call.</p></li>
+<li><p><strong>correlation_id</strong> – (optional) transaction id to trace execution through the call chain.</p></li>
+<li><p><strong>params</strong> – command parameters.</p></li>
 </ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a command execution result.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -219,8 +209,8 @@
           </div>
           <footer>
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-        <a href="pip_services3_rpc.services.StatusRestService.html" class="btn btn-neutral float-right" title="pip_services3_rpc.services.StatusRestService module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
-        <a href="pip_services3_rpc.services.SSLCherryPyServer.html" class="btn btn-neutral float-left" title="pip_services3_rpc.services.SSLCherryPyServer module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="pip_services3_rpc.test.TestRestClient.html" class="btn btn-neutral float-right" title="pip_services3_rpc.test.TestRestClient module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="pip_services3_rpc.test.html" class="btn btn-neutral float-left" title="pip_services3_rpc.test package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
