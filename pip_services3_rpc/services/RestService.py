@@ -179,7 +179,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         if not (callback is None):
             callback(error, result)
 
-    def is_opened(self):
+    def is_open(self):
         """
         Checks if the component is opened.
 

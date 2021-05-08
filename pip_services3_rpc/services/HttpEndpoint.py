@@ -127,7 +127,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self._counters.set_references(references)
         self._connection_resolver.set_references(references)
 
-    def is_opened(self):
+    def is_open(self):
         """
         Checks if the component is opened.
 

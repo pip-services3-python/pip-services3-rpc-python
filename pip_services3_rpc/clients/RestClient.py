@@ -157,7 +157,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         if callback:
             callback(err, result)
 
-    def is_opened(self):
+    def is_open(self):
         """
         Checks if the component is opened.
 
