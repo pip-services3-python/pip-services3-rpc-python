@@ -149,5 +149,12 @@ class HttpResponseSender:
         if hasattr(obj, 'to_json'):
             return obj.to_json()
         if hasattr(obj, '__dict__'):
-            return HttpResponseSender._to_json(obj.__dict__)
+            attribs = dict(obj.__dict__)
+            dict_obj = {}
+            
+            for key in attribs.keys():
+                if not (key.endswith('__') and key.startswith('__')):
+                    dict_obj[key] = attribs[key]
+
+            return HttpResponseSender._to_json(dict_obj)
         return obj
