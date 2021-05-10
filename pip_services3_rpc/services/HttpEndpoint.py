@@ -11,18 +11,20 @@
 import json
 import time
 from threading import Thread
+from typing import List, Optional, Callable
 
 import bottle
 from beaker.middleware import SessionMiddleware
 from bottle import request, response
 from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.errors import ConnectionException, ConfigException
-from pip_services3_commons.refer import IReferenceable
+from pip_services3_commons.refer import IReferenceable, IReferences
 from pip_services3_commons.run import IOpenable
 from pip_services3_commons.validate import Schema
 from pip_services3_components.count import CompositeCounters
 from pip_services3_components.log import CompositeLogger
 
+from . import IRegisterable
 from .HttpResponseSender import HttpResponseSender
 from .SSLCherryPyServer import SSLCherryPyServer
 from ..connect.HttpConnectionResolver import HttpConnectionResolver
@@ -80,19 +82,19 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         Creates HttpEndpoint
         """
-        self._service = None
-        self._server = None
-        self._maintenance_enabled = False
-        self._file_max_size = 200 * 1024 * 1024
-        self._protocol_upgrade_enabled = False
-        self._uri = None
+        self.__service = None
+        self.__server = None
+        self.__maintenance_enabled: bool = False
+        self.__file_max_size = 200 * 1024 * 1024
+        self.__protocol_upgrade_enabled: bool = False
+        self.__uri: str = None
 
-        self._connection_resolver = HttpConnectionResolver()
-        self._logger = CompositeLogger()
-        self._counters = CompositeCounters()
-        self._registrations = []
+        self.__connection_resolver: HttpConnectionResolver = HttpConnectionResolver()
+        self.__logger: CompositeLogger = CompositeLogger()
+        self.__counters: CompositeCounters = CompositeCounters()
+        self.__registrations: List[IRegisterable] = []
 
-    def configure(self, config):
+    def configure(self, config: ConfigParams):
         """
         Configures this HttpEndpoint using the given configuration parameters.
         - connection(s) - the connection resolver's connections;
@@ -105,15 +107,15 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         :param config: configuration parameters, containing a "connection(s)" section.
         """
         config = config.set_defaults(self._default_config)
-        self._connection_resolver.configure(config)
-        self._file_max_size = config.get_as_boolean_with_default('options.file_max_size', self._file_max_size)
-        self._maintenance_enabled = config.get_as_long_with_default('options.maintenance_enabled',
-                                                                    self._maintenance_enabled)
-        self._protocol_upgrade_enabled = config.get_as_boolean_with_default('options.protocol_upgrade_enabled',
-                                                                            self._protocol_upgrade_enabled)
+        self.__connection_resolver.configure(config)
+        self.__file_max_size = config.get_as_boolean_with_default('options.file_max_size', self.__file_max_size)
+        self.__maintenance_enabled = config.get_as_long_with_default('options.maintenance_enabled',
+                                                                     self.__maintenance_enabled)
+        self.__protocol_upgrade_enabled = config.get_as_boolean_with_default('options.protocol_upgrade_enabled',
+                                                                             self.__protocol_upgrade_enabled)
         self._debug = config.get_as_boolean_with_default('connection.debug', self._debug)
 
-    def set_references(self, references):
+    def set_references(self, references: IReferences):
         """
         Sets references to this endpoint's logger, counters, and connection resolver.
 
@@ -123,69 +125,67 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
         :param references: an IReferences object, containing references to a logger, counters, and a connection resolver.
         """
-        self._logger.set_references(references)
-        self._counters.set_references(references)
-        self._connection_resolver.set_references(references)
+        self.__logger.set_references(references)
+        self.__counters.set_references(references)
+        self.__connection_resolver.set_references(references)
 
-    def is_open(self):
+    def is_open(self) -> bool:
         """
         Checks if the component is opened.
 
         :return: whether or not this endpoint is open with an actively listening REST server.
         """
-        return not (self._server is None)
+        return not (self.__server is None)
 
-    def open(self, correlation_id):
+    def open(self, correlation_id: Optional[str]):
         """
         Opens a connection using the parameters resolved by the referenced connection resolver and creates a REST server (service) using the set options and parameters.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
-        if self.is_opened():
+        if self.is_open():
             return
 
-        connection = self._connection_resolver.resolve(correlation_id)
+        connection = self.__connection_resolver.resolve(correlation_id)
         if connection is None:
             raise ConfigException(correlation_id, "NO_CONNECTION", "Connection for REST client is not defined")
-        self._uri = connection.get_uri()
+        self.__uri = connection.get_as_string('uri')
 
         # verify https with bottle
 
         certfile = None
         keyfile = None
 
-        if connection.get_protocol_with_default('http') == 'https':
+        if connection.get_as_string_with_default('protocol', 'http') == 'https':
             certfile = connection.get_as_nullable_string('ssl_crt_file')
             keyfile = connection.get_as_nullable_string('ssl_key_file')
 
         # Create instance of bottle application
-        self._service = SessionMiddleware(bottle.Bottle(catchall=True, autojson=True)).app
+        self.__service = SessionMiddleware(bottle.Bottle(catchall=True, autojson=True)).app
 
-        self._service.config['catchall'] = True
-        self._service.config['autojson'] = True
+        self.__service.config['catchall'] = True
+        self.__service.config['autojson'] = True
 
         # Enable CORS requests
-        self._service.add_hook('after_request', self._enable_cors)
-        self._service.route('/', 'OPTIONS', self._options_handler)
-        self._service.route('/<path:path>', 'OPTIONS', self._options_handler)
+        self.__service.add_hook('after_request', self.__enable_cors)
 
-        self._service.add_hook('after_request', self._do_maintance)
-        self._service.add_hook('after_request', self._no_cache)
-        self._service.add_hook('before_request', self._add_compatibility)
+        self.__service.add_hook('after_request', self.__do_maintance)
+        self.__service.add_hook('after_request', self.__no_cache)
+        self.__service.add_hook('before_request', self.__add_compatibility)
 
         # Register routes
-        # self.perform_registrations()
+        # self.__perform_registrations()
 
         def start_server():
-            self._service.run(server=self._server, debug=self._debug)
+            self.__service.run(server=self.__server, debug=self._debug)
 
-        # self.perform_registrations()
+        # self.__perform_registrations()
 
-        host = connection.get_host()
-        port = connection.get_port()
+        host = connection.get_as_string('host')
+        port = connection.get_as_integer('port')
         # Starting service
         try:
-            self._server = SSLCherryPyServer(host=host, port=port, certfile=certfile, keyfile=keyfile)
+            self.__server = SSLCherryPyServer(host=host, port=port, certfile=certfile, keyfile=keyfile)
 
             # Start server in thread
             Thread(target=start_server).start()
@@ -193,55 +193,55 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
             time.sleep(0.01)
 
             # Give 2 sec for initialization
-            self._connection_resolver.register(correlation_id)
-            self._logger.debug(correlation_id, f"Opened REST service at {self._uri}", )
-            self.perform_registrations()
+            self.__connection_resolver.register(correlation_id)
+            self.__logger.debug(correlation_id, f"Opened REST service at {self.__uri}", )
+            self.__perform_registrations()
         except Exception as ex:
-            self._server = None
+            self.__server = None
 
             raise ConnectionException(correlation_id, 'CANNOT_CONNECT', 'Opening REST service failed') \
-                .wrap(ex).with_details('url', self._uri)
+                .wrap(ex).with_details('url', self.__uri)
 
-    def close(self, correlation_id):
+    def close(self, correlation_id: Optional[str]):
         """
         Closes this endpoint and the REST server (service) that was opened earlier.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         try:
-            if not (self._server is None):
-                self._server.shutdown()
-                self._service.close()
-                self._logger.debug(
-                    correlation_id, f"Closed REST service at {self._uri}")
+            if not (self.__server is None):
+                self.__server.shutdown()
+                self.__service.close()
+                self.__logger.debug(
+                    correlation_id, f"Closed REST service at {self.__uri}")
 
-            self._server = None
-            self._service = None
-            self._uri = None
+            self.__server = None
+            self.__service = None
+            self.__uri = None
         except Exception as ex:
-            self._logger.warn(correlation_id, "Failed while closing REST service: " + str(ex))
+            self.__logger.warn(correlation_id, "Failed while closing REST service: " + str(ex))
 
-    def register(self, registration):
+    def register(self, registration: IRegisterable):
         """
         Registers a registerable object for dynamic endpoint discovery.
 
         :param registration: the registration to add.
         """
-        self._registrations.append(registration)
+        self.__registrations.append(registration)
 
-    def unregister(self, registration):
+    def unregister(self, registration: IRegisterable):
         """
         Unregisters a registerable object, so that it is no longer used in dynamic endpoint discovery.
 
         :param registration: the registration to remove.
         """
-        self._registrations.remove(registration)
+        self.__registrations.remove(registration)
 
-    def perform_registrations(self):
-        for registration in self._registrations:
+    def __perform_registrations(self):
+        for registration in self.__registrations:
             registration.register()
 
-    def fix_route(self, route) -> str:
+    def __fix_route(self, route: str) -> str:
         if route is not None and len(route) > 0:
             if route[0] != '/':
                 route = f'/{route}'
@@ -249,7 +249,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
         return ''
 
-    def register_route(self, method, route, schema, handler):
+    def register_route(self, method: str, route: str, schema: Schema, handler: Callable):
         """
         Registers an action in this objects REST server (service) by the given method and route.
 
@@ -265,12 +265,12 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         # if method == 'DELETE':
         #     method = 'DEL'
 
-        route = self.fix_route(route)
+        route = self.__fix_route(route)
 
         def wrapper(*args, **kwargs):
             try:
                 if isinstance(schema, Schema):
-                    params = self.get_data()
+                    params = self.__get_data()
                     correlation_id = None if not params else params.get('correlation_id')
                     schema.validate_and_throw_exception(correlation_id, params, False)
                 return handler(*args, **kwargs)
@@ -280,9 +280,9 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                     handler(*args, **kwargs)
                 return HttpResponseSender.send_error(ex)
 
-        self._service.route(route, method, wrapper)
+        self.__service.route(route, method, wrapper)
 
-    def get_data(self):
+    def __get_data(self):
         result = {}
         if request.json or request.query:
             for k, v in request.query.dict.items():
@@ -294,23 +294,23 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         else:
             return None
 
-    def _enable_cors(self):
+    def __enable_cors(self):
         response.headers['Access-Control-Max-Age'] = '5'
         response.headers['Access-Control-Allow-Origin'] = '*'
         response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
         response.headers[
             'Access-Control-Allow-Headers'] = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
 
-    def _do_maintance(self):
+    def __do_maintance(self):
         """
         :return: maintenance error code
         """
         # Make this more sophisticated
-        if self._maintenance_enabled:
+        if self.__maintenance_enabled:
             response.headers['Retry-After'] = 3600
             response.status = 503
 
-    def _no_cache(self):
+    def __no_cache(self):
         """
         Prevents IE from caching REST requests
         """
@@ -318,7 +318,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         response.headers['Pragma'] = 'no-cache'
         response.headers['Expires'] = 0
 
-    def _add_compatibility(self):
+    def __add_compatibility(self):
 
         def inner(name):
             if request.query:
@@ -339,16 +339,21 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         request['param'] = inner
         request['route'] = {'params': request.params}
 
-    def _options_handler(self, ath=None):
-        return
-
     def get_param(self, param, default=None):
         return request.params.get(param, default)
 
-    def get_correlation_id(self):
-        return request.query.get('correlation_id')
+    def get_correlation_id(self) -> Optional[str]:
+        """
+        Returns correlationId from request
 
-    def register_route_with_auth(self, method, route, schema, authorize, action):
+        :returns: Returns correlationId from request
+        """
+        correlation_id = bottle.request.query.get('correlation_id')
+        if correlation_id is None or correlation_id == '':
+            correlation_id = bottle.request.headers['correlation_id']
+        return correlation_id
+
+    def register_route_with_auth(self, method: str, route: str, schema: Schema, authorize: Callable, action: Callable):
         """
         Registers an action with authorization in this objects REST server (service)
         by the given method and route.
@@ -365,14 +370,14 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
         self.register_route(method, route, schema, action)
 
-    def register_interceptor(self, route, action):
+    def register_interceptor(self, route: str, action: Callable):
         """
         Registers a middleware action for the given route.
 
         :param route: the route to register in this object's REST server (service).
         :param action: the middleware action to perform at the given route.
         """
-        route = self.fix_route(route)
+        route = self.__fix_route(route)
 
-        self._service.add_hook('before_request', lambda: action(request, response) if not (
+        self.__service.add_hook('before_request', lambda: action(request, response) if not (
                 route is not None and route != '' and str(request.url).startswith(route)) else None)

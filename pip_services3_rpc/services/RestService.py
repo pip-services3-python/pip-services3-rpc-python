@@ -10,19 +10,24 @@
 """
 
 import json
+from abc import abstractmethod
+from typing import Optional, Any, Callable
 
 import bottle
 from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.errors import InvalidStateException
-from pip_services3_commons.refer import IReferenceable, DependencyResolver, IUnreferenceable
+from pip_services3_commons.refer import IReferenceable, DependencyResolver, IUnreferenceable, IReferences
 from pip_services3_commons.run import IOpenable
+from pip_services3_commons.validate import Schema
 from pip_services3_components.count import CompositeCounters
 from pip_services3_components.log import CompositeLogger
+from pip_services3_components.trace.CompositeTracer import CompositeTracer
 
 from .HttpEndpoint import HttpEndpoint
 from .HttpResponseSender import HttpResponseSender
 from .IRegisterable import IRegisterable
 from .ISwaggerService import ISwaggerService
+from .InstrumentTiming import InstrumentTiming
 
 
 class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IRegisterable):
@@ -80,44 +85,35 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
     def __init__(self):
 
         # The dependency resolver.
-        self._dependency_resolver = DependencyResolver(self._default_config)
+        self._dependency_resolver: DependencyResolver = DependencyResolver(self._default_config)
         # The logger.
-        self._logger = CompositeLogger()
+        self._logger: CompositeLogger = CompositeLogger()
         # The performance counters.
-        self._counters = CompositeCounters()
+        self._counters: CompositeCounters = CompositeCounters()
         self._debug = False
         # The base route.
-        self._base_route = None
+        self._base_route: str = None
         # The HTTP endpoint that exposes this service.
-        self._endpoint = None
+        self._endpoint: HttpEndpoint = None
+        # The tracer.
+        self._tracer: CompositeTracer = CompositeTracer()
 
-        self._local_endpoint = None
-        self._config = None
-        self._references = None
-        self._opened = None
-
+        self._config: ConfigParams = None
         self._swagger_service: ISwaggerService = None
         self._swagger_enabled = False
         self._swagger_route = 'swagger'
 
-    def _instrument(self, correlation_id, name):
-        """
-        Adds instrumentation to log calls and measure call time. It returns a CounterTiming object that is used to end the time measurement.
+        self.__local_endpoint: bool = None
+        self.__references: IReferences = None
+        self.__opened: bool = None
 
-        :param correlation_id: (optional) transaction id to trace execution through call chain.
-
-        :param name: a method name.
-        """
-        self._logger.trace(correlation_id, "Executing " + name + " method")
-        return self._counters.begin_timing(name + ".exec_time")
-
-    def set_references(self, references):
+    def set_references(self, references: IReferences):
         """
         Sets references to dependent components.
 
         :param references: references to locate the component dependencies.
         """
-        self._references = references
+        self.__references = references
         self._logger.set_references(references)
         self._counters.set_references(references)
         self._dependency_resolver.set_references(references)
@@ -125,9 +121,9 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         if self._endpoint is None:
             self._endpoint = self.create_endpoint()
-            self._local_endpoint = True
+            self.__local_endpoint = True
         else:
-            self._local_endpoint = False
+            self.__local_endpoint = False
 
         self._endpoint.register(self)
 
@@ -143,7 +139,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         self._swagger_service = None
 
-    def configure(self, config):
+    def configure(self, config: ConfigParams):
         """
         Configures component by passing configuration parameters.
 
@@ -162,73 +158,85 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         if not (self._config is None):
             endpoint.configure(self._config)
 
-        if not (self._references is None):
-            endpoint.set_references(self._references)
+        if not (self.__references is None):
+            endpoint.set_references(self.__references)
 
         return endpoint
 
-    def _instrument(self, correlation_id, name):
-        self._logger.trace(correlation_id, f"Executing {name} method")
-        self._counters.increment_one(f"{name}.exec_count")
-        return self._counters.begin_timing(f"{name}.exec_time")
+    def _instrument(self, correlation_id: Optional[str], name: str) -> InstrumentTiming:
+        """
+        Adds instrumentation to log calls and measure call time.
+        It returns a Timing object that is used to end the time measurement.
 
-    def _instrument_error(self, correlation_id, name, error, result, callback):
-        if not (error is None):
-            self._logger.error(correlation_id, error, f"Failed to execute {name} method")
-            self._counters.increment_one(f"{name}.exec_error")
-        if not (callback is None):
-            callback(error, result)
+        :param correlation_id: (optional) transaction id to trace execution through call chain.
+        :param name: a method name.
+        :return: InstrumentTiming object to end the time measurement.
+        """
+        self._logger.trace(correlation_id, "Executing %s method, name")
+        self._counters.increment_one(name + ".exec_count")
 
-    def is_open(self):
+        counter_timing = self._counters.begin_timing(name + ".exec_time")
+        trace_timing = self._tracer.begin_trace(correlation_id, name, None)
+        return InstrumentTiming(correlation_id, name, "call",
+                                self._logger, self._counters, counter_timing, trace_timing)
+
+    # def _instrument_error(self, correlation_id, name, error, result, callback):
+    #     if not (error is None):
+    #         self._logger.error(correlation_id, error, f"Failed to execute {name} method")
+    #         self._counters.increment_one(f"{name}.exec_error")
+    #     if not (callback is None):
+    #         callback(error, result)
+
+    def is_open(self) -> bool:
         """
         Checks if the component is opened.
 
         :return: true if the component has been opened and false otherwise.
         """
-        return self._opened
+        return self.__opened
 
-    def open(self, correlation_id):
+    def open(self, correlation_id: Optional[str]):
         """
         Opens the component.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
 
-        if self.is_opened():
+        if self.is_open():
             return
 
         if self._endpoint is None:
             self._endpoint = self.create_endpoint()
             self._endpoint.register(self)
-            self._local_endpoint = True
+            self.__local_endpoint = True
 
-        if self._local_endpoint:
+        if self.__local_endpoint:
             self._endpoint.open(correlation_id)
 
-        self._opened = True
+        self.__opened = True
         # # register route
         # if self._registered != True:
         #     self.add_route()
         #     self._registered = True
 
-    def close(self, correlation_id):
+    def close(self, correlation_id: Optional[str]):
         """
         Closes component and frees used resources.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
-        if not self._opened:
+        if not self.__opened:
             return
 
         if self._endpoint is None:
             raise InvalidStateException(correlation_id, "NO_ENDPOINT", "HTTP endpoint is missing")
 
-        if self._local_endpoint:
+        if self.__local_endpoint:
             self._endpoint.close(correlation_id)
 
-        self._opened = False
+        self.__opened = False
 
-    def send_result(self, result):
+    def send_result(self, result: Any) -> Optional[str]:
         """
         Creates a callback function that sends result as JSON object. That callack function call be called directly or passed as a parameter to business logic components.
 
@@ -242,7 +250,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         return HttpResponseSender.send_result(result)
 
-    def send_created_result(self, result):
+    def send_created_result(self, result: Any) -> Optional[str]:
         """
         Creates a callback function that sends newly created object as JSON. That callack function call be called directly or passed as a parameter to business logic components.
 
@@ -255,7 +263,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         return HttpResponseSender.send_created_result(result)
 
-    def send_deleted_result(self, result=None):
+    def send_deleted_result(self, result: Any = None) -> Optional[str]:
         """
         Creates a callback function that sends newly created object as JSON. That callack function call be called directly or passed as a parameter to business logic components.
 
@@ -268,7 +276,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         return HttpResponseSender.send_deleted_result(result)
 
-    def send_error(self, error):
+    def send_error(self, error: Any) -> str:
         """
         Sends error serialized as ErrorDescription object and appropriate HTTP status code. If status code is not defined, it uses 500 status code.
 
@@ -285,7 +293,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         return ''
 
-    def register_route(self, method, route, schema, handler):
+    def register_route(self, method: str, route: str, schema: Schema, handler: Callable):
         """
         Registers an action in this objects REST server (service) by the given method and route.
 
@@ -310,6 +318,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         #     route = base_route + route
         self._endpoint.register_route(method, route, schema, handler)
 
+    @abstractmethod
     def register(self):
         """
         Registers all service routes in HTTP endpoint.
@@ -344,7 +353,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
                 route = base_route + route
         return route
 
-    def register_route_with_auth(self, method, route, schema, authorize, action):
+    def register_route_with_auth(self, method: str, route: str, schema: Schema, authorize: Callable, action: Callable):
         """
         Registers a route with authorization in HTTP endpoint.
 
@@ -359,9 +368,9 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         route = self._append_base_route(self.fix_route(route))
 
-        self._endpoint.register_route_with_auth(method, route, schema, authorize, method)
+        self._endpoint.register_route_with_auth(method, route, schema, authorize, action)
 
-    def register_interceptor(self, route, action):
+    def register_interceptor(self, route: str, action: Callable):
         """
         Registers a middleware for a given route in HTTP endpoint.
 
@@ -375,12 +384,12 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         self._endpoint.register_interceptor(route, action)
 
-    def _register_open_api_spec_from_file(self, path):
+    def _register_open_api_spec_from_file(self, path: str):
         with open(path, 'r') as f:
             content = f.read()
         self._register_open_api_spec(content)
 
-    def _register_open_api_spec(self, content):
+    def _register_open_api_spec(self, content: str):
 
         def handler():
             bottle.response.headers.update({
@@ -395,3 +404,14 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
             if self._swagger_service is not None:
                 self._swagger_service.register_open_api_spec(self._base_route, self._swagger_route)
+
+    def _get_correlation_id(self) -> Optional[str]:
+        """
+        Returns correlationId from request
+
+        :returns: Returns correlationId from request
+        """
+        correlation_id = bottle.request.query.get('correlation_id')
+        if correlation_id is None or correlation_id == '':
+            correlation_id = bottle.request.headers['correlation_id']
+        return correlation_id

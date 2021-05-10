@@ -8,17 +8,20 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from typing import Optional
 
-from pip_services3_commons.data import IdGenerator
+from pip_services3_commons.data import IdGenerator, FilterParams, PagingParams
+
 
 class RestQueryParams(dict):
 
-    def __init__(self, correlation_id = None, filter = None, paging = None):
+    def __init__(self, correlation_id: Optional[str] = None, filte: FilterParams = None, paging: PagingParams = None):
+        super().__init__()
         self.add_correlation_id(correlation_id)
-        self.add_filter_params(filter)
+        self.add_filter_params(filte)
         self.add_paging_params(paging)
 
-    def add_correlation_id(self, correlation_id = None):
+    def add_correlation_id(self, correlation_id: Optional[str]=None):
         # Automatically generate short ids for now
         if correlation_id is None:
             correlation_id = IdGenerator.next_short()
@@ -31,7 +34,7 @@ class RestQueryParams(dict):
         for key, value in filter.items():
             self[key] = value
 
-    def add_paging_params(self, paging):
+    def add_paging_params(self, paging: PagingParams):
         if paging is None: return
 
         if not (paging.total is None):

@@ -8,8 +8,10 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from typing import Callable
 
-from pip_services3_commons.commands import ICommandable
+from pip_services3_commons.commands import ICommandable, CommandSet, ICommand
+from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.run import Parameters
 
 from .CommandableSwaggerDocument import CommandableSwaggerDocument
@@ -65,13 +67,13 @@ class CommandableHttpService(RestService):
         :param base_route: a service base route.
         """
         super(CommandableHttpService, self).__init__()
-        self._command_set = None
-        self._swagger_auto = True
+        self._command_set: CommandSet = None
+        self._swagger_auto: bool = True
 
         self._base_route = base_route
         self._dependency_resolver.put('controller', 'none')
 
-    def configure(self, config):
+    def configure(self, config: ConfigParams):
         """
         Configures component by passing configuration parameters.
 
@@ -81,7 +83,7 @@ class CommandableHttpService(RestService):
 
         self._swagger_auto = config.get_as_boolean_with_default('swagger.auto', self._swagger_auto)
 
-    def _get_handler(self, command):
+    def __get_handler(self, command: ICommand) -> Callable:
         def handler():
             params = self.get_data()
             correlation_id = params['correlation_id'] if 'correlation_id' in params else None
@@ -109,7 +111,7 @@ class CommandableHttpService(RestService):
             # if route[0] != '/':
             #     route = '/' + route #self._base_route + '/' + command.get_name()
 
-            self.register_route('POST', route, None, self._get_handler(command))
+            self.register_route('POST', route, None, self.__get_handler(command))
 
         if self._swagger_auto:
             swagger_config = self._config.get_section('swagger')

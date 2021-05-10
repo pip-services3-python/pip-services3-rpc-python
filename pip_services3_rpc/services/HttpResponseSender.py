@@ -9,18 +9,31 @@
     :license: MIT, see LICENSE for more details.
 """
 import json
+from typing import Any, Optional
 
 import bottle
 from pip_services3_commons.errors import ErrorDescriptionFactory
 
 
-class HttpResponseSender():
+class HttpResponseSender:
     """
     Helper class that handles HTTP-based responses.
     """
 
     @staticmethod
-    def send_result(result):
+    def send_result(result: Any) -> Optional[str]:
+        """
+        Creates a callback function that sends result as JSON object.
+        That callack function call be called directly or passed
+        as a parameter to business logic components.
+
+        If object is not null it returns 200 status code.
+        For null results it returns 204 status code.
+        If error occur it sends ErrorDescription with approproate status code.
+
+        :param result: an execution result
+        :returns: JSON text response
+        """
         bottle.response.headers['Content-Type'] = 'application/json'
         if result is None:
             bottle.response.status = 404
@@ -30,7 +43,15 @@ class HttpResponseSender():
             return json.dumps(result, default=HttpResponseSender._to_json)
 
     @staticmethod
-    def send_empty_result(result):
+    def send_empty_result(result: Any = None) -> Optional[str]:
+        """
+        Creates a callback function that sends an empty result with 204 status code.
+        If error occur it sends ErrorDescription with approproate status code.
+
+        :param result:
+        :returns: JSON text response
+
+        """
         bottle.response.headers['Content-Type'] = 'application/json'
         if result is None:
             bottle.response.status = 204
@@ -40,7 +61,20 @@ class HttpResponseSender():
             return
 
     @staticmethod
-    def send_created_result(result):
+    def send_created_result(result: Any) -> Optional[str]:
+        """
+        Creates a callback function that sends newly created object as JSON.
+        That callack function call be called directly or passed
+        as a parameter to business logic components.
+
+        If object is not null it returns 201 status code.
+        For null results it returns 204 status code.
+        If error occur it sends ErrorDescription with approproate status code.
+
+        :param result: an execution result or a promise with execution result
+        :returns: JSON text response
+
+        """
         bottle.response.headers['Content-Type'] = 'application/json'
         if result is None:
             bottle.response.status = 204
@@ -50,7 +84,20 @@ class HttpResponseSender():
             return json.dumps(result, default=HttpResponseSender._to_json)
 
     @staticmethod
-    def send_deleted_result(result=None):
+    def send_deleted_result(result: Any = None) -> Optional[str]:
+        """
+        Creates a callback function that sends newly created object as JSON.
+        That callack function call be called directly or passed
+        as a parameter to business logic components.
+
+        If object is not null it returns 201 status code.
+        For null results it returns 204 status code.
+        If error occur it sends ErrorDescription with approproate status code.
+
+        :param result: an execution result or a promise with execution result
+        :returns: JSON text response
+
+        """
         bottle.response.headers['Content-Type'] = 'application/json'
         if result is None:
             bottle.response.status = 204
@@ -60,7 +107,7 @@ class HttpResponseSender():
         return json.dumps(result, default=HttpResponseSender._to_json) if result else None
 
     @staticmethod
-    def send_error(error):
+    def send_error(error: Any) -> str:
         """
         Sends error serialized as ErrorDescription object and appropriate HTTP status code. If status code is not defined, it uses 500 status code.
 
@@ -88,23 +135,19 @@ class HttpResponseSender():
         if isinstance(obj, list):
             result = []
             for item in obj:
-                item = self._to_json(item)
+                item = HttpResponseSender._to_json(item)
                 result.append(item)
             return result
 
         if isinstance(obj, dict):
             result = {}
             for (k, v) in obj.items():
-                v = self._to_json(v)
+                v = HttpResponseSender._to_json(v)
                 result[k] = v
             return result
 
         if hasattr(obj, 'to_json'):
             return obj.to_json()
         if hasattr(obj, '__dict__'):
-            return self._to_json(obj.__dict__)
+            return HttpResponseSender._to_json(obj.__dict__)
         return obj
-
-    @staticmethod
-    def get_correlation_id(self):
-        return bottle.request.query.get('correlation_id')

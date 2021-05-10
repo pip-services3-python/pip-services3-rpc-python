@@ -60,7 +60,7 @@ class DummyRestOperations(RestOperations, ABC):
     def unhandled_error(self):
         raise TypeError('Test unhandled error')
 
-    def send_bad_request(self, req, message):
-        return self._send_bad_request(req, message)
+    def send_bad_request(self, message):
+        return self._send_bad_request(message)
 
  

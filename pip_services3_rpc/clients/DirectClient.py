@@ -8,13 +8,17 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from typing import Any, Optional
 
-from pip_services3_commons.run import IOpenable
-from pip_services3_commons.config import ConfigParams, IConfigurable
-from pip_services3_commons.refer import Descriptor, IReferences, IReferenceable, DependencyResolver
-from pip_services3_components.log import CompositeLogger
-from pip_services3_components.count import CompositeCounters
+from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.errors import ConnectionException
+from pip_services3_commons.refer import IReferenceable, DependencyResolver, IReferences
+from pip_services3_commons.run import IOpenable
+from pip_services3_components.count import CompositeCounters
+from pip_services3_components.log import CompositeLogger
+from pip_services3_components.trace.CompositeTracer import CompositeTracer
+
+from pip_services3_rpc.services.InstrumentTiming import InstrumentTiming
 
 
 class DirectClient(IConfigurable, IReferenceable, IOpenable):
@@ -52,22 +56,26 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
             data = client.get_data("123", "1")
             # ...
     """
-    _controller = None
-    _opened = True
-    _logger = None
-    _counters = None
-    _dependency_resolver = None
 
     def __init__(self):
         """
         Creates a new instance of the client.
         """
-        self._logger = CompositeLogger()
-        self._counters = CompositeCounters()
-        self._dependency_resolver = DependencyResolver()
+        # The controller reference.
+        self._controller: Any = None
+        # The open flag.
+        self._opened: bool = True
+        # The logger.
+        self._logger: CompositeLogger = CompositeLogger()
+        #  The tracer.
+        self._tracer: CompositeTracer = CompositeTracer()
+        # The performance counters
+        self._counters: CompositeCounters = CompositeCounters()
+        # The dependency resolver to get controller reference.
+        self._dependency_resolver: DependencyResolver = DependencyResolver()
         self._dependency_resolver.put('controller', 'none')
 
-    def configure(self, config):
+    def configure(self, config: ConfigParams):
         """
         Configures component by passing configuration parameters.
 
@@ -75,7 +83,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         self._dependency_resolver.configure(config)
 
-    def set_references(self, references):
+    def set_references(self, references: IReferences):
         """
         Sets references to dependent components.
 
@@ -83,39 +91,44 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         self._logger.set_references(references)
         self._counters.set_references(references)
+        self._tracer.set_references(references)
         self._dependency_resolver.set_references(references)
         self._controller = self._dependency_resolver.get_one_required('controller')
 
-    def _instrument(self, correlation_id, name):
+    def _instrument(self, correlation_id: Optional[str], name: str) -> InstrumentTiming:
         """
-        Adds instrumentation to log calls and measure call time. It returns a CounterTiming object that is used to end the time measurement.
-
-        :param correlation_id: (optional) transaction id to trace execution through call chain.
-
-        :param name: a method name.
-
-        :return: CounterTiming object to end the time measurement.
-        """
-        self._logger.trace(correlation_id, f"Executing {name} method")
-        return self._counters.begin_timing(f"{name} .call_time")
-
-    def _instrument_error(self, correlation_id, name, err, result, callback):
-        """
-        Adds instrumentation to error handling.
+        Adds instrumentation to log calls and measure call time.
+        It returns a Timing object that is used to end the time measurement.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         :param name: a method name.
-        :param err: an occured error
-        :param result: (optional) an execution result
-        :param callback: (optional) an execution callback
+        :return: InstrumentTiming object to end the time measurement.
         """
-        if err is not None:
-            self._logger.error(correlation_id, err, f'Failed to call {name} method')
-            self._counters.increment_one(f"{name}.call_errors")
-        if callback:
-            callback(err, result)
+        self._logger.trace(correlation_id, "Calling %s method", name)
+        self._counters.increment_one(name + ".call_count")
 
-    def is_open(self):
+        counter_timing = self._counters.begin_timing(name + '.call_time')
+        trace_timing = self._tracer.begin_trace(correlation_id, name, None)
+        return InstrumentTiming(correlation_id, name, "call",
+                                self._logger, self._counters, counter_timing, trace_timing)
+
+    # def _instrument_error(self, correlation_id, name, err, result, callback):
+    #     """
+    #     Adds instrumentation to error handling.
+    #
+    #     :param correlation_id: (optional) transaction id to trace execution through call chain.
+    #     :param name: a method name.
+    #     :param err: an occured error
+    #     :param result: (optional) an execution result
+    #     :param callback: (optional) an execution callback
+    #     """
+    #     if err is not None:
+    #         self.__logger.error(correlation_id, err, f'Failed to call {name} method')
+    #         self.__counters.increment_one(f"{name}.call_errors")
+    #     if callback:
+    #         callback(err, result)
+
+    def is_open(self) -> bool:
         """
         Checks if the component is opened.
 
@@ -123,7 +136,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         """
         return self._opened
 
-    def open(self, correlation_id):
+    def open(self, correlation_id: Optional[str]):
         """
         Opens the component.
 
@@ -138,7 +151,7 @@ class DirectClient(IConfigurable, IReferenceable, IOpenable):
         self._opened = True
         self._logger.info(correlation_id, 'Opened direct client')
 
-    def close(self, correlation_id):
+    def close(self, correlation_id: Optional[str]):
         """
         Closes component and frees used resources.
 

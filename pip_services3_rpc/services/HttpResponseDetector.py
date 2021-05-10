@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 
 
-import re
 import json
+import re
 
-from pip_services3_commons.convert.RecursiveMapConverter import RecursiveMapConverter
+import bottle
 
 
 class HttpResponseDetector:
@@ -13,7 +13,7 @@ class HttpResponseDetector:
     """
 
     @staticmethod
-    def detect_platform(req):
+    def detect_platform(req: bottle.Request) -> str:
         """
         Detects the platform (using "user-agent") from which the given HTTP request was made.
 
@@ -49,7 +49,7 @@ class HttpResponseDetector:
             return 'unknown'
 
     @staticmethod
-    def detect_browser(req):
+    def detect_browser(req: bottle.Request) -> str:
         """
         Detects the browser (using "user-agent") from which the given HTTP request was made.
 
@@ -70,7 +70,7 @@ class HttpResponseDetector:
         return ua or 'unknown'
 
     @staticmethod
-    def detect_address(req):
+    def detect_address(req: bottle.Request) -> str:
         """
         Detects the IP address from which the given HTTP request was received.
 
@@ -82,18 +82,18 @@ class HttpResponseDetector:
         if req.get_header('x-forwarded-for'):
             ip = req.get_header('x-forwarded-for').split(',')[0]
 
-        if ip is None and 'connection' in json.loads(req.json).keys():
+        if ip is None and 'connection' in json.loads(str(req.json)).keys():
             try:
-                ip = json.loads(req.json)['connection']['remoteAddress']
+                ip = json.loads(str(req.json))['connection']['remoteAddress']
             except KeyError:
                 try:
-                    ip = json.loads(req.json)['connection']['socket']['remoteAddress']
+                    ip = json.loads(str(req.json))['connection']['socket']['remoteAddress']
                 except KeyError:
                     pass
 
         if ip is None:
             try:
-                ip = json.loads(req.json)['socket']['remoteAddress']
+                ip = json.loads(str(req.json))['socket']['remoteAddress']
             except KeyError:
                 pass
 
@@ -106,7 +106,7 @@ class HttpResponseDetector:
         return ip
 
     @staticmethod
-    def detect_server_host(req):
+    def detect_server_host(req: bottle.Request) -> str:
         """
         Detects the host name of the request's destination server.
 
@@ -116,7 +116,7 @@ class HttpResponseDetector:
         return '' + req.get_header('host').split(':')[0]
 
     @staticmethod
-    def detect_server_port(req):
+    def detect_server_port(req: bottle.Request) -> str:
         """
         Detects the request's destination port number.
 

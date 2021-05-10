@@ -20,10 +20,10 @@ class TestHttpConnectionResolver:
                                                                "connection.port", 123))
         connection = connection_resolver.resolve(None)
 
-        assert connection.get_protocol() == "http"
-        assert connection.get_host() == "somewhere.com"
-        assert connection.get_port() == 123
-        assert connection.get_uri() == "http://somewhere.com:123"
+        assert connection.get_as_string('protocol') == "http"
+        assert connection.get_as_string('host') == "somewhere.com"
+        assert connection.get_as_integer('port') == 123
+        assert connection.get_as_string('uri') == "http://somewhere.com:123"
 
     def test_connection_uri(self):
         connection_resolver = HttpConnectionResolver()
@@ -31,10 +31,10 @@ class TestHttpConnectionResolver:
 
         connection = connection_resolver.resolve(None)
 
-        assert connection.get_protocol() == "https"
-        assert connection.get_host() == "somewhere.com"
-        assert connection.get_port() == 123
-        assert connection.get_uri() == "https://somewhere.com:123"
+        assert connection.get_as_string('protocol') == "https"
+        assert connection.get_as_string('host') == "somewhere.com"
+        assert connection.get_as_integer('port') == 123
+        assert connection.get_as_string('uri') == "https://somewhere.com:123"
 
 
 class TestHttpsCredentials:
@@ -51,12 +51,12 @@ class TestHttpsCredentials:
 
         connection = connection_resolver.resolve(None)
 
-        assert 'https' == connection.get_protocol()
-        assert 'somewhere.com' == connection.get_host()
-        assert 123 == connection.get_port()
-        assert 'https://somewhere.com:123' == connection.get_uri()
-        assert 'ssl_key_file' == connection.get('credential.ssl_key_file')
-        assert 'ssl_crt_file' == connection.get('credential.ssl_crt_file')
+        assert 'https' == connection.get_as_string('protocol')
+        assert 'somewhere.com' == connection.get_as_string('host')
+        assert 123 == connection.get_as_integer('port')
+        assert 'https://somewhere.com:123' == connection.get_as_string('uri')
+        assert 'ssl_key_file' == connection.get_as_string('ssl_key_file')
+        assert 'ssl_crt_file' == connection.get_as_string('ssl_crt_file')
 
     def test_https_with_no_credentials_connection_params(self):
         connection_resolver = HttpConnectionResolver()
@@ -68,11 +68,11 @@ class TestHttpsCredentials:
         ))
         connection = connection_resolver.resolve(None)
 
-        assert 'https' == connection.get_protocol()
-        assert 'somewhere.com' == connection.get_host()
-        assert 123 == connection.get_port()
-        assert 'https://somewhere.com:123' == connection.get_uri()
-        assert connection.get('credential.internal_network')
+        assert 'https' == connection.get_as_string('protocol')
+        assert 'somewhere.com' == connection.get_as_string('host')
+        assert 123 == connection.get_as_integer('port')
+        assert 'https://somewhere.com:123' == connection.get_as_string('uri')
+        assert connection.get_as_string('internal_network') is None
 
     def test_https_with_missing_credentials_connection_params(self):
         # Section missing
@@ -138,9 +138,9 @@ class TestHttpsCredentials:
         print('Test - ssl_key_file,  ssl_crt_file present')
         connection = connection_resolver.resolve(None)
 
-        assert 'https' == connection.get_protocol()
-        assert 'somewhere.com' == connection.get_host()
-        assert 123 == connection.get_port()
-        assert 'https://somewhere.com:123' == connection.get_uri()
-        assert 'ssl_key_file' == connection.get('credential.ssl_key_file')
-        assert 'ssl_crt_file' == connection.get('credential.ssl_crt_file')
+        assert 'https' == connection.get_as_string('protocol')
+        assert 'somewhere.com' == connection.get_as_string('host')
+        assert 123 == connection.get_as_integer('port')
+        assert 'https://somewhere.com:123' == connection.get_as_string('uri')
+        assert 'ssl_key_file' == connection.get_as_string('ssl_key_file')
+        assert 'ssl_crt_file' == connection.get_as_string('ssl_crt_file')

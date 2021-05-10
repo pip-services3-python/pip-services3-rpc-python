@@ -9,7 +9,10 @@
     :license: MIT, see LICENSE for more details.
 """
 from abc import ABC
+from typing import Any, Optional
+
 from .RestClient import RestClient
+
 
 class CommandableHttpClient(RestClient, ABC):
     """
@@ -53,19 +56,17 @@ class CommandableHttpClient(RestClient, ABC):
         data = client.getData("123", "1")
         # ...
     """
-    _base_route = None
 
-    def __init__(self, name):
+    def __init__(self, base_route: str):
         """
         Creates a new instance of the client.
 
-        :param name: a base route for remote service.
+        :param base_route: a base route for remote service.
         """
         super(CommandableHttpClient, self).__init__()
-        self._base_route = name
+        self._base_route = base_route
 
-
-    def call_command(self, name, correlation_id, params):
+    def call_command(self, name: str, correlation_id: Optional[str], params: Any) -> Any:
         """
         Calls a remote method via HTTP commadable protocol. The call is made via POST operation and all parameters are sent in body object. The complete route to remote method is defined as baseRoute + "/" + name.
 
@@ -79,12 +80,13 @@ class CommandableHttpClient(RestClient, ABC):
         """
         timing = self._instrument(correlation_id, self._base_route + '.' + name)
         try:
-            # route = self.fix_route(self._base_route) + self.fix_route(name)
+            # route = self.__fix_route(self._base_route) + self.__fix_route(name)
             # if self._base_route and self._base_route[0] != '/':
             #     route = '/'  + self._base_route + '/' + name
             # else:
             #     route = self._base_route + '/' + name
-
             return self.call('POST', name, correlation_id, None, params)
+        except Exception as err:
+            timing.end_failure(err)
         finally:
             timing.end_timing()

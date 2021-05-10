@@ -1,32 +1,34 @@
 # -*- coding: utf-8 -*-
-
-import netifaces
 import datetime
-import json
-import bottle
+from typing import Callable
 
-from pip_services3_commons.refer.IReferences import IReferences
+import bottle
+import netifaces
 from pip_services3_commons.refer.Descriptor import Descriptor
+from pip_services3_commons.refer.IReferences import IReferences
 from pip_services3_components.info.ContextInfo import ContextInfo
+
 from .HttpResponseDetector import HttpResponseDetector
-from .RestService import RestService
 from .RestOperations import RestOperations
-from .HttpResponseSender import HttpResponseSender
+
 
 class AboutOperations(RestOperations):
-    _context_info = None
 
-    def set_references(self, references):
+    def __init__(self):
+        super().__init__()
+        self.__context_info: ContextInfo = None
+
+    def set_references(self, references: IReferences):
         super(AboutOperations, self).set_references(references)
 
-        self._context_info = references.get_one_optional(
+        self.__context_info = references.get_one_optional(
             Descriptor('pip-services', 'context-info', '*', '*', '*')
         )
 
-    def get_about_operation(self):
-        return lambda req, res: self.get_about(req, res)
+    def get_about_operation(self) -> Callable:
+        return self.get_about
 
-    def __get_external_addr(self):
+    def __get_network_adresses(self) -> list:
         interfaces = netifaces.interfaces()
         addresses = []
         for interface in interfaces:
@@ -44,24 +46,21 @@ class AboutOperations(RestOperations):
 
         return addresses
 
-    def get_network_adresses(self):
-        return self.__get_external_addr()
+    def get_about(self) -> str:
 
-    def get_about(self, req=None, res=None):
-        if req is None:
-            req = bottle.request
+        req = bottle.request
         about = {
             'server': {
-                'name': self._context_info.name if not (self._context_info is None) else "unknown",
-                'description': self._context_info.description if not (self._context_info is None) else "",
-                'properties': self._context_info.properties if not (self._context_info is None) else "",
-                'uptime': self._context_info.uptime if not (self._context_info is None) else None,
-                'start_time': self._context_info.start_time if not (self._context_info is None) else None,
+                'name': self.__context_info.name if not (self.__context_info is None) else "unknown",
+                'description': self.__context_info.description if not (self.__context_info is None) else "",
+                'properties': self.__context_info.properties if not (self.__context_info is None) else "",
+                'uptime': self.__context_info.uptime if not (self.__context_info is None) else None,
+                'start_time': self.__context_info.start_time if not (self.__context_info is None) else None,
                 'current_time': datetime.datetime.now().isoformat(),
                 'protocol': req.method,
                 'host': HttpResponseDetector.detect_server_host(req),
                 'port': HttpResponseDetector.detect_server_port(req),
-                'addresses': self.get_network_adresses(),
+                'addresses': self.__get_network_adresses(),
                 'url': req.url
             },
             'client': {

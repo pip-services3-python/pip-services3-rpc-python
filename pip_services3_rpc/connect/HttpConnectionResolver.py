@@ -8,14 +8,15 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+from typing import Optional, List
 from urllib.parse import urlparse
 
-from pip_services3_commons.config import IConfigurable
+from pip_services3_commons.config import IConfigurable, ConfigParams
 from pip_services3_commons.errors import ConfigException
-from pip_services3_commons.refer import IReferenceable
-from pip_services3_components.connect import ConnectionResolver
+from pip_services3_commons.refer import IReferenceable, IReferences
 from pip_services3_components.auth.CredentialParams import CredentialParams
 from pip_services3_components.auth.CredentialResolver import CredentialResolver
+from pip_services3_components.connect import ConnectionResolver, ConnectionParams
 
 
 class HttpConnectionResolver(IReferenceable, IConfigurable):
@@ -47,17 +48,13 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
           params = connectionResolver.resolve("123")
     """
 
-    # Create connection resolver.
-    _connection_resolver = None
-
-    # The base credential resolver.
-    _credential_resolver = None
-
     def __init__(self):
-        self._connection_resolver = ConnectionResolver()
-        self._credential_resolver = CredentialResolver()
+        # # Create connection resolver.
+        self._connection_resolver: ConnectionResolver = ConnectionResolver()
+        # # The base credential resolver.
+        self._credential_resolver: CredentialResolver = CredentialResolver()
 
-    def configure(self, config):
+    def configure(self, config: ConfigParams):
         """
         Configures component by passing configuration parameters.
         :param config: configuration parameters to be set.
@@ -65,7 +62,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         self._connection_resolver.configure(config)
         self._credential_resolver.configure(config)
 
-    def set_references(self, references):
+    def set_references(self, references: IReferences):
         """
         Sets references to dependent components.
 
@@ -74,14 +71,15 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         self._connection_resolver.set_references(references)
         self._credential_resolver.set_references(references)
 
-    def __validate_connection(self, correlation_id, connection, credential=None):
+    def __validate_connection(self, correlation_id: Optional[str], connection: ConnectionParams,
+                              credential: CredentialParams = None):
 
         # Sometimes when we use https we are on an internal network and do not want to have to deal with security.
         # When we need a https connection and we don't want to pass credentials, flag is 'credential.internal_network',
         # this flag just has to be present and non null for this functionality to work.
         if connection is None:
             raise ConfigException(correlation_id, "NO_CONNECTION", "HTTP connection is not set")
-        uri = connection.get_uri()
+        uri = connection.get_as_string('uri')
 
         if uri is not None:
             return None
@@ -93,11 +91,11 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
                                   "Protocol is not supported by REST connection") \
                 .with_details("protocol", protocol)
 
-        host = connection.get_host()
+        host = connection.get_as_string('host')
         if host is None:
             raise ConfigException(correlation_id, "NO_HOST", "Connection host is not set")
 
-        port = connection.get_port()
+        port = connection.get_as_integer('port')
         if port == 0:
             raise ConfigException(correlation_id, "NO_PORT", "Connection port is not set")
 
@@ -124,40 +122,37 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
                             'SSL crt file is not configured in credentials')
         return None
 
-    def __update_connection(self, connection, credential=None):
-        if connection is None:
-            return
+    def __compose_connection(self, connections: List[ConnectionParams],
+                             credential: CredentialParams = None) -> ConfigParams:
+        connection = ConfigParams.merge_configs(*connections)
 
-        uri = connection.get_uri()
+        uri = connection.get_as_string('uri')
 
         if uri is None or uri == "":
 
-            protocol = connection.get_protocol_with_default("http")
-            host = connection.get_host()
-            port = connection.get_port()
+            protocol = connection.get_as_string_with_default('protocol', "uri")
+            host = connection.get_as_string('host')
+            port = connection.get_as_integer('port')
 
             uri = protocol + "://" + host
             if port != 0:
                 uri = uri + ":" + str(port)
-            connection.set_uri(uri)
+            connection.set_as_object('uri', uri)
 
         else:
             address = urlparse(uri)
-            connection.set_protocol(address.scheme)
-            connection.set_host(address.hostname)
-            connection.set_port(address.port)
 
-        if connection.get_protocol() == 'https':
-            _cred_internal = connection.get_as_nullable_string('internal_network')
-            if _cred_internal is None:
-                _cred_internal = credential
-            else:
-                _cred_internal = CredentialParams()
-            connection.add_section('credential', _cred_internal)
-        else:
-            connection.add_section('credential', CredentialParams())
+            connection.set_as_object('protocol', address.scheme)
+            connection.set_as_object('host', address.hostname)
+            connection.set_as_object('port', address.port)
 
-    def resolve(self, correlation_id):
+        if connection.get_as_string('protocol') == 'https':
+            if credential.get_as_nullable_string('internal_network') is None:
+                connection = connection.override(credential)
+
+        return connection
+
+    def resolve(self, correlation_id: Optional[str]) -> ConfigParams:
         """
         Resolves a single component connection. If connections are configured to be retrieved from Discovery service
         it finds a IDiscovery and resolves the connection there.
@@ -170,13 +165,9 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         connection = self._connection_resolver.resolve(correlation_id)
         credential = self._credential_resolver.lookup(correlation_id)
         self.__validate_connection(correlation_id, connection, credential)
-        self.__update_connection(connection, credential)
+        return self.__compose_connection([connection], credential)
 
-        connection.update(credential)
-
-        return connection
-
-    def resolve_all(self, correlation_id):
+    def resolve_all(self, correlation_id: Optional[str]) -> ConfigParams:
         """
         Resolves all component connection. If connections are configured to be retrieved from Discovery service it finds a IDiscovery and resolves the connection there.
 
@@ -186,18 +177,22 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         """
 
         connections = self._connection_resolver.resolve_all(correlation_id)
+        credential = self._credential_resolver.lookup(correlation_id)
+
+        connections = connections or []
+
         for connection in connections:
-            self.__validate_connection(correlation_id, connection)
-            self.__update_connection(connection)
+            self.__validate_connection(correlation_id, connection, credential)
 
-        return connections
+        return self.__compose_connection(connections, credential)
 
-    def register(self, correlation_id):
+    def register(self, correlation_id: Optional[str]):
         """
         Registers the given connection in all referenced discovery services. This method can be used for dynamic service discovery.
 
         :param correlation_id: (optional) transaction id to trace execution through call chain.
         """
         connection = self._connection_resolver.resolve(correlation_id)
-        self.__validate_connection(correlation_id, connection)
+        credential = self._credential_resolver.lookup(correlation_id)
+        self.__validate_connection(correlation_id, connection, credential)
         self._connection_resolver.register(correlation_id, connection)

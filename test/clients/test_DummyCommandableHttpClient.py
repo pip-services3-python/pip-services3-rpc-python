@@ -29,6 +29,8 @@ rest_config = ConfigParams.from_tuples(
 class TestDummyCommandableHttpClient:
     references = None
     fixture = None
+    service: DummyCommandableHttpService
+    client: DummyCommandableHttpClient
 
     @classmethod
     def setup_class(cls):
@@ -57,7 +59,6 @@ class TestDummyCommandableHttpClient:
     def teardown_class(cls):
         cls.service.close(None)
         cls.client.close(None)
-        pass
 
     def test_crud_operations(self):
         self.fixture.test_crud_operations()

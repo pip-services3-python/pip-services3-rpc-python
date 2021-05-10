@@ -9,7 +9,9 @@
     :license: MIT, see LICENSE for more details.
 """
 import datetime
+from typing import Callable
 
+from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.convert import StringConverter
 
 from .RestService import RestService
@@ -50,30 +52,30 @@ class HeartbeatRestService(RestService):
           service.open("123")
           # ...
     """
-    _route = "heartbeat"
 
     def __init__(self):
         """
         Creates a new instance of this service.
         """
         super(HeartbeatRestService, self).__init__()
+        self.__route = "heartbeat"
 
-    def configure(self, config):
+    def configure(self, config: ConfigParams):
         """
         Configures component by passing configuration parameters.
 
         :param config: configuration parameters to be set.
         """
         super(HeartbeatRestService, self).configure(config)
-        self._route = config.get_as_string_with_default("route", self._route)
+        self.__route = config.get_as_string_with_default("route", self.__route)
 
     def register(self):
         """
         Registers all service routes in HTTP endpoint.
         """
-        self.register_route("GET", self._route, None, self.heartbeat)
+        self.register_route("GET", self.__route, None, self.heartbeat)
 
-    def heartbeat(self):
+    def heartbeat(self) -> str:
         """
         Handles heartbeat requests
 
@@ -81,5 +83,3 @@ class HeartbeatRestService(RestService):
         """
         result = StringConverter.to_string(datetime.datetime.now())
         return self.send_result(result)
-
- 

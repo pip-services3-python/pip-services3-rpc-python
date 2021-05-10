@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from typing import List
+from typing import List, Optional, Dict, Any
 
 from pip_services3_commons.commands import ICommand
 from pip_services3_commons.config import ConfigParams
@@ -9,28 +9,28 @@ from pip_services3_commons.convert import TypeCode
 class CommandableSwaggerDocument:
 
     def __init__(self, base_route, config: ConfigParams, commands: List[ICommand]):
-        self._content = ''
+        self.__content: str = ''
 
         self.commands: List[ICommand] = commands or []
 
         config = config or ConfigParams()
 
-        self.version = '3.0.2'
-        self.base_route = base_route
+        self.version: str = '3.0.2'
+        self.base_route: str = base_route
 
-        self.info_title = config.get_as_string_with_default("name", "CommandableHttpService")
-        self.info_description = config.get_as_string_with_default("description", "Commandable microservice")
-        self.info_version = '1'
-        self.info_terms_of_service = None
+        self.info_title: str = config.get_as_string_with_default("name", "CommandableHttpService")
+        self.info_description: str = config.get_as_string_with_default("description", "Commandable microservice")
+        self.info_version: str = '1'
+        self.info_terms_of_service: Optional[str] = None
 
-        self.info_contact_name = None
-        self.info_contact_url = None
-        self.info_contact_email = None
+        self.info_contact_name: Optional[str] = None
+        self.info_contact_url: Optional[str] = None
+        self.info_contact_email: Optional[str] = None
 
-        self.info_license_name = None
-        self.info_license_url = None
+        self.info_license_name: Optional[str] = None
+        self.info_license_url: Optional[str] = None
 
-    def to_string(self):
+    def to_string(self) -> str:
         data = {
             'openapi': self.version,
             'info': {
@@ -53,9 +53,9 @@ class CommandableSwaggerDocument:
 
         self._write_data(0, data)
 
-        return self._content
+        return self.__content
 
-    def __create_paths_data(self):
+    def __create_paths_data(self) -> Dict[str, Any]:
         data = {}
         for index in range(len(self.commands)):
             command = self.commands[index]
@@ -74,7 +74,7 @@ class CommandableSwaggerDocument:
 
         return data
 
-    def __create_request_body_data(self, command):
+    def __create_request_body_data(self, command: ICommand) -> Optional[Dict[str, Any]]:
         schema_data = self.__create_schema_data(command)
 
         if schema_data is not None:
@@ -88,8 +88,8 @@ class CommandableSwaggerDocument:
 
         return None
 
-    def __create_schema_data(self, command):
-        schema = command._schema
+    def __create_schema_data(self, command: ICommand) -> Optional[Dict[str, Any]]:
+        schema = None if not hasattr(command, '__schema') else command.__schema
 
         if schema is None or schema.get_properties() is None:
             return None
@@ -112,7 +112,7 @@ class CommandableSwaggerDocument:
 
         return data
 
-    def __create_responses_data(self):
+    def __create_responses_data(self) -> Dict[str, Any]:
         return {
             '200': {
                 'description': 'Successful response',
@@ -126,7 +126,7 @@ class CommandableSwaggerDocument:
             }
         }
 
-    def _write_data(self, indent, data: dict):
+    def _write_data(self, indent: int, data: Dict[str, Any]):
         for key, value in data.items():
 
             if isinstance(value, str):
@@ -150,36 +150,36 @@ class CommandableSwaggerDocument:
             else:
                 self._write_as_object(indent, key, value)
 
-    def _write_name(self, indent, name):
+    def _write_name(self, indent: int, name: str):
         spaces = self._get_spaces(indent)
-        self._content += spaces + name + ":\n"
+        self.__content += spaces + name + ":\n"
 
-    def _write_array_item(self, indent, name, is_object_item=False):
+    def _write_array_item(self, indent: int, name: str, is_object_item: bool = False):
         spaces = self._get_spaces(indent)
-        self._content += spaces + '- '
+        self.__content += spaces + '- '
 
         if is_object_item:
-            self._content += name + ":\n"
+            self.__content += name + ":\n"
         else:
-            self._content += name + "\n"
+            self.__content += name + "\n"
 
-    def _write_as_object(self, indent, name, value):
+    def _write_as_object(self, indent: int, name: str, value: Any):
         if value is None:
             return
         spaces = self._get_spaces(indent)
-        self._content += spaces + name + ": " + value + "\n"
+        self.__content += spaces + name + ": " + value + "\n"
 
-    def _write_as_string(self, indent, name, value):
+    def _write_as_string(self, indent: int, name: str, value: Any):
         if not value:
             return
 
         spaces = self._get_spaces(indent)
-        self._content += spaces + name + ": '" + value + "'\n"
+        self.__content += spaces + name + ": '" + value + "'\n"
 
-    def _get_spaces(self, length):
+    def _get_spaces(self, length: int) -> str:
         return ' ' * length * 2
 
-    def _type_to_string(self, type):
+    def _type_to_string(self, type: Any) -> str:
         # allowed types: array, boolean, integer, number, object, string
         if type == TypeCode.Integer or type == TypeCode.Long:
             return 'integer'

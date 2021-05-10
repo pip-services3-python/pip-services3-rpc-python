@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+from typing import Any, Optional
 
 from pip_services3_rpc.clients import RestClient
 
@@ -8,11 +9,12 @@ class TestRestClient(RestClient):
     REST client used for automated testing.
     """
 
-    def __init__(self, base_route):
+    def __init__(self, base_route: str):
         super(TestRestClient, self).__init__()
         self._base_route = base_route
 
-    def call(self, method, route, correlation_id=None, params=None, data=None):
+    def call(self, method: str, route: str, correlation_id: Optional[str] = None, params: Any = None,
+             data: Any = None) -> Any:
         """
         Calls a remote method via HTTP/REST protocol.
 

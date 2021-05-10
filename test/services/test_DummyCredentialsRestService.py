@@ -45,7 +45,7 @@ DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
 DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
 
 
-class TestDummyCredentialsRestService():
+class TestDummyCredentialsRestService:
     controller = None
     service = None
 
