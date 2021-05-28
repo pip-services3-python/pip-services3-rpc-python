@@ -86,8 +86,8 @@ class RestOperations(IConfigurable, IReferenceable, ABC):
     def _send_created_result(self, result: Any = None) -> Optional[str]:
         return HttpResponseSender.send_created_result(result)
 
-    def _send_deleted_result(self) -> Optional[str]:
-        return HttpResponseSender.send_deleted_result()
+    def _send_deleted_result(self, result: Any = None) -> Optional[str]:
+        return HttpResponseSender.send_deleted_result(result)
 
     def _send_error(self, error: Any = None) -> str:
         return HttpResponseSender.send_error(error)
