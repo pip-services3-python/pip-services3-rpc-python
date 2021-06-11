@@ -8,6 +8,7 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+import inspect
 import json
 import time
 from threading import Thread
@@ -273,6 +274,20 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                     params = self.__get_data()
                     correlation_id = None if not params else params.get('correlation_id')
                     schema.validate_and_throw_exception(correlation_id, params, False)
+
+                    # prepare parameters for handler, TODO: maybe need refactor
+                    if request.method == "GET":
+                        handler_arg_list = inspect.getfullargspec(handler).args
+                        if handler_arg_list[0] == 'self': del handler_arg_list[0]
+                        uniq = set(kwargs.keys()) | set(handler_arg_list)
+                        kwargs.update(params)
+                        new_kwargs = {}
+                        for k in kwargs.keys():
+                            if k in uniq and k != 'correlation_id':
+                                new_kwargs[k] = kwargs[k]
+                        kwargs = new_kwargs
+                        del new_kwargs
+
                 return handler(*args, **kwargs)
             except Exception as ex:
                 # hack the redirect response in bottle
@@ -287,7 +302,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         if request.json or request.query:
             for k, v in request.query.dict.items():
                 result[k] = ''.join(v)
-            if request.json != 'null':
+            if request.json is not None and request.json != 'null':
                 result.update(request.json if not isinstance(request.json, str) else json.loads(
                     request.json))
             return result
