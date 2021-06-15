@@ -1,0 +1,7 @@
+pip\_services3\_rpc.services.HttpRequestDetector module
+=======================================================
+
+.. automodule:: pip_services3_rpc.services.HttpRequestDetector
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -11,7 +11,7 @@
 
 __all__ = ['CommandableHttpService', 'RestService', 'RestOperations', 'RestQueryParams', 'SSLCherryPyServer.py',
            'StatusRestService', 'IRegisterable', 'HttpResponseSender', 'HttpEndpoint', 'HeartbeatRestService',
-           'HeartBeatOperations', 'AboutOperations', 'HttpResponseDetector', 'StatusOperations']
+           'HeartBeatOperations', 'AboutOperations', 'HttpRequestDetector', 'StatusOperations']
 
 from .CommandableHttpService import CommandableHttpService
 from .RestService import RestService
@@ -24,6 +24,6 @@ from .IRegisterable import IRegisterable
 from .StatusRestService import StatusRestService
 from .HeartbeatRestService import HeartbeatRestService
 from .HeartBeatOperations import HeartBeatOperations
-from .HttpResponseDetector import HttpResponseDetector
+from .HttpRequestDetector import HttpRequestDetector
 from .AboutOperations import AboutOperations
 from .StatusOperations import StatusOperations

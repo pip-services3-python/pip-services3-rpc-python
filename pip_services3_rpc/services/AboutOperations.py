@@ -8,7 +8,7 @@ from pip_services3_commons.refer.Descriptor import Descriptor
 from pip_services3_commons.refer.IReferences import IReferences
 from pip_services3_components.info.ContextInfo import ContextInfo
 
-from .HttpResponseDetector import HttpResponseDetector
+from .HttpRequestDetector import HttpRequestDetector
 from .RestOperations import RestOperations
 
 
@@ -58,15 +58,15 @@ class AboutOperations(RestOperations):
                 'start_time': self.__context_info.start_time if not (self.__context_info is None) else None,
                 'current_time': datetime.datetime.now().isoformat(),
                 'protocol': req.method,
-                'host': HttpResponseDetector.detect_server_host(req),
-                'port': HttpResponseDetector.detect_server_port(req),
+                'host': HttpRequestDetector.detect_server_host(req),
+                'port': HttpRequestDetector.detect_server_port(req),
                 'addresses': self.__get_network_adresses(),
                 'url': req.url
             },
             'client': {
-                'address': HttpResponseDetector.detect_address(req),
-                'client': HttpResponseDetector.detect_browser(req),
-                'platform': HttpResponseDetector.detect_platform(req),
+                'address': HttpRequestDetector.detect_address(req),
+                'client': HttpRequestDetector.detect_browser(req),
+                'platform': HttpRequestDetector.detect_platform(req),
                 'user': req.get_header('user')
             }
         }

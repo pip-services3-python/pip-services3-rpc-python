@@ -195,7 +195,7 @@
 <li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.HttpEndpoint.html#pip-services3-rpc-services-httpendpoint">pip_services3_rpc.services.HttpEndpoint</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.HttpResponseDetector.html">pip_services3_rpc.services.HttpResponseDetector module</a></li>
+<li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.HttpRequestDetector.html">pip_services3_rpc.services.HttpRequestDetector module</a></li>
 <li class="toctree-l1"><a class="reference internal" href="pip_services3_rpc.services.HttpResponseSender.html">pip_services3_rpc.services.HttpResponseSender module</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="pip_services3_rpc.services.HttpResponseSender.html#pip-services3-rpc-services-httpresponsesender">pip_services3_rpc.services.HttpResponseSender</a></li>
 </ul>
@@ -629,13 +629,13 @@ by the given method and route.</p>
 </dd></dl>
 
 <dl class="py class">
-<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpResponseDetector">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pip_services3_rpc.services.</span></span><span class="sig-name descname"><span class="pre">HttpResponseDetector</span></span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseDetector" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpRequestDetector">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pip_services3_rpc.services.</span></span><span class="sig-name descname"><span class="pre">HttpRequestDetector</span></span><a class="headerlink" href="#pip_services3_rpc.services.HttpRequestDetector" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Helper class that retrieves parameters from HTTP requests.</p>
 <dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpResponseDetector.detect_address">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseDetector.detect_address" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpRequestDetector.detect_address">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_address</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpRequestDetector.detect_address" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects the IP address from which the given HTTP request was received.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -649,8 +649,8 @@ by the given method and route.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpResponseDetector.detect_browser">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseDetector.detect_browser" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpRequestDetector.detect_browser">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_browser</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpRequestDetector.detect_browser" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects the browser (using “user-agent”) from which the given HTTP request was made.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -664,8 +664,8 @@ by the given method and route.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpResponseDetector.detect_platform">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_platform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseDetector.detect_platform" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpRequestDetector.detect_platform">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_platform</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpRequestDetector.detect_platform" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects the platform (using “user-agent”) from which the given HTTP request was made.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -680,8 +680,8 @@ be returned.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpResponseDetector.detect_server_host">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_server_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseDetector.detect_server_host" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpRequestDetector.detect_server_host">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_server_host</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpRequestDetector.detect_server_host" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects the host name of the request’s destination server.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -694,8 +694,8 @@ be returned.</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpResponseDetector.detect_server_port">
-<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_server_port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpResponseDetector.detect_server_port" title="Permalink to this definition">¶</a></dt>
+<dt class="sig sig-object py" id="pip_services3_rpc.services.HttpRequestDetector.detect_server_port">
+<em class="property"><span class="pre">static</span> </em><span class="sig-name descname"><span class="pre">detect_server_port</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">req</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bottle.BaseRequest</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.services.HttpRequestDetector.detect_server_port" title="Permalink to this definition">¶</a></dt>
 <dd><p>Detects the request’s destination port number.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>

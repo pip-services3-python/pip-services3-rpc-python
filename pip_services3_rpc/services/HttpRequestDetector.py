@@ -7,7 +7,7 @@ import re
 import bottle
 
 
-class HttpResponseDetector:
+class HttpRequestDetector:
     """
     Helper class that retrieves parameters from HTTP requests.
     """
