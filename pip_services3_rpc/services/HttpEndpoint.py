@@ -114,7 +114,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
                                                                      self.__maintenance_enabled)
         self.__protocol_upgrade_enabled = config.get_as_boolean_with_default('options.protocol_upgrade_enabled',
                                                                              self.__protocol_upgrade_enabled)
-        self._debug = config.get_as_boolean_with_default('connection.debug', self._debug)
+        self._debug = config.get_as_boolean_with_default('options.debug', self._debug)
 
     def set_references(self, references: IReferences):
         """
