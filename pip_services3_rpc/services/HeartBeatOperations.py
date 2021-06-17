@@ -13,7 +13,7 @@ class HeartBeatOperations(RestOperations):
         super(HeartBeatOperations, self).__init__()
 
     def get_heart_beat_operation(self) -> Callable:
-        return lambda req, res: self.heartbeat()
+        return lambda: self.heartbeat()
 
     def heartbeat(self) -> str:
         result = StringConverter.to_string(datetime.datetime.now())

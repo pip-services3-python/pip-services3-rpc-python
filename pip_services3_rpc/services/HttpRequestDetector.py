@@ -82,18 +82,23 @@ class HttpRequestDetector:
         if req.get_header('x-forwarded-for'):
             ip = req.get_header('x-forwarded-for').split(',')[0]
 
-        if ip is None and 'connection' in json.loads(str(req.json)).keys():
+        json_data = req.json
+
+        if not isinstance(json_data, dict) and json_data is not None:
+            json_data = json.loads(str(json_data))
+
+        if ip is None and json_data and 'connection' in json_data.keys():
             try:
-                ip = json.loads(str(req.json))['connection']['remoteAddress']
+                ip = json_data['connection']['remoteAddress']
             except KeyError:
                 try:
-                    ip = json.loads(str(req.json))['connection']['socket']['remoteAddress']
+                    ip = json_data['connection']['socket']['remoteAddress']
                 except KeyError:
                     pass
 
         if ip is None:
             try:
-                ip = json.loads(str(req.json))['socket']['remoteAddress']
+                ip = json_data['socket']['remoteAddress']
             except KeyError:
                 pass
 

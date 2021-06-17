@@ -8,10 +8,10 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-import json
 from typing import Any, Optional
 
 import bottle
+from pip_services3_commons.convert.JsonConverter import JsonConverter
 from pip_services3_commons.errors import ErrorDescriptionFactory
 
 
@@ -36,11 +36,11 @@ class HttpResponseSender:
         """
         bottle.response.headers['Content-Type'] = 'application/json'
         if result is None:
-            bottle.response.status = 404
+            bottle.response.status = 204
             return
         else:
             bottle.response.status = 200
-            return json.dumps(result, default=HttpResponseSender._to_json)
+            return JsonConverter.to_json(result)
 
     @staticmethod
     def send_empty_result(result: Any = None) -> Optional[str]:
@@ -55,7 +55,7 @@ class HttpResponseSender:
         bottle.response.headers['Content-Type'] = 'application/json'
         if result is None:
             bottle.response.status = 204
-            return json.dumps(result, default=HttpResponseSender._to_json)
+            return JsonConverter.to_json(result)
         else:
             bottle.response.status = 404
             return
@@ -81,7 +81,7 @@ class HttpResponseSender:
             return
         else:
             bottle.response.status = 201
-            return json.dumps(result, default=HttpResponseSender._to_json)
+            return JsonConverter.to_json(result)
 
     @staticmethod
     def send_deleted_result(result: Any = None) -> Optional[str]:
@@ -104,7 +104,7 @@ class HttpResponseSender:
             return
 
         bottle.response.status = 200
-        return json.dumps(result, default=HttpResponseSender._to_json) if result else None
+        return JsonConverter.to_json(result) if result else None
 
     @staticmethod
     def send_error(error: Any) -> str:
@@ -115,46 +115,17 @@ class HttpResponseSender:
 
         :return: HTTP response status
         """
+        basic_fillers = {'code': 'Undefined', 'status': 500, 'message': 'Unknown error',
+                         'name': None, 'details': None,
+                         'component': None, 'stack': None, 'cause': None}
 
-        error.__dict__.update({'code': 'Undefined', 'status': 500, 'message': 'Unknown error',
-                               'name': None, 'details': None,
-                               'component': None, 'stack': None, 'cause': None})
+        if error is None:
+            error = type('error', (object,), basic_fillers)
+        else:
+            for k, v in basic_fillers.items():
+                error.__dict__[k] = error.__dict__[k] if error.__dict__.get(k) is not None else v
 
         bottle.response.headers['Content-Type'] = 'application/json'
         error = ErrorDescriptionFactory.create(error)
         bottle.response.status = error.status
-        return json.dumps(error.to_json())
-
-    @staticmethod
-    def _to_json(obj):
-        if obj is None:
-            return None
-
-        if isinstance(obj, set):
-            obj = list(obj)
-        if isinstance(obj, list):
-            result = []
-            for item in obj:
-                item = HttpResponseSender._to_json(item)
-                result.append(item)
-            return result
-
-        if isinstance(obj, dict):
-            result = {}
-            for (k, v) in obj.items():
-                v = HttpResponseSender._to_json(v)
-                result[k] = v
-            return result
-
-        if hasattr(obj, 'to_json'):
-            return obj.to_json()
-        if hasattr(obj, '__dict__'):
-            attribs = dict(obj.__dict__)
-            dict_obj = {}
-            
-            for key in attribs.keys():
-                if not (key.endswith('__') and key.startswith('__')):
-                    dict_obj[key] = attribs[key]
-
-            return HttpResponseSender._to_json(dict_obj)
-        return obj
+        return JsonConverter.to_json(error)

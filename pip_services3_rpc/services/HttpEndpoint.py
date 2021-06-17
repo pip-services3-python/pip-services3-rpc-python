@@ -379,9 +379,17 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         :param authorize: the authorization interceptor
         :param action: the action to perform at the given route.
         """
+        def action_with_authorize(*args, **kwargs):
+            # hack to pass the parameters in authorizer
+            bottle.request.params['kwargs'] = kwargs
+            # bottle.request.params['args'] = args
+
+            authorize()
+            return next_action(*args, **kwargs)
+
         if authorize:
             next_action = action
-            action = lambda req, res: authorize(request, response, next_action(response, response))
+            action = action_with_authorize
 
         self.register_route(method, route, schema, action)
 
@@ -394,5 +402,5 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         route = self.__fix_route(route)
 
-        self.__service.add_hook('before_request', lambda: action(request, response) if not (
+        self.__service.add_hook('before_request', lambda: action() if not (
                 route is not None and route != '' and str(request.url).startswith(route)) else None)

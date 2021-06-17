@@ -23,7 +23,7 @@ except:
 
 setup(
     name='pip_services3_rpc',
-    version='3.2.1',
+    version='3.2.3',
     url='http://github.com/pip-services3-python/pip-services3-rpc-python',
     license='MIT',
     author='Conceptual Vision Consulting LLC',

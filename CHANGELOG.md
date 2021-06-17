@@ -1,6 +1,18 @@
 # <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> Remote Procedure Calls for Python Changelog
 
-### <a name="3.2.1"></a> 3.2.1 (2021-06-10)
+## <a name="3.2.2 - 3.2.3"></a> 3.2.2 - 3.2.3 (2021-06-17)
+
+### Bug Fixes
+* Fixed get_heart_beat_operation
+* Fixed HttpRequestDetector.detect_address
+* Fixed HttpResponseSender.send_result
+
+
+### Features
+* HttpEndpoint added register_route_with_auth
+* Added **Auth** - authentication and authorisation components
+
+## <a name="3.2.1"></a> 3.2.1 (2021-06-10)
 
 ### Bug Fixes
 * fixed processing query parameters
@@ -67,7 +79,6 @@
 Initial public release
 
 ### Features
-* **Auth** - authentication and authorisation components
 * **Build** - HTTP service factory
 * **Clients** - retrieving connection settings from the microservice’s configuration
 * **Connect** - helper module to retrieve connections

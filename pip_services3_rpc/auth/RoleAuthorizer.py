@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
-
+import bottle
 from pip_services3_commons.errors.UnauthorizedException import UnauthorizedException
+
 from pip_services3_rpc.services.HttpResponseSender import HttpResponseSender
 
 
 class RoleAuthorizer:
     def user_in_roles(self, roles):
-        def inner(req, res, next):
-            user = req.user
+        def inner():
+            user = bottle.request.user
             if user is None:
                 HttpResponseSender.send_error(UnauthorizedException(
                     None,
@@ -23,10 +24,10 @@ class RoleAuthorizer:
                     HttpResponseSender.send_error(UnauthorizedException(
                         None,
                         'NOT_IN_ROLE',
-                        'User must be ' + ' or '.join(roles) + ' to perform this operation'
+                        'User must be ' +
+                        ' or '.join(roles) + ' to perform this operation'
                     ).with_details('roles', roles).with_status(403))
-                else:
-                    next()
+
         return inner
 
     def user_in_role(self, role):

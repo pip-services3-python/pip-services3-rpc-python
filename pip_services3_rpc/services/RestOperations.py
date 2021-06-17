@@ -63,9 +63,10 @@ class RestOperations(IConfigurable, IReferenceable, ABC):
         return FilterParams(data)
 
     def _get_paging_params(self) -> PagingParams:
-        skip = bottle.request.query.get('skip')
-        take = bottle.request.query.get('take')
-        total = bottle.request.query.get('total')
+        params = dict(bottle.request.query.decode())
+        skip = params.get('skip')
+        take = params.get('take')
+        total = params.get('total')
         return PagingParams(skip, take, total)
 
     def _get_data(self) -> Optional[str]:
