@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from typing import Callable
+
 import bottle
 from pip_services3_commons.errors.UnauthorizedException import UnauthorizedException
 
@@ -7,10 +9,10 @@ from pip_services3_rpc.services.HttpResponseSender import HttpResponseSender
 
 class BasicAuthorizer:
 
-    def anybody(self):
+    def anybody(self) -> Callable:
         return lambda: None
 
-    def signed(self):
+    def signed(self) -> Callable:
         def inner():
             if bottle.request.user is None:
                 return HttpResponseSender.send_error(UnauthorizedException(
