@@ -4,6 +4,7 @@
 
 ### Bug Fixes
 * Fixed getting correlation id from request
+* Update getting query parameters
 
 ## <a name="3.2.2 - 3.2.4"></a> 3.2.2 - 3.2.4 (2021-06-17)
 
