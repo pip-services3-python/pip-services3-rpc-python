@@ -293,7 +293,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
 
         return ''
 
-    def register_route(self, method: str, route: str, schema: Schema, handler: Callable):
+    def register_route(self, method: str, route: str, schema: Optional[Schema], handler: Callable):
         """
         Registers an action in this objects REST server (service) by the given method and route.
 
