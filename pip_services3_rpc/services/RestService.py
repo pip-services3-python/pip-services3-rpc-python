@@ -413,5 +413,5 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         """
         correlation_id = bottle.request.query.get('correlation_id')
         if correlation_id is None or correlation_id == '':
-            correlation_id = bottle.request.headers['correlation_id']
+            correlation_id = bottle.request.headers.get('correlation_id')
         return correlation_id
