@@ -172,7 +172,7 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         :param name: a method name.
         :return: InstrumentTiming object to end the time measurement.
         """
-        self._logger.trace(correlation_id, "Executing %s method, name")
+        self._logger.trace(correlation_id, "Executing %s method", name)
         self._counters.increment_one(name + ".exec_count")
 
         counter_timing = self._counters.begin_timing(name + ".exec_time")
@@ -327,19 +327,12 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         in child classes.
         """
 
-    def get_data(self):
+    def _get_data(self) -> dict:
         data = bottle.request.json
         if isinstance(data, str):
             return json.loads(bottle.request.json)
         elif bottle.request.json:
             return bottle.request.json
-        else:
-            return None
-
-    def get_request_param(self):
-
-        if (not (bottle is None)) and (not (bottle.request is None)) and (not (bottle.request.params is None)):
-            return bottle.request.params
         else:
             return {}
 
