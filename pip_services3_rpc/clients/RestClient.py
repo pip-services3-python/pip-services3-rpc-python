@@ -2,9 +2,9 @@
 """
     pip_services3_rpc.client.RestClient
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
+
     REST client implementation
-    
+
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
@@ -314,8 +314,8 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         return params
 
-    def call(self, method: str, route: str, correlation_id: Optional[str] = None, params: Any = None,
-             data: Any = None) -> Any:
+    def _call(self, method: str, route: str, correlation_id: Optional[str] = None, params: Any = None,
+              data: Any = None) -> Any:
         """
         Calls a remote method via HTTP/REST protocol.
 
@@ -346,8 +346,12 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         try:
             # Call the service
-            data = data if isinstance(data, str) else json.dumps(self._to_json(data))
-            response = requests.request(method, route, params=params, json=data, timeout=self._timeout)
+            data = data if isinstance(data, str) else self._to_json(data)
+            if data:
+                data.update(params)
+            else:
+                data = params
+            response = requests.request(method, route, json=json.dumps(data), timeout=self._timeout)
 
         except Exception as ex:
             error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)

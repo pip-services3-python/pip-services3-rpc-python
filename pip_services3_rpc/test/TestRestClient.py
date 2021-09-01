@@ -13,8 +13,8 @@ class TestRestClient(RestClient):
         super(TestRestClient, self).__init__()
         self._base_route = base_route
 
-    def call(self, method: str, route: str, correlation_id: Optional[str] = None, params: Any = None,
-             data: Any = None) -> Any:
+    def _call(self, method: str, route: str, correlation_id: Optional[str] = None, params: Any = None,
+              data: Any = None) -> Any:
         """
         Calls a remote method via HTTP/REST protocol.
 
@@ -25,4 +25,4 @@ class TestRestClient(RestClient):
         :param data: (optional) body object.
         :returns: a result object.
         """
-        return super(TestRestClient, self).call(method, route, correlation_id, params, data)
+        return super(TestRestClient, self)._call(method, route, correlation_id, params, data)

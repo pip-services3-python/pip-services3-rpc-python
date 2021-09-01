@@ -24,7 +24,7 @@ class DummyRestClient(RestClient, IDummyClient):
     def get_page_by_filter(self, correlation_id, filters, paging):
         params = RestQueryParams(correlation_id, filters, paging)
 
-        result = self.call(
+        result = self._call(
             'GET',
             '/dummies',
             correlation_id,
@@ -34,7 +34,7 @@ class DummyRestClient(RestClient, IDummyClient):
         return DataPage(result['data'], result['total'])
 
     def get_one_by_id(self, correlation_id, id):
-        return self.call(
+        return self._call(
             'GET',
             f'/dummies/{id}',
             correlation_id,
@@ -42,7 +42,7 @@ class DummyRestClient(RestClient, IDummyClient):
         )
 
     def create(self, correlation_id, entity):
-        return self.call(
+        return self._call(
             'POST',
             '/dummies',
             correlation_id,
@@ -53,7 +53,7 @@ class DummyRestClient(RestClient, IDummyClient):
         )
 
     def update(self, correlation_id, entity):
-        return self.call(
+        return self._call(
             'PUT',
             '/dummies',
             correlation_id,
@@ -64,7 +64,7 @@ class DummyRestClient(RestClient, IDummyClient):
         )
 
     def delete_by_id(self, correlation_id, id):
-        return self.call(
+        return self._call(
             'DELETE',
             f'/dummies/{id}',
             correlation_id,

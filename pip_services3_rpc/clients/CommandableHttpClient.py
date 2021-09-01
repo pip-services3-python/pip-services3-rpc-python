@@ -85,7 +85,7 @@ class CommandableHttpClient(RestClient, ABC):
             #     route = '/'  + self._base_route + '/' + name
             # else:
             #     route = self._base_route + '/' + name
-            return self.call('POST', name, correlation_id, None, params)
+            return self._call('POST', name, correlation_id, None, params)
         except Exception as err:
             timing.end_failure(err)
         finally:
