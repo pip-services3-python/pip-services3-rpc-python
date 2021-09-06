@@ -13,6 +13,7 @@ from typing import Optional, Any
 
 import requests
 from pip_services3_commons.config import ConfigParams, IConfigurable
+from pip_services3_commons.data import PagingParams
 from pip_services3_commons.errors import ErrorDescription, ApplicationExceptionFactory
 from pip_services3_commons.errors import UnknownException, InvocationException
 from pip_services3_commons.refer import IReferenceable, IReferences
@@ -276,7 +277,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         return params
 
-    def add_filter_params(self, params: Any = None, filters: Any = None) -> dict:
+    def _add_filter_params(self, params: Any = None, filters: Any = None) -> dict:
         """
         Adds filter parameters (with the same name as they defined)
         to invocation parameter map.
@@ -291,7 +292,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         return params
 
-    def add_paging_params(self, params: Any = None, paging: Any = None) -> dict:
+    def _add_paging_params(self, params: dict = None, paging: PagingParams = None) -> dict:
         """
         Adds paging parameters (skip, take, total) to invocation parameter map.
 
@@ -303,18 +304,17 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
 
         """
         params = params or {}
-        if not (paging is None):
-            if not (paging['total'] is None):
-                params['total'] = paging['total']
-            if not (paging['skip'] is None):
-                params['skip'] = paging['skip']
-            if not (paging['take'] is None):
-                params['take'] = paging['take']
-            # params.update(paging)
+        if paging:
+            if paging.total:
+                params['total'] = paging.total
+            if paging.skip:
+                params['skip'] = paging.skip
+            if paging.take:
+                params['take'] = paging.take
 
         return params
 
-    def _call(self, method: str, route: str, correlation_id: Optional[str] = None, params: Any = None,
+    def _call(self, method: str, route: str, correlation_id: Optional[str] = None, params: dict = None,
               data: Any = None) -> Any:
         """
         Calls a remote method via HTTP/REST protocol.
@@ -333,6 +333,10 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         """
         method = method.upper()
 
+        if method not in ['GET', 'HEAD', 'POST', 'PUT', 'DELETE', 'PATCH']:
+            raise UnknownException(correlation_id, 'UNSUPPORTED_METHOD',
+                                   'Method is not supported by REST client').with_details('verb', method)
+
         route = self.__create_request_route(route)
         params = self.add_correlation_id(correlation_id=correlation_id, params=params)
         response = None
@@ -347,17 +351,17 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
         try:
             # Call the service
             data = data if isinstance(data, str) else self._to_json(data)
-            if data:
-                data.update(params)
-            else:
-                data = params
-            response = requests.request(method, route, json=json.dumps(data), timeout=self._timeout)
+            response = requests.request(method, route,
+                                        headers=self._headers,
+                                        json=json.dumps(data),
+                                        params=params,
+                                        timeout=self._timeout)
 
         except Exception as ex:
             error = InvocationException(correlation_id, 'REST_ERROR', 'REST operation failed: ' + str(ex)).wrap(ex)
             raise error
 
-        if response.status_code == 404 or response.status_code == 204:
+        if response.status_code == 204:
             return None
 
         try:

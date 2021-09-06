@@ -23,7 +23,7 @@ except:
 
 setup(
     name='pip_services3_rpc',
-    version='3.2.7',
+    version='3.2.9',
     url='http://github.com/pip-services3-python/pip-services3-rpc-python',
     license='MIT',
     author='Conceptual Vision Consulting LLC',
@@ -36,8 +36,8 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
-        'iso8601', 'PyYAML', 'pystache', 'pytest', 'pytz', 'bottle', 'requests', 'netifaces',
-        'pip-services3-commons', 'pip-services3-components', 'cheroot', 'beaker'
+        'iso8601', 'PyYAML', 'pystache', 'pytest', 'pytz', 'bottle', 'requests',
+        'pip-services3-commons', 'pip-services3-components', 'cheroot', 'beaker', 'psutil'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',

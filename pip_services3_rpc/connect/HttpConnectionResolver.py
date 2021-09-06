@@ -102,7 +102,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
         # Check HTTPS credentials
         if protocol == 'https':
             # Check for credential
-            if credential is None:
+            if credential is None or credential.length() == 0:
                 raise ConfigException(
                     correlation_id, 'NO_CREDENTIAL',
                     'SSL certificates are not configured for HTTPS protocol')

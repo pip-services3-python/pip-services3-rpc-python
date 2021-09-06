@@ -45,12 +45,17 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
             - host:                  host name or IP address
             - port:                  port number
             - uri:                   resource URI or connection string with all parameters in it
+        - credential - the HTTPS credentials:
+            - ssl_key_file:         the SSL private key in PEM
+            - ssl_crt_file:         the SSL certificate in PEM
+            - ssl_ca_file:          the certificate authorities (root cerfiticates) in PEM
 
     ### References ###
         - `*:logger:*:*:1.0`         (optional) :class:`ILogger <pip_services3_components.log.ILogger.ILogger>` components to pass log messages
         - `*:counters:*:*:1.0`       (optional) :class:`ICounters <pip_services3_components.count.ICounters.ICounters>` components to pass collected measurements
         - `*:discovery:*:*:1.0`      (optional) :class:`IDiscovery <pip_services3_components.connect.IDiscovery.IDiscovery>` services to resolve connection
         - `*:endpoint:http:*:1.0`    (optional) :class:`HttpEndpoint <pip_services3_rpc.services.HttpEndpoint>` reference
+        - `*:tracer:*:*:1.0`         (optional) :class:`ITracer <pip_services3_components.trace.ITracer.ITracer>` components to record traces
 
     Example:
 
@@ -286,8 +291,8 @@ class RestService(IOpenable, IConfigurable, IReferenceable, IUnreferenceable, IR
         return HttpResponseSender.send_error(error)
 
     def fix_route(self, route) -> str:
-        if (route is not None and len(route) > 0):
-            if (route[0] != '/'):
+        if route is not None and len(route) > 0:
+            if route[0] != '/':
                 route = f'/{route}'
             return route
 

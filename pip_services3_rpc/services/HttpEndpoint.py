@@ -270,7 +270,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         def wrapper(*args, **kwargs):
             try:
                 if isinstance(schema, Schema):
-                    params = self.__get_data()
+                    params = self.__get_data() or {}
+                    params.update(kwargs)
                     correlation_id = None if not params else params.get('correlation_id')
                     schema.validate_and_throw_exception(correlation_id, params, False)
 
@@ -283,7 +284,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
         self.__service.route(route, method, wrapper)
 
-    def __get_data(self):
+    def __get_data(self) -> Optional[dict]:
         result = {}
         if request.json or request.query:
             for k, v in request.query.dict.items():
@@ -389,5 +390,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         route = self.__fix_route(route)
 
-        self.__service.add_hook('before_request', lambda: action() if not (
-                route is not None and route != '' and str(request.url).startswith(route)) else None)
+        def intercept_handler():
+            if route and str(request.path).startswith(route):
+                return action()
+
+        self.__service.add_hook('before_request', intercept_handler)

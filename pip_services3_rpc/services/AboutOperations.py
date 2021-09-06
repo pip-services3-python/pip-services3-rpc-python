@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 import datetime
+from socket import AddressFamily
 from typing import Callable
 
 import bottle
-import netifaces
+import psutil
 from pip_services3_commons.refer.Descriptor import Descriptor
 from pip_services3_commons.refer.IReferences import IReferences
 from pip_services3_components.info.ContextInfo import ContextInfo
@@ -28,21 +29,27 @@ class AboutOperations(RestOperations):
     def get_about_operation(self) -> Callable:
         return self.get_about
 
+    def __is_local_adress(self, addr: str, mask: str):
+        addr = addr.split('.')
+        if not ((int(addr[0]) == 10 or int(addr[0]) == 127) or (
+                int(addr[0]) == 172 and 16 <= int(addr[1]) <= 31) or (
+                        int(addr[0]) == 192 and int(addr[1]) == 168) or (
+                        int(addr[0]) == 100 and 64 <= int(addr[1]) <= 127)) or mask not in ['255.0.0.0',
+                                                                                            '255.240.0.0',
+                                                                                            '255.255.0.0',
+                                                                                            '255.192.0.0']:
+            return True
+
+        return False
+
     def __get_network_adresses(self) -> list:
-        interfaces = netifaces.interfaces()
+
+        interfaces = psutil.net_if_addrs()
         addresses = []
-        for interface in interfaces:
-            if netifaces.AF_INET in netifaces.ifaddresses(interface).keys():
-                addr = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr'].split('.')
-                mask = netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['netmask']
-                if not ((int(addr[0]) == 10 or int(addr[0]) == 127) or (
-                        int(addr[0]) == 172 and 16 <= int(addr[1]) <= 31) or (
-                                int(addr[0]) == 192 and int(addr[1]) == 168) or (
-                                int(addr[0]) == 100 and 64 <= int(addr[1]) <= 127)) or mask not in ['255.0.0.0',
-                                                                                                    '255.240.0.0',
-                                                                                                    '255.255.0.0',
-                                                                                                    '255.192.0.0']:
-                    addresses.append(netifaces.ifaddresses(interface)[netifaces.AF_INET][0]['addr'])
+        for key in interfaces.keys():
+            for adress in interfaces[key]:
+                if AddressFamily.AF_INET == adress.family and self.__is_local_adress(adress.address, adress.netmask):
+                    addresses.append(adress.address)
 
         return addresses
 

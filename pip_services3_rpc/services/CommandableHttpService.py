@@ -86,7 +86,7 @@ class CommandableHttpService(RestService):
     def __get_handler(self, command: ICommand) -> Callable:
         def handler():
             params = self._get_data()
-            correlation_id = params.get('correlation_id')
+            correlation_id = self._get_correlation_id()
             args = Parameters.from_value(params)
             timing = self._instrument(correlation_id, self._base_route + '.' + command.get_name())
             try:
