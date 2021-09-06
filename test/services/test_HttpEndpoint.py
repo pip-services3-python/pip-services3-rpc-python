@@ -35,7 +35,7 @@ class TestHttpEndpointService():
 
     @classmethod
     def setup_class(cls):
-        cls.controller = DummyController()
+        controller = DummyController()
         cls.service = DummyRestService()
         cls.service.configure(ConfigParams.from_tuples(
             'base_route', '/api/v1'
@@ -44,36 +44,35 @@ class TestHttpEndpointService():
         cls.endpoint = HttpEndpoint()
         cls.endpoint.configure(rest_config)
 
-        cls.references = References.from_tuples(
-            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
+        references = References.from_tuples(
+            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), controller,
             Descriptor('pip-services-dummies', 'service', 'rest', 'default', '1.0'), cls.service,
             Descriptor('pip-services', 'endpoint', 'http', 'default', '1.0'), cls.endpoint
         )
 
-        cls.service.set_references(cls.references)
+        cls.service.set_references(references)
         cls.endpoint.open(None)
         cls.service.open(None)
 
-    def teardown_method(self, method):
+    def teardown_method(self):
         self.service.close(None)
         self.endpoint.close(None)
 
     def test_crud_operations(self):
-        dummy1 = self.invoke("/api/v1/dummies", {'body': DUMMY1})
+        response = self.invoke("/api/v1/dummies", {'body': DUMMY1.to_json()})
 
-        assert None != dummy1
-        assert DUMMY1['key'] == dummy1['key']
-        assert DUMMY1['content'] == dummy1['content']
+        dummy1 = Dummy(**response)
+
+        assert dummy1 is not None
+        assert DUMMY1.key == dummy1.key
+        assert DUMMY1.content == dummy1.content
 
     def invoke(self, route, entity):
-        params = {}
+
         route = "http://localhost:3004" + route
-        response = None
-        timeout = 10000
-        try:
-            # Call the service
-            data = json.dumps(entity)
-            response = requests.request('POST', route, params=params, json=data, timeout=timeout)
-            return response.json()
-        except Exception as ex:
-            return False
+
+        # Call the service
+        data = json.dumps(entity)
+        response = requests.request('POST', route, json=data, timeout=5)
+        return response.json()
+

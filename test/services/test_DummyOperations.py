@@ -41,12 +41,12 @@ class TestDummyOperations:
         cls.service = DummyRestService()
         cls.service.configure(rest_config)
 
-        cls.references = References.from_tuples(
+        references = References.from_tuples(
             Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
             Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service
         )
 
-        cls.service.set_references(cls.references)
+        cls.service.set_references(references)
         cls.service.open(None)
 
     def teardown_class(self, method=None):
@@ -105,16 +105,10 @@ class TestDummyOperations:
         assert about['client']['platform'] == 'mac 10.5'
 
     def invoke(self, route, method='POST', entity=None, headers=None):
-        params = {}
         route = "http://localhost:3006" + route
-        timeout = 10000
-        try:
-            # Call the service
-            if entity:
-                data = json.dumps(entity)
-            else:
-                data = None
-            response = requests.request(method, route, headers=headers, params=params, json=data, timeout=timeout)
-            return response.json()
-        except Exception as ex:
-            return ex
+
+        # Call the service
+        if entity:
+            entity = json.dumps(entity)
+        response = requests.request(method, route, headers=headers, json=entity, timeout=5)
+        return response.json()

@@ -31,8 +31,8 @@ DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
 
 
 class TestDummyCommandableHttpService():
-    controller = None
-    service = None
+    controller: DummyController
+    service: DummyCommandableHttpService
 
     @classmethod
     def setup_class(cls):
@@ -41,68 +41,81 @@ class TestDummyCommandableHttpService():
         cls.service = DummyCommandableHttpService()
         cls.service.configure(rest_config)
 
-        cls.references = References.from_tuples(
+        references = References.from_tuples(
             Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
             Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service
         )
 
-        cls.service.set_references(cls.references)
+        cls.service.set_references(references)
+        cls.service.open(None)
 
-    def setup_method(self, method):
-        self.service.open(None)
-
-    def teardown_method(self, method):
-        self.service.close(None)
+    @classmethod
+    def teardown_class(cls):
+        cls.service.close(None)
 
     def test_crud_operations(self):
         # Create one dummy
-        dummy1 = self.invoke("/dummy/create_dummy", Parameters.from_tuples("dummy", DUMMY1))
+        response = self.invoke("/dummy/create_dummy", Parameters.from_tuples("dummy", DUMMY1.to_json()))
 
-        assert None != dummy1
-        assert DUMMY1['key'] == dummy1['key']
-        assert DUMMY1['content'] == dummy1['content']
+        dummy1 = Dummy(**response)
+
+        assert dummy1 is not None
+        assert DUMMY1.key == dummy1.key
+        assert DUMMY1.content == dummy1.content
 
         # Create another dummy
-        dummy2 = self.invoke("/dummy/create_dummy", Parameters.from_tuples("dummy", DUMMY2))
+        response = self.invoke("/dummy/create_dummy", Parameters.from_tuples("dummy", DUMMY2.to_json()))
 
-        assert None != dummy2
-        assert DUMMY2['key'] == dummy2['key']
-        assert DUMMY2['content'] == dummy2['content']
+        dummy2 = Dummy(**response)
+
+        assert dummy2 is not None
+        assert DUMMY2.key == dummy2.key
+        assert DUMMY2.content == dummy2.content
 
         # Get all dummies
         dummies = self.invoke("/dummy/get_dummies", Parameters.from_tuples("dummies"))
 
-        assert None != dummies
+        assert dummies is not None
         assert 2 == len(dummies['data'])
 
         # Update the dummy
-        dummy1['content'] = "Updated Content 1"
-        dummy = self.invoke("/dummy/update_dummy", Parameters.from_tuples("dummy", dummy1))
+        dummy1.content = "Updated Content 1"
+        response = self.invoke("/dummy/update_dummy", Parameters.from_tuples("dummy", dummy1.to_json()))
 
-        assert None != dummy
-        assert dummy1['id'] == dummy['id']
-        assert dummy1['key'] == dummy['key']
-        assert "Updated Content 1" == dummy['content']
+        dummy = Dummy(**response)
+
+        assert dummy is not None
+        assert dummy1.id == dummy.id
+        assert dummy1.key == dummy.key
+        assert "Updated Content 1" == dummy.content
 
         # Delete the dummy
-        self.invoke("/dummy/delete_dummy", Parameters.from_tuples("dummy_id", dummy1['id']))
+        self.invoke("/dummy/delete_dummy", Parameters.from_tuples("dummy_id", dummy1.id))
 
         # Try to get deleted dummy
-        get_dummy = self.invoke("/dummy/get_dummy_by_id", Parameters.from_tuples("dummy_id", dummy1['id']))
-        assert False == get_dummy
+        get_dummy = self.invoke("/dummy/get_dummy_by_id", Parameters.from_tuples("dummy_id", dummy1.id))
+        assert get_dummy is None
 
-    def invoke(self, route, entity):
-        params = {}
+    def invoke(self, route, entity, headers=None):
         route = "http://localhost:3005" + route
-        response = None
-        timeout = 10000
-        try:
-            # Call the service
-            data = json.dumps(entity)
-            response = requests.request('POST', route, params=params, json=data, timeout=timeout)
+        timeout = 5
+
+        entity = {} if not entity else json.dumps(entity)
+
+        # Call the service
+        response = requests.request('POST', route, json=entity, timeout=timeout, headers=headers)
+        if response.status_code != 204:
             return response.json()
-        except Exception as ex:
-            return False
+
+    def test_check_correlation_id(self):
+        # check transmit correlation_id over params
+        result = self.invoke('/dummy/check_correlation_id?correlation_id=test_cor_id', None)
+        assert 'test_cor_id' == result['correlation_id']
+
+        # check transmit correlation_id over header
+        headers = {'correlation_id': "test_cor_id_header"}
+        result = self.invoke('/dummy/check_correlation_id', None, headers=headers)
+        assert 'test_cor_id_header' == result['correlation_id']
 
     def test_get_open_api_spec(self):
         response = requests.request('GET', 'http://localhost:3005/dummy/swagger')
@@ -127,7 +140,10 @@ class TestDummyCommandableHttpService():
         )
         self.service.set_references(references)
 
-        self.service.open(None)
+        try:
+            self.service.open(None)
 
-        response = requests.request('GET', 'http://localhost:3005/dummy/swagger')
-        assert response.text == open_api_content
+            response = requests.request('GET', 'http://localhost:3005/dummy/swagger')
+            assert response.text == open_api_content
+        finally:
+            self.service.close(None)

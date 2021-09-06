@@ -7,16 +7,14 @@
     :license: MIT, see LICENSE for more details.
 """
 
-import pytest
 import time
 
 from pip_services3_commons.config import ConfigParams
-from pip_services3_commons.refer import Descriptor, References, Referencer
-from pip_services3_commons.run import Opener, Closer
+from pip_services3_commons.refer import Descriptor, References
 
-from ..DummyController import DummyController
 from .DummyClientFixture import DummyClientFixture
 from .DummyCommandableHttpClient import DummyCommandableHttpClient
+from ..DummyController import DummyController
 from ..services.DummyCommandableHttpService import DummyCommandableHttpService
 
 rest_config = ConfigParams.from_tuples(
@@ -27,38 +25,43 @@ rest_config = ConfigParams.from_tuples(
 
 
 class TestDummyCommandableHttpClient:
-    references = None
-    fixture = None
+    fixture: DummyClientFixture
     service: DummyCommandableHttpService
     client: DummyCommandableHttpClient
 
     @classmethod
     def setup_class(cls):
-        cls.controller = DummyController()
+        controller = DummyController()
 
         cls.service = DummyCommandableHttpService()
         cls.service.configure(rest_config)
 
-        cls.client = DummyCommandableHttpClient()
-        cls.client.configure(rest_config)
-
-        cls.references = References.from_tuples(
-            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
+        references = References.from_tuples(
+            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), controller,
             Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service
         )
-        cls.client.set_references(cls.references)
-        cls.service.set_references(cls.references)
 
-        cls.fixture = DummyClientFixture(cls.client)
+        cls.service.set_references(references)
 
         cls.service.open(None)
-        cls.client.open(None)
-        time.sleep(1)
+
+        time.sleep(0.5)
 
     @classmethod
     def teardown_class(cls):
         cls.service.close(None)
-        cls.client.close(None)
+
+    def setup_method(self):
+        self.client = DummyCommandableHttpClient()
+        self.fixture = DummyClientFixture(self.client)
+
+        self.client.configure(rest_config)
+        self.client.set_references(References())
+
+        self.client.open(None)
+
+    def teardown_method(self):
+        self.client.close(None)
 
     def test_crud_operations(self):
         self.fixture.test_crud_operations()

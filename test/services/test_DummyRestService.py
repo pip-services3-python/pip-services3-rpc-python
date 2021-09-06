@@ -24,7 +24,7 @@ rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
     "connection.host", "localhost",
     "connection.port", 3001,
-    "openapi_content", "swagger yaml or json content",  # for test only
+    "swagger.content", "swagger yaml or json content",  # for test only
     "swagger.enable", "true"
 )
 
@@ -32,7 +32,7 @@ DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
 DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
 
 
-class TestDummyRestService():
+class TestDummyRestService:
     controller = None
     service = None
 
@@ -43,12 +43,12 @@ class TestDummyRestService():
         cls.service = DummyRestService()
         cls.service.configure(rest_config)
 
-        cls.references = References.from_tuples(
+        references = References.from_tuples(
             Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
             Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service
         )
 
-        cls.service.set_references(cls.references)
+        cls.service.set_references(references)
 
     def setup_method(self, method):
         self.service.open(None)
@@ -58,40 +58,63 @@ class TestDummyRestService():
 
     def test_crud_operations(self):
         # Create one dummy
-        dummy1 = self.invoke("/dummies", {"body": DUMMY1})
+        response = self.invoke('POST', "/dummies", {"body": DUMMY1.to_json()})
 
-        assert None != dummy1
-        assert DUMMY1['key'] == dummy1['key']
-        assert DUMMY1['content'] == dummy1['content']
+        dummy1 = Dummy(**response)
+        assert dummy1 is not None
+        assert DUMMY1.key == dummy1.key
+        assert DUMMY1.content == dummy1.content
 
         # Create another dummy
-        dummy2 = self.invoke("/dummies", {"body": DUMMY2})
+        response = self.invoke('POST', "/dummies", {"body": DUMMY2.to_json()})
 
-        assert None != dummy2
-        assert DUMMY2['key'] == dummy2['key']
-        assert DUMMY2['content'] == dummy2['content']
+        dummy2 = Dummy(**response)
 
-        # dummy_del = self.invoke('/dummies/<id>')
+        assert dummy2 is not None
+        assert DUMMY2.key == dummy2.key
+        assert DUMMY2.content == dummy2.content
 
-        assert 2 == self.service.get_number_of_calls()
+        # Get all dummies
+        response = self.invoke('GET', '/dummies', None)
 
-    def invoke(self, route, entity):
-        params = {}
+        assert response is not None
+        assert len(response['data']) == 2
+
+        # Update the dummy
+        dummy1.content = 'Updated Content 1'
+        response = self.invoke('PUT', '/dummies', {'body': dummy1.to_json()})
+
+        dummy = Dummy(**response)
+
+        assert dummy.content == 'Updated Content 1'
+        assert dummy.key == dummy1.key
+
+        dummy1 = dummy
+
+        # Delete dummy
+        self.invoke('DELETE', f'/dummies/{dummy1.id}')
+
+        # Try to get delete dummy
+        response = self.invoke('GET', f'/dummies/{dummy1.id}')
+
+        assert response is None
+
+        assert 6 == self.service.get_number_of_calls()
+
+    def invoke(self, method, route, entity=None):
         route = "http://localhost:3001" + route
-        response = None
-        timeout = 10000
-        try:
-            # Call the service
-            data = json.dumps(entity)
-            response = requests.request('POST', route, params=params, json=data, timeout=timeout)
+
+        # Call the service
+        if entity:
+            entity = json.dumps(entity)
+        response = requests.request(method, route, json=entity, timeout=5)
+        if response.status_code != 204:
             return response.json()
-        except Exception as ex:
-            return False
 
     def test_get_open_api_spec_from_string(self):
         response = requests.request('GET', 'http://localhost:3001/swagger')
 
-        open_api_content = rest_config.get_as_string('openapi_content')
+        open_api_content = rest_config.get_as_string('swagger.content')
         assert open_api_content == response.text
 
     def test_get_open_api_spec_from_file(self):
@@ -109,7 +132,7 @@ class TestDummyRestService():
             "connection.protocol", "http",
             "connection.host", "localhost",
             "connection.port", 3001,
-            "openapi_file", filename,  # for test only
+            "swagger.path", filename,  # for test only
             "swagger.enable", "true"
         )
         ctrl = DummyController()

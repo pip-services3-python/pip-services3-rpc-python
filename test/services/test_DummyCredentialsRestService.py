@@ -9,19 +9,15 @@
     :license: MIT, see LICENSE for more details.
 """
 import json
-import time
+import os
 
 import requests
 from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.refer import References, Descriptor
-from pip_services3_commons.run import Parameters
-from pip_services3_commons.data import IdGenerator
 
 from ..Dummy import Dummy
 from ..DummyController import DummyController
 from ..services.DummyRestService import DummyRestService
-
-import os
 
 
 def get_fullpath(filepath):
@@ -56,12 +52,12 @@ class TestDummyCredentialsRestService:
         cls.service = DummyRestService()
         cls.service.configure(rest_config)
 
-        cls.references = References.from_tuples(
+        references = References.from_tuples(
             Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller,
             Descriptor("pip-services-dummies", "service", "http", "default", "1.0"), cls.service
         )
 
-        cls.service.set_references(cls.references)
+        cls.service.set_references(references)
 
     def setup_method(self, method):
         self.service.open(None)
@@ -71,26 +67,31 @@ class TestDummyCredentialsRestService:
 
     def test_crud_operations(self):
         # Create one dummy
-        dummy1 = self.invoke("/dummies", {'body': DUMMY1})
+        response = self.invoke("/dummies", {"body": DUMMY1.to_json()})
 
-        assert None != dummy1
-        assert DUMMY1['key'] == dummy1['key']
-        assert DUMMY1['content'] == dummy1['content']
+        dummy1 = Dummy(**response)
+        assert dummy1 is not None
+        assert DUMMY1.key == dummy1.key
+        assert DUMMY1.content == dummy1.content
 
         # Create another dummy
-        dummy2 = self.invoke("/dummies", {'body': DUMMY2})
+        response = self.invoke("/dummies", {"body": DUMMY2.to_json()})
 
-        assert None != dummy2
-        assert DUMMY2['key'] == dummy2['key']
-        assert DUMMY2['content'] == dummy2['content']
+        dummy2 = Dummy(**response)
+
+        assert dummy2 is not None
+        assert DUMMY2.key == dummy2.key
+        assert DUMMY2.content == dummy2.content
 
         # dummy_del = self.invoke('/dummies/<id>')
+
+        assert 2 == self.service.get_number_of_calls()
 
     def invoke(self, route, entity):
         params = {}
         route = f"https://localhost:{port}{route}"
         response = None
-        timeout = 10000
+        timeout = 5
         try:
             # Call the service
             data = json.dumps(entity)

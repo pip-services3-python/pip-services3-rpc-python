@@ -7,42 +7,35 @@
     :license: MIT, see LICENSE for more details.
 """
 
-import pytest
+from pip_services3_commons.refer import Descriptor, References
 
-from pip_services3_commons.config import ConfigParams
-from pip_services3_commons.refer import Descriptor, References, Referencer
-from pip_services3_commons.run import Opener, Closer
-
-from ..DummyController import DummyController
 from .DummyClientFixture import DummyClientFixture
 from .DummyDirectClient import DummyDirectClient
+from ..DummyController import DummyController
+
 
 class TestDummyDirectClient:
-    references = None
     fixture = None
+    client = None
 
     @classmethod
     def setup_class(cls):
-        cls.controller = DummyController()
-        
+        controller = DummyController()
+
         cls.client = DummyDirectClient()
 
-        cls.references = References.from_tuples(
-            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller, 
-            Descriptor("pip-services-dummies", "client", "direct", "default", "1.0"), cls.client
+        references = References.from_tuples(
+            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), controller,
         )
-        cls.client.set_references(cls.references)
+        cls.client.set_references(references)
 
         cls.fixture = DummyClientFixture(cls.client)
 
     def setup_method(self, method):
         self.client.open(None)
-        pass
 
     def teardown_method(self, method):
         self.client.close(None)
-        pass
-        
+
     def test_crud_operations(self):
         self.fixture.test_crud_operations()
-

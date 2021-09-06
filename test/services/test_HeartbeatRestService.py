@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-import json
-import time
 import datetime
-import requests
+import json
 
+import requests
 from pip_services3_commons.config.ConfigParams import ConfigParams
+
 from pip_services3_rpc.services.HeartbeatRestService import HeartbeatRestService
 
 rest_config = ConfigParams.from_tuples(
@@ -39,11 +39,9 @@ class TestHeartBeatrestService:
         params = {}
         route = "http://localhost:3003" + route
         response = None
-        timeout = 10000
-        try:
-            # Call the service
-            data = json.dumps(entity)
-            response = requests.request('GET', route, params=params, json=data, timeout=timeout)
-            return response.json()
-        except Exception as ex:
-            return ex
+        timeout = 5
+
+        # Call the service
+        data = json.dumps(entity)
+        response = requests.request('GET', route, params=params, json=data, timeout=timeout)
+        return response.json()

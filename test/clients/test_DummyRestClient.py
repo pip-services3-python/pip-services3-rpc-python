@@ -7,57 +7,57 @@
     :license: MIT, see LICENSE for more details.
 """
 
-import pytest
-
 from pip_services3_commons.config import ConfigParams
-from pip_services3_commons.refer import Descriptor, References, Referencer
-from pip_services3_commons.run import Opener, Closer
+from pip_services3_commons.refer import Descriptor, References
 
-from ..DummyController import DummyController
 from .DummyClientFixture import DummyClientFixture
 from .DummyRestClient import DummyRestClient
+from ..DummyController import DummyController
 from ..services.DummyRestService import DummyRestService
 
 rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
     'connection.host', 'localhost',
-    'connection.port', 3000
+    'connection.port', 3000,
+    "options.correlation_id_place", "headers",
 )
 
+
 class TestDummyRestClient:
-    references = None
     fixture = None
+    service = None
+    client = None
 
     @classmethod
     def setup_class(cls):
-        cls.controller = DummyController()
-        
+        controller = DummyController()
+
         cls.service = DummyRestService()
         cls.service.configure(rest_config)
 
-        cls.client = DummyRestClient()
-        cls.client.configure(rest_config)
-
-        cls.references = References.from_tuples(
-            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), cls.controller, 
-            Descriptor("pip-services-dummies", "service", "rest", "default", "1.0"), cls.service, 
-            Descriptor("pip-services-dummies", "client", "rest", "default", "1.0"), cls.client
+        references = References.from_tuples(
+            Descriptor("pip-services-dummies", "controller", "default", "default", "1.0"), controller,
+            Descriptor("pip-services-dummies", "service", "rest", "default", "1.0"), cls.service,
         )
-        cls.client.set_references(cls.references)
-        cls.service.set_references(cls.references)
 
-        cls.fixture = DummyClientFixture(cls.client)
+        cls.service.set_references(references)
 
-    def setup_method(self, method):
-        self.service.open(None)
+        cls.service.open(None)
+
+    def teardown_class(self):
+        self.service.close(None)
+
+    def setup_method(self):
+        self.client = DummyRestClient()
+        self.fixture = DummyClientFixture(self.client)
+
+        self.client.configure(rest_config)
+        self.client.set_references(References())
+
         self.client.open(None)
-        pass
 
     def teardown_method(self, method):
-        self.service.close(None)
         self.client.close(None)
-        pass
-        
+
     def test_crud_operations(self):
         self.fixture.test_crud_operations()
-

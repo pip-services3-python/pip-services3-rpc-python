@@ -7,37 +7,32 @@
     :license: MIT, see LICENSE for more details.
 """
 from pip_services3_commons.config import ConfigParams
-from pip_services3_rpc.connect import HttpConnectionResolver
 from pip_services3_commons.errors.ConfigException import ConfigException
+
+from pip_services3_rpc.connect import HttpConnectionResolver
 
 
 class TestHttpConnectionResolver:
 
-    def test_connection_params(self):
+    def test_resolve_uri(self):
         connection_resolver = HttpConnectionResolver()
-        connection_resolver.configure(ConfigParams.from_tuples("connection.protocol", "http",
-                                                               "connection.host", "somewhere.com",
-                                                               "connection.port", 123))
+        connection_resolver.configure(ConfigParams.from_tuples("connection.uri", "http://somewhere.com:777"))
         connection = connection_resolver.resolve(None)
 
         assert connection.get_as_string('protocol') == "http"
         assert connection.get_as_string('host') == "somewhere.com"
-        assert connection.get_as_integer('port') == 123
-        assert connection.get_as_string('uri') == "http://somewhere.com:123"
+        assert connection.get_as_integer('port') == 777
+        assert connection.get_as_string('uri') == "http://somewhere.com:777"
 
-    def test_connection_uri(self):
+    def test_resolve_parameters(self):
         connection_resolver = HttpConnectionResolver()
-        connection_resolver.configure(ConfigParams.from_tuples("connection.uri", "https://somewhere.com:123"))
-
+        connection_resolver.configure(ConfigParams.from_tuples(
+            "connection.protocol", "http",
+            "connection.host", "somewhere.com",
+            "connection.port", 777
+        ))
         connection = connection_resolver.resolve(None)
-
-        assert connection.get_as_string('protocol') == "https"
-        assert connection.get_as_string('host') == "somewhere.com"
-        assert connection.get_as_integer('port') == 123
-        assert connection.get_as_string('uri') == "https://somewhere.com:123"
-
-
-class TestHttpsCredentials:
+        assert connection.get_as_string('uri') == "http://somewhere.com:777"
 
     def test_https_with_credentials_connection_params(self):
         connection_resolver = HttpConnectionResolver()
@@ -46,7 +41,7 @@ class TestHttpsCredentials:
             "connection.port", 123,
             "connection.protocol", "https",
             "credential.ssl_key_file", "ssl_key_file",
-            "credential.ssl_crt_file", "ssl_crt_file",
+            "credential.ssl_crt_file", "ssl_crt_file"
         ))
 
         connection = connection_resolver.resolve(None)
@@ -86,9 +81,9 @@ class TestHttpsCredentials:
         try:
             connection_resolver.resolve(None)
         except ConfigException as err:
-            assert err.code == 'NO_SSL_KEY_FILE'
-            assert err.name == 'NO_SSL_KEY_FILE'
-            assert err.message == 'SSL key file is not configured in credentials'
+            assert err.code == 'NO_CREDENTIAL'
+            assert err.name == 'NO_CREDENTIAL'
+            assert err.message == 'SSL certificates are not configured for HTTPS protocol'
             assert err.category == 'Misconfiguration'
 
         # ssl_crt_file missing
@@ -100,7 +95,6 @@ class TestHttpsCredentials:
             "credential.ssl_key_file", "ssl_key_file"
         ))
 
-        print('Test - ssl_crt_file missing')
         try:
             connection_resolver.resolve(None)
         except ConfigException as err:
@@ -117,7 +111,7 @@ class TestHttpsCredentials:
             "connection.protocol", "https",
             "credential.ssl_crt_file", "ssl_crt_file"
         ))
-        print('Test - ssl_key_file missing')
+
         try:
             connection_resolver.resolve(None)
         except ConfigException as err:
@@ -135,9 +129,8 @@ class TestHttpsCredentials:
             "credential.ssl_key_file", "ssl_key_file",
             "credential.ssl_crt_file", "ssl_crt_file"
         ))
-        print('Test - ssl_key_file,  ssl_crt_file present')
-        connection = connection_resolver.resolve(None)
 
+        connection = connection_resolver.resolve(None)
         assert 'https' == connection.get_as_string('protocol')
         assert 'somewhere.com' == connection.get_as_string('host')
         assert 123 == connection.get_as_integer('port')
