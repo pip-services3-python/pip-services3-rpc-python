@@ -353,7 +353,7 @@ class RestClient(IOpenable, IConfigurable, IReferenceable):
             data = data if isinstance(data, str) else self._to_json(data)
             response = requests.request(method, route,
                                         headers=self._headers,
-                                        json=json.dumps(data),
+                                        json=data,
                                         params=params,
                                         timeout=self._timeout)
 
