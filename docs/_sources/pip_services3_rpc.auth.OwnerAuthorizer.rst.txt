@@ -1,0 +1,7 @@
+pip\_services3\_rpc.auth.OwnerAuthorizer module
+===============================================
+
+.. automodule:: pip_services3_rpc.auth.OwnerAuthorizer
+   :members:
+   :undoc-members:
+   :show-inheritance:

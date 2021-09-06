@@ -1,0 +1,20 @@
+pip\_services3\_rpc.auth package
+================================
+
+Submodules
+----------
+
+.. toctree::
+   :maxdepth: 4
+
+   pip_services3_rpc.auth.BasicAuthorizer
+   pip_services3_rpc.auth.OwnerAuthorizer
+   pip_services3_rpc.auth.RoleAuthorizer
+
+Module contents
+---------------
+
+.. automodule:: pip_services3_rpc.auth
+   :members:
+   :undoc-members:
+   :show-inheritance:

@@ -1,0 +1,7 @@
+pip\_services3\_rpc.auth.BasicAuthorizer module
+===============================================
+
+.. automodule:: pip_services3_rpc.auth.BasicAuthorizer
+   :members:
+   :undoc-members:
+   :show-inheritance:

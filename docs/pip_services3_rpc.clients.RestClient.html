@@ -91,6 +91,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">pip_services3_rpc</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pip_services3_rpc.html">pip_services3_rpc package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="pip_services3_rpc.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.auth.html">pip_services3_rpc.auth package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.build.html">pip_services3_rpc.build package</a></li>
 <li class="toctree-l4 current"><a class="reference internal" href="pip_services3_rpc.clients.html">pip_services3_rpc.clients package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.connect.html">pip_services3_rpc.connect package</a></li>
@@ -247,7 +248,7 @@
 </div>
 <dl class="py method">
 <dt class="sig sig-object py" id="pip_services3_rpc.clients.RestClient.RestClient.add_correlation_id">
-<span class="sig-name descname"><span class="pre">add_correlation_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Any</span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.add_correlation_id" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">add_correlation_id</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Any</span></span></span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.add_correlation_id" title="Permalink to this definition">¶</a></dt>
 <dd><p>Adds a correlation id (correlation_id) to invocation parameter map.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -258,61 +259,6 @@
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>invocation parameters with added correlation id.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.clients.RestClient.RestClient.add_filter_params">
-<span class="sig-name descname"><span class="pre">add_filter_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">filters</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.add_filter_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds filter parameters (with the same name as they defined)
-to invocation parameter map.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> – invocation parameters.</p></li>
-<li><p><strong>filters</strong> – (optional) filter parameters</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>invocation parameters with added filter parameters.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.clients.RestClient.RestClient.add_paging_params">
-<span class="sig-name descname"><span class="pre">add_paging_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">paging</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">dict</span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.add_paging_params" title="Permalink to this definition">¶</a></dt>
-<dd><p>Adds paging parameters (skip, take, total) to invocation parameter map.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>params</strong> – invocation parameters.</p></li>
-<li><p><strong>paging</strong> – (optional) paging parameters</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>invocation parameters with added paging parameters.</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.clients.RestClient.RestClient.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Any</span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.call" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls a remote method via HTTP/REST protocol.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> – HTTP method: “get”, “head”, “post”, “put”, “delete”</p></li>
-<li><p><strong>route</strong> – a command route. Base route will be added to this route</p></li>
-<li><p><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</p></li>
-<li><p><strong>params</strong> – (optional) query parameters.</p></li>
-<li><p><strong>data</strong> – (optional) body object.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>result object</p>
 </dd>
 </dl>
 </dd></dl>
@@ -341,12 +287,12 @@ to invocation parameter map.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pip_services3_rpc.clients.RestClient.RestClient.fix_route">
-<span class="sig-name descname"><span class="pre">fix_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">str</span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.fix_route" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">fix_route</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.fix_route" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="pip_services3_rpc.clients.RestClient.RestClient.is_open">
-<span class="sig-name descname"><span class="pre">is_open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> &#x2192; <span class="pre">bool</span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.is_open" title="Permalink to this definition">¶</a></dt>
+<span class="sig-name descname"><span class="pre">is_open</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="headerlink" href="#pip_services3_rpc.clients.RestClient.RestClient.is_open" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if the component is opened.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>

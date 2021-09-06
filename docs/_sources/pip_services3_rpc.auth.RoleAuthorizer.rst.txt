@@ -1,0 +1,7 @@
+pip\_services3\_rpc.auth.RoleAuthorizer module
+==============================================
+
+.. automodule:: pip_services3_rpc.auth.RoleAuthorizer
+   :members:
+   :undoc-members:
+   :show-inheritance:

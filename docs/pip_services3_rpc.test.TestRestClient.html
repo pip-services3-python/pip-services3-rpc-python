@@ -90,6 +90,7 @@
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">pip_services3_rpc</a><ul class="current">
 <li class="toctree-l2 current"><a class="reference internal" href="pip_services3_rpc.html">pip_services3_rpc package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="pip_services3_rpc.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.auth.html">pip_services3_rpc.auth package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.build.html">pip_services3_rpc.build package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.clients.html">pip_services3_rpc.clients package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="pip_services3_rpc.connect.html">pip_services3_rpc.connect package</a></li>
@@ -182,26 +183,6 @@
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">pip_services3_rpc.test.TestRestClient.</span></span><span class="sig-name descname"><span class="pre">TestRestClient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">base_route</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#pip_services3_rpc.test.TestRestClient.TestRestClient" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <a class="reference internal" href="pip_services3_rpc.clients.RestClient.html#pip_services3_rpc.clients.RestClient.RestClient" title="pip_services3_rpc.clients.RestClient.RestClient"><code class="xref py py-class docutils literal notranslate"><span class="pre">pip_services3_rpc.clients.RestClient.RestClient</span></code></a></p>
 <p>REST client used for automated testing.</p>
-<dl class="py method">
-<dt class="sig sig-object py" id="pip_services3_rpc.test.TestRestClient.TestRestClient.call">
-<span class="sig-name descname"><span class="pre">call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">method</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">correlation_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">params</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> &#x2192; <span class="pre">Any</span><a class="headerlink" href="#pip_services3_rpc.test.TestRestClient.TestRestClient.call" title="Permalink to this definition">¶</a></dt>
-<dd><p>Calls a remote method via HTTP/REST protocol.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>method</strong> – HTTP method: “get”, “head”, “post”, “put”, “delete”</p></li>
-<li><p><strong>route</strong> – a command route. Base route will be added to this route</p></li>
-<li><p><strong>correlation_id</strong> – (optional) transaction id to trace execution through call chain.</p></li>
-<li><p><strong>params</strong> – (optional) query parameters.</p></li>
-<li><p><strong>data</strong> – (optional) body object.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>a result object.</p>
-</dd>
-</dl>
-</dd></dl>
-
 </dd></dl>
 
 </div>
