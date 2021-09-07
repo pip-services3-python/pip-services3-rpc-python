@@ -1,6 +1,6 @@
 {
     "name": "pip_services3_rpc",
     "registry": "pipdevs",
-    "version": "3.2.10",
+    "version": "3.2.11",
     "build": 0
 }

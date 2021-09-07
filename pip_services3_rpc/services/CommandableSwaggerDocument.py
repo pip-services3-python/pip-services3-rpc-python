@@ -4,6 +4,7 @@ from typing import List, Optional, Dict, Any
 from pip_services3_commons.commands import ICommand
 from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.convert import TypeCode
+from pip_services3_commons.validate import ObjectSchema
 
 
 class CommandableSwaggerDocument:
@@ -89,7 +90,8 @@ class CommandableSwaggerDocument:
         return None
 
     def __create_schema_data(self, command: ICommand) -> Optional[Dict[str, Any]]:
-        schema = None if not hasattr(command, '__schema') else command.__schema
+        private_schema = f'_{type(command).__name__}__schema'
+        schema: ObjectSchema = getattr(command, private_schema, None)
 
         if schema is None or schema.get_properties() is None:
             return None
@@ -97,12 +99,12 @@ class CommandableSwaggerDocument:
         properties = {}
         required = []
 
-        for property in schema.get_properties():
-            properties[property.get_name()] = {
-                'type': self._type_to_string(property.get_type())
+        for prop in schema.get_properties():
+            properties[prop.get_name()] = {
+                'type': self._type_to_string(prop.get_type())
             }
-            if property.required:
-                required.append(property.get_name())
+            if prop.is_required():
+                required.append(prop.get_name())
 
         data = {
             'properties': properties
