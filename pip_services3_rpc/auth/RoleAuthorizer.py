@@ -12,7 +12,7 @@ class RoleAuthorizer:
         def inner():
             user = bottle.request.user
             if user is None:
-                HttpResponseSender.send_error(UnauthorizedException(
+                return HttpResponseSender.send_error(UnauthorizedException(
                     None,
                     'NOT_SIGNED',
                     'User must be signed in to perform this operation'
@@ -23,7 +23,7 @@ class RoleAuthorizer:
                     authorized = authorized or role in user.roles
 
                 if not authorized:
-                    HttpResponseSender.send_error(UnauthorizedException(
+                    return HttpResponseSender.send_error(UnauthorizedException(
                         None,
                         'NOT_IN_ROLE',
                         'User must be ' +

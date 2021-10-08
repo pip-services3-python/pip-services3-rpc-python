@@ -67,7 +67,7 @@ class TestHttpConnectionResolver:
         assert 'somewhere.com' == connection.get_as_string('host')
         assert 123 == connection.get_as_integer('port')
         assert 'https://somewhere.com:123' == connection.get_as_string('uri')
-        assert connection.get_as_string('internal_network') is None
+        assert connection.get_as_nullable_string('internal_network') is None
 
     def test_https_with_missing_credentials_connection_params(self):
         # Section missing
