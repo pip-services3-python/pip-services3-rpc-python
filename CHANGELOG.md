@@ -1,5 +1,11 @@
 # <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> Remote Procedure Calls for Python Changelog
 
+## <a name="3.2.12"></a> 3.2.12 (2021-10-28)
+
+### Bug Fixes
+* Optimize imports
+* Update requirements
+
 ## <a name="3.2.11"></a> 3.2.11 (2021-09-08)
 
 ### Bug Fixes

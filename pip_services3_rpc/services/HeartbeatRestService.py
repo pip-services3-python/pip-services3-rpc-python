@@ -9,7 +9,6 @@
     :license: MIT, see LICENSE for more details.
 """
 import datetime
-from typing import Callable
 
 from pip_services3_commons.config import ConfigParams
 from pip_services3_commons.convert import StringConverter

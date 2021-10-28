@@ -11,6 +11,6 @@
 
 __all__ = [ 'DirectClient', 'RestClient', 'CommandableHttpClient' ]
 
+from .CommandableHttpClient import CommandableHttpClient
 from .DirectClient import DirectClient
 from .RestClient import RestClient
-from .CommandableHttpClient import CommandableHttpClient

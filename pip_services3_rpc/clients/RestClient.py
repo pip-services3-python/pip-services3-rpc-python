@@ -8,7 +8,6 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
-import json
 from typing import Optional, Any
 
 import requests
