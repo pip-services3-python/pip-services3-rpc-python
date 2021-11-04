@@ -36,12 +36,22 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
     ### Configuration parameters ###
         Parameters to pass to the :func:`configure` method for component configuration:
-            - connection(s) - the connection resolver's connections;
+
+        - cors_headers - a comma-separated list of allowed CORS headers
+        - cors_origins - a comma-separated list of allowed CORS origins
+
+        - connection(s) - the connection resolver's connections;
             - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
             - "connection.protocol" - the connection's protocol;
             - "connection.host" - the target host;
             - "connection.port" - the target port;
             - "connection.uri" - the target URI.
+
+        - credential - the HTTPS credentials:
+            - "credential.ssl_key_file" - the SSL private key in PEM
+            - "credential.ssl_crt_file" - the SSL certificate in PEM
+            - "credential.ssl_ca_file" - the certificate authorities (root cerfiticates) in PEM
+
 
     ### References ###
         A logger, counters, and a connection resolver can be referenced by passing the following references to the object's :func:`set_references` method:
@@ -93,6 +103,8 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         self.__logger: CompositeLogger = CompositeLogger()
         self.__counters: CompositeCounters = CompositeCounters()
         self.__registrations: List[IRegisterable] = []
+        self.__allowed_headers: List[str] = ["correlation_id"]
+        self.__allowed_origins: List[str] = []
 
     def configure(self, config: ConfigParams):
         """
@@ -108,12 +120,26 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         """
         config = config.set_defaults(self._default_config)
         self.__connection_resolver.configure(config)
-        self.__file_max_size = config.get_as_boolean_with_default('options.file_max_size', self.__file_max_size)
-        self.__maintenance_enabled = config.get_as_long_with_default('options.maintenance_enabled',
-                                                                     self.__maintenance_enabled)
+
+        self.__file_max_size = config.get_as_long_with_default('options.file_max_size', self.__file_max_size)
+        self.__maintenance_enabled = config.get_as_boolean_with_default('options.maintenance_enabled',
+                                                                        self.__maintenance_enabled)
         self.__protocol_upgrade_enabled = config.get_as_boolean_with_default('options.protocol_upgrade_enabled',
                                                                              self.__protocol_upgrade_enabled)
         self._debug = config.get_as_boolean_with_default('options.debug', self._debug)
+
+        headers = config.get_as_string_with_default("cors_headers", "").split(",")
+        for header in headers:
+            if header != '':
+                self.__allowed_headers = list(filter(lambda h: h != header, self.__allowed_headers))
+                self.__allowed_headers.append(header)
+
+        origins = config.get_as_string_with_default("cors_origins", "").split(',')
+        for origin in origins:
+            origin = origin.strip()
+            if origin != '':
+                self.__allowed_origins = list(filter(lambda h: h != origin, self.__allowed_origins))
+                self.__allowed_origins.append(origin)
 
     def set_references(self, references: IReferences):
         """
@@ -298,10 +324,10 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
 
     def __enable_cors(self):
         response.headers['Access-Control-Max-Age'] = '5'
-        response.headers['Access-Control-Allow-Origin'] = '*'
+        response.headers['Access-Control-Allow-Origin'] = ', '.join(self.__allowed_origins)
         response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
         response.headers[
-            'Access-Control-Allow-Headers'] = 'Authorization, Origin, Accept, Content-Type, X-Requested-With'
+            'Access-Control-Allow-Headers'] = ', '.join(self.__allowed_headers)
 
     def __do_maintance(self):
         """
