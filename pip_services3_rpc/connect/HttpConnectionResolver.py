@@ -134,7 +134,7 @@ class HttpConnectionResolver(IReferenceable, IConfigurable):
             host = connection.get_as_string('host')
             port = connection.get_as_integer('port')
 
-            uri = protocol + "://" + host
+            uri = protocol + "://" + host if host else None
             if port != 0:
                 uri = uri + ":" + str(port)
             connection.set_as_object('uri', uri)

@@ -106,7 +106,7 @@ class DummyRestService(RestService):
             return self.send_error(err)
 
     def register(self):
-        self.register_interceptor('/dummies', self._increment_number_of_calls)
+        self.register_interceptor('/dummies$', self._increment_number_of_calls)
 
         self.register_route('get', '/dummies', ObjectSchema(True)
                             .with_optional_property("skip", TypeCode.String)

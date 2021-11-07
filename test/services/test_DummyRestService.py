@@ -49,12 +49,13 @@ class TestDummyRestService:
         )
 
         cls.service.set_references(references)
+        cls.service.open(None)
 
-    def setup_method(self, method):
-        self.service.open(None)
+    # def setup_class(cls, method):
 
-    def teardown_method(self, method):
-        self.service.close(None)
+    @classmethod
+    def teardown_class(cls, method):
+        cls.service.close(None)
 
     def test_crud_operations(self):
         # Create one dummy
@@ -99,15 +100,24 @@ class TestDummyRestService:
 
         assert response is None
 
-        assert 6 == self.service.get_number_of_calls()
+        assert 4 == self.service.get_number_of_calls()
 
-    def invoke(self, method, route, entity=None):
+    def test_check_correlation_id(self):
+        # check transmit correlation_id over params
+        result = self.invoke('GET', '/dummies/check/correlation_id?correlation_id=test_cor_id')
+        assert 'test_cor_id' == result['correlation_id']
+
+        # check transmit correlation_id over header
+        result = self.invoke('GET', '/dummies/check/correlation_id', headers={"correlation_id": "test_cor_id_header"})
+        assert 'test_cor_id_header' == result['correlation_id']
+
+    def invoke(self, method, route, entity=None, headers=None):
         route = "http://localhost:3001" + route
 
         # Call the service
         if entity:
             entity = json.dumps(entity)
-        response = requests.request(method, route, json=entity, timeout=5)
+        response = requests.request(method, route, json=entity, timeout=5, headers=headers)
         if response.status_code != 204:
             return response.json()
 

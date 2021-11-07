@@ -9,6 +9,7 @@
     :license: MIT, see LICENSE for more details.
 """
 import json
+import re
 import time
 from threading import Thread
 from typing import List, Optional, Callable
@@ -417,7 +418,10 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         route = self.__fix_route(route)
 
         def intercept_handler():
-            if route and str(request.path).startswith(route):
+            match = re.match('.*' + route, request.url) is not None
+            if route is not None and route != '' and not match:
+                pass
+            else:
                 return action()
 
         self.__service.add_hook('before_request', intercept_handler)
