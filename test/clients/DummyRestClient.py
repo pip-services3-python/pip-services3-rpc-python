@@ -37,7 +37,7 @@ class DummyRestClient(RestClient, IDummyClient):
             )
 
             page = DataPage(
-                data=[Dummy(**item) for item in result['data']],
+                data=[Dummy.from_json(item) for item in result['data']],
                 total=result['total']
             )
             return page
@@ -55,7 +55,7 @@ class DummyRestClient(RestClient, IDummyClient):
                 correlation_id,
             )
             if response:
-                return Dummy(**response)
+                return Dummy.from_json(response)
         except Exception as err:
             timing.end_timing(err)
         finally:
@@ -74,7 +74,7 @@ class DummyRestClient(RestClient, IDummyClient):
                 }
             )
             if response:
-                return Dummy(**response)
+                return Dummy.from_json(response)
         except Exception as err:
             timing.end_timing(err)
         finally:
@@ -93,7 +93,7 @@ class DummyRestClient(RestClient, IDummyClient):
                 }
             )
             if response:
-                return Dummy(**response)
+                return Dummy.from_json(response)
         except Exception as err:
             timing.end_timing(err)
         finally:
@@ -109,7 +109,7 @@ class DummyRestClient(RestClient, IDummyClient):
                 None
             )
             if response:
-                return Dummy(**response)
+                return Dummy.from_json(response)
         except Exception as err:
             timing.end_timing(err)
         finally:

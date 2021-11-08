@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from pip_services3_commons.convert import TypeCode
-from pip_services3_commons.validate import ObjectSchema
+from pip_services3_commons.validate import ObjectSchema, ArraySchema
+
+from test.SubDummySchema import SubDummySchema
 
 
 class DummySchema(ObjectSchema):
@@ -10,3 +12,4 @@ class DummySchema(ObjectSchema):
         self.with_optional_property("id", TypeCode.String)
         self.with_required_property("key", TypeCode.String)
         self.with_optional_property("content", TypeCode.String)
+        self.with_optional_property("array", ArraySchema(SubDummySchema()))

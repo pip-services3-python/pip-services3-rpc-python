@@ -32,7 +32,7 @@ class DummyCommandableHttpClient(CommandableHttpClient, IDummyClient):
             }
         )
         page = DataPage(
-            data=[Dummy(**item) for item in result['data']],
+            data=[Dummy.from_json(item) for item in result['data']],
             total=result['total']
         )
         return page
@@ -46,7 +46,7 @@ class DummyCommandableHttpClient(CommandableHttpClient, IDummyClient):
             }
         )
         if response:
-            return Dummy(**response)
+            return Dummy.from_json(response)
 
     def create(self, correlation_id: Optional[str], item: Dummy) -> Dummy:
         response = self.call_command(
@@ -57,7 +57,7 @@ class DummyCommandableHttpClient(CommandableHttpClient, IDummyClient):
             }
         )
         if response:
-            return Dummy(**response)
+            return Dummy.from_json(response)
 
     def update(self, correlation_id: Optional[str], item: Dummy) -> Dummy:
         response = self.call_command(
@@ -68,7 +68,7 @@ class DummyCommandableHttpClient(CommandableHttpClient, IDummyClient):
             }
         )
         if response:
-            return Dummy(**response)
+            return Dummy.from_json(response)
 
     def delete_by_id(self, correlation_id: Optional[str], dummy_id: str) -> Dummy:
         response = self.call_command(
@@ -79,7 +79,7 @@ class DummyCommandableHttpClient(CommandableHttpClient, IDummyClient):
             }
         )
         if response:
-            return Dummy(**response)
+            return Dummy.from_json(response)
 
     def check_correlation_id(self, correlation_id: Optional[str]) -> str:
         result = self.call_command(

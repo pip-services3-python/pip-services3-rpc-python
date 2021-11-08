@@ -1,5 +1,19 @@
 # <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> Remote Procedure Calls for Python Changelog
 
+## <a name="3.3.0"></a> 3.3.0 (2021-11-07)
+
+### Bug Fixes
+* **services** Added configuration of CORS headers to HttpEndpoint
+* **services** Fixed bug with formatting ArraySchema in swagger document
+
+### Features
+* **services**  Added RegRxp supporting to interceptors
+   Examples:
+   - the interceptor route **"/dummies"** corresponds to all of this routes **"/dummies"**, **"/dummies/check"**, **"/dummies/test"**
+   - the interceptor route **"/dummies$"** corresponds only for this route **"/dummies"**. The routes **"/dummies/check"**, **"/dummies/test"** aren't processing by interceptor
+   Please, don't forgot, route in interceptor always automaticaly concateneted with base route, like this **service_base_route + route_in_interceptor**.
+   For example, "/api/v1/" - service base route, "/dummies$" - interceptor route, in result will be next expression - "/api/v1/dummies$"
+
 ## <a name="3.2.12"></a> 3.2.12 (2021-10-28)
 
 ### Bug Fixes

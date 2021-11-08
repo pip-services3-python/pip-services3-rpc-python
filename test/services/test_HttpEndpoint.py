@@ -17,10 +17,11 @@ from pip_services3_commons.refer import References, Descriptor
 from pip_services3_rpc.services import HttpEndpoint
 from ..Dummy import Dummy
 from ..DummyController import DummyController
+from ..SubDummy import SubDummy
 from ..services.DummyRestService import DummyRestService
 
-DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
-DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
+DUMMY1 = Dummy(None, 'Key 1', 'Content 1', [SubDummy('SubKey 1', 'SubContent 1')])
+DUMMY2 = Dummy(None, 'Key 2', 'Content 2', [SubDummy('SubKey 2', 'SubContent 2')])
 
 rest_config = ConfigParams.from_tuples(
     "connection.protocol", "http",
@@ -68,11 +69,9 @@ class TestHttpEndpointService():
         assert DUMMY1.content == dummy1.content
 
     def invoke(self, route, entity):
-
         route = "http://localhost:3004" + route
 
         # Call the service
         data = json.dumps(entity)
         response = requests.request('POST', route, json=data, timeout=5)
         return response.json()
-

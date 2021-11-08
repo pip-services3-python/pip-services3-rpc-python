@@ -71,7 +71,7 @@ class DummyRestService(RestService):
     def __create(self):
         data = bottle.request.json
         data = data if isinstance(data, dict) else json.loads(data)
-        entity = Dummy(**data.get('body'))
+        entity = Dummy.from_json(data.get('body'))
 
         result = self._controller.create(
             self._get_correlation_id(),
@@ -82,7 +82,7 @@ class DummyRestService(RestService):
     def __update(self):
         data = bottle.request.json
         data = data if isinstance(data, dict) else json.loads(data)
-        entity = Dummy(**data.get('body'))
+        entity = Dummy.from_json(data.get('body'))
 
         result = self._controller.update(
             self._get_correlation_id(),

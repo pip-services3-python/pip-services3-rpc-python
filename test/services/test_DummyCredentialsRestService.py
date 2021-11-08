@@ -17,6 +17,7 @@ from pip_services3_commons.refer import References, Descriptor
 
 from ..Dummy import Dummy
 from ..DummyController import DummyController
+from ..SubDummy import SubDummy
 from ..services.DummyRestService import DummyRestService
 
 
@@ -37,8 +38,8 @@ rest_config = ConfigParams.from_tuples(
     'credential.ssl_crt_file', get_fullpath('../credentials/ssl_crt_file')
 )
 
-DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
-DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
+DUMMY1 = Dummy(None, 'Key 1', 'Content 1', [SubDummy('SubKey 1', 'SubContent 1')])
+DUMMY2 = Dummy(None, 'Key 2', 'Content 2', [SubDummy('SubKey 2', 'SubContent 2')])
 
 
 class TestDummyCredentialsRestService:
@@ -69,7 +70,7 @@ class TestDummyCredentialsRestService:
         # Create one dummy
         response = self.invoke("/dummies", {"body": DUMMY1.to_json()})
 
-        dummy1 = Dummy(**response)
+        dummy1 = Dummy.from_json(response)
         assert dummy1 is not None
         assert DUMMY1.key == dummy1.key
         assert DUMMY1.content == dummy1.content
@@ -77,7 +78,7 @@ class TestDummyCredentialsRestService:
         # Create another dummy
         response = self.invoke("/dummies", {"body": DUMMY2.to_json()})
 
-        dummy2 = Dummy(**response)
+        dummy2 = Dummy.from_json(response)
 
         assert dummy2 is not None
         assert DUMMY2.key == dummy2.key

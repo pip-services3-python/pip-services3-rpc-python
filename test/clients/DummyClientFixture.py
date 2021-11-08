@@ -12,9 +12,10 @@ from pip_services3_commons.data import PagingParams, FilterParams
 
 from . import IDummyClient
 from ..Dummy import Dummy
+from ..SubDummy import SubDummy
 
-DUMMY1 = Dummy(None, 'Key 1', 'Content 1')
-DUMMY2 = Dummy(None, 'Key 2', 'Content 2')
+DUMMY1 = Dummy(None, 'Key 1', 'Content 1', [SubDummy('SubKey 1', 'SubContent 1')])
+DUMMY2 = Dummy(None, 'Key 2', 'Content 2', [SubDummy('SubKey 2', 'SubContent 2')])
 
 
 class DummyClientFixture:

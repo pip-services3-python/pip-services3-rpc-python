@@ -39,7 +39,8 @@ class DummyCommandSet(CommandSet):
         def handler(correlation_id: Optional[str], args: Parameters):
             filter = FilterParams.from_value(args.get("filter"))
             paging = PagingParams.from_value(args.get("paging"))
-            return self._controller.get_page_by_filter(correlation_id, filter, paging)
+            page = self._controller.get_page_by_filter(correlation_id, filter, paging)
+            return page
 
         return Command(
             "get_dummies",
@@ -61,7 +62,7 @@ class DummyCommandSet(CommandSet):
         def handler(correlation_id: Optional[str], args: Parameters):
             entity = args.get("dummy")
             if isinstance(entity, dict):
-                entity = Dummy(**entity)
+                entity = Dummy.from_json(entity)
             return self._controller.create(correlation_id, entity)
 
         return Command(
@@ -74,7 +75,7 @@ class DummyCommandSet(CommandSet):
         def handler(correlation_id: Optional[str], args: Parameters):
             entity = args.get("dummy")
             if isinstance(entity, dict):
-                entity = Dummy(**entity)
+                entity = Dummy.from_json(entity)
             return self._controller.update(correlation_id, entity)
 
         return Command(

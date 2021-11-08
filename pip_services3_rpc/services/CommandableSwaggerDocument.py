@@ -3,8 +3,8 @@ from typing import List, Optional, Dict, Any
 
 from pip_services3_commons.commands import ICommand
 from pip_services3_commons.config import ConfigParams
-from pip_services3_commons.convert import TypeCode
-from pip_services3_commons.validate import ObjectSchema
+from pip_services3_commons.convert import TypeCode, TypeConverter
+from pip_services3_commons.validate import ObjectSchema, ArraySchema
 
 
 class CommandableSwaggerDocument:
@@ -30,6 +30,8 @@ class CommandableSwaggerDocument:
 
         self.info_license_name: Optional[str] = None
         self.info_license_url: Optional[str] = None
+
+        self._object_type: Dict[str, Any] = {'type': 'object'}
 
     def to_string(self) -> str:
         data = {
@@ -95,24 +97,79 @@ class CommandableSwaggerDocument:
 
         if schema is None or schema.get_properties() is None:
             return None
+        return self.__create_property_data(schema, True)
+
+    def __create_property_data(self, schema: ObjectSchema, include_required: bool) -> Dict[str, Any]:
 
         properties = {}
         required = []
 
-        for prop in schema.get_properties():
-            properties[prop.get_name()] = {
-                'type': self._type_to_string(prop.get_type())
-            }
-            if prop.is_required():
-                required.append(prop.get_name())
+        for property in schema.get_properties():
+            if property.get_type() is None:
+                properties[property.get_name()] = self._object_type
+            else:
+                property_name = property.get_name()
+                property_type = property.get_type()
 
-        data = {
-            'properties': properties
-        }
+                if isinstance(property_type, ArraySchema):
+                    properties[property_name] = {
+                        'type': 'array',
+                        'items': self.__create_property_type_data(property_type.get_value_type())
+                    }
+                else:
+                    properties[property_name] = self.__create_property_type_data(property_type)
+
+                if include_required and property.is_required():
+                    required.append(property_name)
+
+        data = {'properties': properties}
         if len(required) > 0:
             data['required'] = required
 
         return data
+
+    def __create_property_type_data(self, property_type: Any) -> dict:
+        if isinstance(property_type, ObjectSchema):
+            object_map = self.__create_property_data(property_type, False)
+            return self._object_type.update(object_map)
+        else:
+            type_code: TypeCode = None
+
+            if isinstance(property_type, TypeCode):
+                type_code = property_type
+            else:
+                type_code = TypeConverter.to_type_code(property_type)
+
+            if type_code == TypeCode.Unknown or type_code == TypeCode.Map:
+                type_code = TypeCode.Object
+
+            if type_code == TypeCode.Integer:
+                return {
+                    "type": "integer",
+                    "format": "int32"
+                }
+            elif type_code == TypeCode.Long:
+                return {
+                    "type": "number",
+                    "format": "int64"
+                }
+            elif type_code == TypeCode.Float:
+                return {
+                    "type": "number",
+                    "format": "float"
+                }
+            elif type_code == TypeCode.Double:
+                return {
+                    "type": "number",
+                    "format": "double"
+                }
+            elif type_code == TypeCode.DateTime:
+                return {
+                    "type": "string",
+                    "format": "date-time"
+                }
+            else:
+                return {"type": TypeConverter.to_string(type_code)}
 
     def __create_responses_data(self) -> Dict[str, Any]:
         return {
@@ -180,17 +237,3 @@ class CommandableSwaggerDocument:
 
     def _get_spaces(self, length: int) -> str:
         return ' ' * length * 2
-
-    def _type_to_string(self, type: Any) -> str:
-        # allowed types: array, boolean, integer, number, object, string
-        if type == TypeCode.Integer or type == TypeCode.Long:
-            return 'integer'
-        if type == TypeCode.Double or type == TypeCode.Float:
-            return 'number'
-        if type == TypeCode.String:
-            return 'string'
-        if type == TypeCode.Boolean:
-            return 'boolean'
-        if type == TypeCode.Array:
-            return 'array'
-        return 'object'

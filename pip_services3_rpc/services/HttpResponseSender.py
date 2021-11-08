@@ -8,6 +8,7 @@
     :copyright: Conceptual Vision Consulting LLC 2018-2019, see AUTHORS for more details.
     :license: MIT, see LICENSE for more details.
 """
+import traceback
 from typing import Any, Optional
 
 import bottle
@@ -123,9 +124,10 @@ class HttpResponseSender:
             error = type('error', (object,), basic_fillers)
         else:
             for k, v in basic_fillers.items():
-                error.__dict__[k] = error.__dict__[k] if error.__dict__.get(k) is not None else v
+                error.__dict__[k] = v if error.__dict__.get(k) is None else  error.__dict__[k]
 
         bottle.response.headers['Content-Type'] = 'application/json'
         error = ErrorDescriptionFactory.create(error)
+        error.stack_trace = traceback.format_exc()
         bottle.response.status = error.status
         return JsonConverter.to_json(error)
