@@ -131,7 +131,7 @@ class CommandableSwaggerDocument:
     def __create_property_type_data(self, property_type: Any) -> dict:
         if isinstance(property_type, ObjectSchema):
             object_map = self.__create_property_data(property_type, False)
-            return self._object_type.update(object_map)
+            return dict(tuple(self._object_type.items()) + tuple(object_map.items()))
         else:
             type_code: TypeCode = None
 
