@@ -8,7 +8,7 @@ class TestCommandableHttpClient(CommandableHttpClient):
     def __init__(self, base_route: str):
         super(TestCommandableHttpClient, self).__init__(base_route)
 
-    def call_command(self, name:str, correlation_id: Optional[str], params: Any) -> Any:
+    def call_command(self, name: str, correlation_id: Optional[str], params: Any) -> Any:
         """
         Calls a remote method via HTTP commadable protocol.
         The call is made via POST operation and all parameters are sent in body object.
