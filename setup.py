@@ -36,14 +36,14 @@ setup(
     zip_safe=True,
     platforms='any',
     install_requires=[
+        'pytz',
         'bottle >= 0.12.19, < 0.13',
-        'requests >= 2.26.0, < 3.0',
+        'requests >= 2.27.1, < 3.0',
         'cheroot >= 8.6.0, < 9.0',
         'beaker >= 1.11.0, < 2.0',
         'psutil >= 5.9.0, < 6.0',
-
-        'pip-services3-commons >= 3.3.11, < 4.0',
-        'pip-services3-components >= 3.5.4, < 4.0'
+        'pip-services3-commons >= 3.3.13, < 4.0',
+        'pip-services3-components >= 3.5.9, < 4.0'
     ],
     classifiers=[
         'Development Status :: 4 - Beta',
@@ -51,7 +51,6 @@ setup(
         'License :: OSI Approved :: MIT License',
         'Operating System :: OS Independent',
         'Programming Language :: Python',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',

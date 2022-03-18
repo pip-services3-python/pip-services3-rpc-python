@@ -122,6 +122,7 @@ class HttpEndpoint(IOpenable, IConfigurable, IReferenceable):
         config = config.set_defaults(self._default_config)
         self.__connection_resolver.configure(config)
 
+        bottle.BaseRequest.MEMFILE_MAX = config.get_as_long('options.request_max_size')
         self.__file_max_size = config.get_as_long_with_default('options.file_max_size', self.__file_max_size)
         self.__maintenance_enabled = config.get_as_boolean_with_default('options.maintenance_enabled',
                                                                         self.__maintenance_enabled)
