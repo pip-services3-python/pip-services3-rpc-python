@@ -1,9 +1,14 @@
 # <img src="https://uploads-ssl.webflow.com/5ea5d3315186cf5ec60c3ee4/5edf1c94ce4c859f2b188094_logo.svg" alt="Pip.Services Logo" width="200"> <br/> Remote Procedure Calls for Python Changelog
 
-## <a name="3.3.1"></a> 3.3.1 (2022-03-18)
+## <a name="3.3.2"></a> 3.3.2 (2022-03-18)
 
 ### Features
 * Added *request_max_size* for **HttpEndpoint**
+
+### Bug Fixes
+* fixed bool fields for swagger generation
+
+## <a name="3.3.1"></a> 3.3.1 (2022-01-05)
 
 ### Bug Fixes
 * **services** Fixed supports swagger nested data schemas

@@ -168,6 +168,10 @@ class CommandableSwaggerDocument:
                     "type": "string",
                     "format": "date-time"
                 }
+            elif type_code == TypeCode.Boolean:
+                return {
+                    "type": "boolean"
+                }
             else:
                 return {"type": TypeConverter.to_string(type_code)}
 
