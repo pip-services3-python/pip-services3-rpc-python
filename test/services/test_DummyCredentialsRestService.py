@@ -68,7 +68,7 @@ class TestDummyCredentialsRestService:
 
     def test_crud_operations(self):
         # Create one dummy
-        response = self.invoke("/dummies", {"body": DUMMY1.to_json()})
+        response = self.invoke("/dummies", DUMMY1.to_json())
 
         dummy1 = Dummy.from_json(response)
         assert dummy1 is not None
@@ -76,7 +76,7 @@ class TestDummyCredentialsRestService:
         assert DUMMY1.content == dummy1.content
 
         # Create another dummy
-        response = self.invoke("/dummies", {"body": DUMMY2.to_json()})
+        response = self.invoke("/dummies", DUMMY2.to_json())
 
         dummy2 = Dummy.from_json(response)
 

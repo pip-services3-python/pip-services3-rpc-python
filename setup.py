@@ -23,7 +23,7 @@ except:
 
 setup(
     name='pip_services3_rpc',
-    version='3.3.2',
+    version='3.3.3',
     url='http://github.com/pip-services3-python/pip-services3-rpc-python',
     license='MIT',
     author='Conceptual Vision Consulting LLC',
@@ -42,7 +42,7 @@ setup(
         'cheroot >= 8.6.0, < 9.0',
         'beaker >= 1.11.0, < 2.0',
         'psutil >= 5.9.0, < 6.0',
-        'pip-services3-commons >= 3.3.13, < 4.0',
+        'pip-services3-commons >= 3.3.14, < 4.0',
         'pip-services3-components >= 3.5.9, < 4.0'
     ],
     classifiers=[
@@ -54,6 +54,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
         'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python :: 3.9',
         'Topic :: Software Development :: Libraries :: Python Modules'
     ]
 )

@@ -11,6 +11,7 @@
 """
 
 import ssl
+import logging
 
 from bottle import ServerAdapter
 from cheroot import wsgi
@@ -36,7 +37,9 @@ class SSLCherryPyServer(ServerAdapter):
 
         try:
             self.server.start()
-        finally:
+        except Exception as e:
+            logging.critical(e, exc_info=True)
+
             if self.server:
                 self.server.stop()
 

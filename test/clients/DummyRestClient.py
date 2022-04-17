@@ -43,6 +43,7 @@ class DummyRestClient(RestClient, IDummyClient):
             return page
         except Exception as err:
             timing.end_timing(err)
+            raise err
         finally:
             timing.end_success()
 
@@ -58,6 +59,7 @@ class DummyRestClient(RestClient, IDummyClient):
                 return Dummy.from_json(response)
         except Exception as err:
             timing.end_timing(err)
+            raise err
         finally:
             timing.end_success()
 
@@ -69,14 +71,13 @@ class DummyRestClient(RestClient, IDummyClient):
                 '/dummies',
                 correlation_id,
                 None,
-                {
-                    'body': entity
-                }
+                entity
             )
             if response:
                 return Dummy.from_json(response)
         except Exception as err:
             timing.end_timing(err)
+            raise err
         finally:
             timing.end_success()
 
@@ -88,14 +89,13 @@ class DummyRestClient(RestClient, IDummyClient):
                 '/dummies',
                 correlation_id,
                 None,
-                {
-                    'body': entity
-                }
+                entity
             )
             if response:
                 return Dummy.from_json(response)
         except Exception as err:
             timing.end_timing(err)
+            raise err
         finally:
             timing.end_success()
 
@@ -112,6 +112,7 @@ class DummyRestClient(RestClient, IDummyClient):
                 return Dummy.from_json(response)
         except Exception as err:
             timing.end_timing(err)
+            raise err
         finally:
             timing.end_success()
 
@@ -127,5 +128,6 @@ class DummyRestClient(RestClient, IDummyClient):
             return None if not result else result.get('correlation_id')
         except Exception as err:
             timing.end_timing(err)
+            raise err
         finally:
             timing.end_success()

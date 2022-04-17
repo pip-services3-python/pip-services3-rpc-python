@@ -60,7 +60,7 @@ class TestHttpEndpointService():
         self.endpoint.close(None)
 
     def test_crud_operations(self):
-        response = self.invoke("/api/v1/dummies", {'body': DUMMY1.to_json()})
+        response = self.invoke("/api/v1/dummies", DUMMY1.to_json())
 
         dummy1 = Dummy(**response)
 

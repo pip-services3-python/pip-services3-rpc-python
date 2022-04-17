@@ -88,5 +88,6 @@ class CommandableHttpClient(RestClient, ABC):
             return self._call('POST', name, correlation_id, None, params)
         except Exception as err:
             timing.end_failure(err)
+            raise err
         finally:
             timing.end_timing()

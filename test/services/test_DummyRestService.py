@@ -60,7 +60,7 @@ class TestDummyRestService:
 
     def test_crud_operations(self):
         # Create one dummy
-        response = self.invoke('POST', "/dummies", {"body": DUMMY1.to_json()})
+        response = self.invoke('POST', "/dummies", DUMMY1.to_json())
 
         dummy1 = Dummy.from_json(response)
         assert dummy1 is not None
@@ -68,7 +68,7 @@ class TestDummyRestService:
         assert DUMMY1.content == dummy1.content
 
         # Create another dummy
-        response = self.invoke('POST', "/dummies", {"body": DUMMY2.to_json()})
+        response = self.invoke('POST', "/dummies", DUMMY2.to_json())
 
         dummy2 = Dummy.from_json(response)
 
@@ -84,7 +84,7 @@ class TestDummyRestService:
 
         # Update the dummy
         dummy1.content = 'Updated Content 1'
-        response = self.invoke('PUT', '/dummies', {'body': dummy1.to_json()})
+        response = self.invoke('PUT', '/dummies', dummy1.to_json())
 
         dummy = Dummy(**response)
 
