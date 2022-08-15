@@ -1,6 +1,14 @@
 {
-    "name": "pip_services3_rpc",
-    "registry": "pipdevs",
+    "name":  "pip_services3_rpc",
+    "type": "module",
+    "language": "python",
     "version": "3.3.3",
-    "build": 0
+    "build": 0,
+    "registry": "pipdevs",
+    "artifacts": [
+        {
+            "name":  "<name>",
+            "type": "pypi"
+        }
+    ]
 }
