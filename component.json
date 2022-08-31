@@ -1,5 +1,5 @@
 {
-    "name":  "pip_services3_rpc",
+    "name":  "pip-services3-rpc",
     "type": "module",
     "language": "python",
     "version": "3.3.3",
