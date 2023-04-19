@@ -96,9 +96,11 @@ class HttpRequestDetector:
                 except KeyError:
                     pass
 
-        if ip is None:
+        if ip is None and json_data is not None:
             try:
-                ip = json_data['socket']['remoteAddress']
+                socket = json_data.get('socket')
+                if socket:
+                    ip = json_data.get('remoteAddress')
             except KeyError:
                 pass
 
