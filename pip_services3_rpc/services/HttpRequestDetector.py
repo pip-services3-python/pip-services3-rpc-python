@@ -100,7 +100,7 @@ class HttpRequestDetector:
             try:
                 socket = json_data.get('socket')
                 if socket:
-                    ip = json_data.get('remoteAddress')
+                    ip = socket.get('remoteAddress')
             except KeyError:
                 pass
 
